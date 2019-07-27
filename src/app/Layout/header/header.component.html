@@ -83,6 +83,14 @@
     </a>
   </li>
 
+  <hr class="sidebar-divider my-0" />
+  <li class="nav-item" *ngIf="isAdmin">
+    <a class="nav-link" routerLink="/account-master">
+      <i class="fas fa-arrow-right"></i>
+      <span>Account Master</span>
+    </a>
+  </li>
+
   <!-- Divider -->
   <hr class="sidebar-divider my-0" />
   <li class="nav-item" *ngIf="isAdmin">

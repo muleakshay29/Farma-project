@@ -1,14 +1,11 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { NgModule } from "@angular/core";
+import { SharedModule } from "../_shared/shared.module";
 
-import { TransactionsRoutingModule } from './transactions-routing.module';
-import { AccountMasterComponent } from './account-master/account-master.component';
+import { TransactionsRoutingModule } from "./transactions-routing.module";
+import { AccountMasterComponent } from "./account-master/account-master.component";
 
 @NgModule({
   declarations: [AccountMasterComponent],
-  imports: [
-    CommonModule,
-    TransactionsRoutingModule
-  ]
+  imports: [SharedModule, TransactionsRoutingModule]
 })
-export class TransactionsModule { }
+export class TransactionsModule {}

@@ -1,3 +1,102 @@
-<p>
-  account-master works!
-</p>
+<h3 class="h3 mb-4 text-gray-800 border-bottom pb-2">Accounr Master</h3>
+
+<div class="card shadow mb-4">
+  <div class="card-body">
+    <form
+      [formGroup]="accountMaster"
+      #formDirective="ngForm"
+      (ngSubmit)="onSubmit()"
+    >
+      <div class="form-group">
+        <input
+          type="text"
+          class="form-control rounded-pill"
+          formControlName="AC_code"
+          placeholder="Enter Account code"
+        />
+        <app-error-message [control]="AC_code"></app-error-message>
+      </div>
+
+      <div class="form-group">
+        <input
+          type="text"
+          class="form-control rounded-pill"
+          formControlName="AC_name"
+          placeholder="Enter Account Name"
+        />
+        <app-error-message [control]="AC_name"></app-error-message>
+      </div>
+
+      <div class="form-group">
+        <input
+          type="text"
+          class="form-control rounded-pill"
+          formControlName="AC_no"
+          placeholder="Enter Account No"
+        />
+        <app-error-message [control]="AC_no"></app-error-message>
+      </div>
+
+      <div class="form-group">
+        <input
+          type="text"
+          class="form-control rounded-pill"
+          formControlName="IFSC_code"
+          placeholder="Enter IFSC Code"
+        />
+        <app-error-message [control]="IFSC_code"></app-error-message>
+      </div>
+
+      <div class="form-group">
+        <input
+          type="text"
+          class="form-control rounded-pill"
+          formControlName="AC_type"
+          placeholder="Select AC Type"
+        />
+        <app-error-message [control]="AC_type"></app-error-message>
+      </div>
+
+      <div class="form-group">
+        <input
+          type="text"
+          class="form-control rounded-pill"
+          formControlName="Bank_name"
+          placeholder="Select Bank Name"
+        />
+        <app-error-message [control]="Bank_name"></app-error-message>
+      </div>
+
+      <div class="form-group">
+        <input
+          type="number"
+          class="form-control rounded-pill"
+          formControlName="AC_opening_bal"
+          placeholder="Enter Account Opening Balance"
+        />
+        <app-error-message [control]="AC_opening_bal"></app-error-message>
+      </div>
+
+      <div class="form-group">
+        <input
+          type="text"
+          class="form-control rounded-pill"
+          formControlName="Opening_bal_type"
+          placeholder="Select Opening Balance Type"
+        />
+        <app-error-message [control]="Opening_bal_type"></app-error-message>
+      </div>
+
+      <div class="form-group text-center">
+        <button
+          type="submit"
+          value="submit"
+          class="btn btn-primary btn-user rounded-pill"
+          [disabled]="!accountMaster.valid"
+        >
+          Submit
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

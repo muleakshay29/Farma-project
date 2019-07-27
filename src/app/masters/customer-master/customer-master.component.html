@@ -1,0 +1,132 @@
+<h3 class="h3 mb-4 text-gray-800 border-bottom pb-2">Customer Master</h3>
+
+<div class="card shadow mb-4">
+  <div class="card-body">
+    <form
+      [formGroup]="customerMaster"
+      #formDirective="ngForm"
+      (ngSubmit)="onSubmit()"
+    >
+      <div class="form-group">
+        <input
+          formControlName="Cust_name"
+          class="form-control rounded-pill"
+          placeholder="Search Customer"
+        />
+        <app-error-message [control]="Cust_name"></app-error-message>
+      </div>
+
+      <div class="form-group">
+        <input
+          type="hidden"
+          formControlName="Cust_code"
+          class="form-control rounded-pill"
+        />
+      </div>
+
+      <div class="card">
+        <div class="card-body">
+          <div class="form-group row">
+            <div class="col-sm-6 mb-3 mb-sm-0">
+              <label><strong>Name</strong></label>
+              <input
+                type="text"
+                class="form-control rounded-pill"
+                placeholder="Name"
+                [value]="Customer_name"
+                readonly
+              />
+            </div>
+            <div class="col-sm-6">
+              <label><strong>City</strong></label>
+              <input
+                type="text"
+                class="form-control rounded-pill"
+                placeholder="City"
+                [value]="City"
+                readonly
+              />
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <div class="col-sm-6 mb-3 mb-sm-0">
+              <label><strong>Area</strong></label>
+              <input
+                type="text"
+                class="form-control rounded-pill"
+                placeholder="Area"
+                [value]="Area"
+                readonly
+              />
+            </div>
+            <div class="col-sm-6">
+              <label><strong>Address</strong></label>
+              <textarea
+                class="form-control rounded-pill"
+                [value]="Address"
+                placeholder="Address"
+                readonly
+              ></textarea>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <div class="col-sm-6 mb-3 mb-sm-0">
+              <label><strong>Email</strong></label>
+              <input
+                type="email"
+                class="form-control rounded-pill"
+                placeholder="Email"
+                [value]="Email"
+                readonly
+              />
+            </div>
+            <div class="col-sm-6">
+              <label><strong>Phone No.</strong></label>
+              <input
+                type="number"
+                class="form-control rounded-pill"
+                placeholder="Phone No."
+                [value]="Phone_no"
+                readonly
+              />
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <div class="col-sm-6 mb-3 mb-sm-0">
+              <label><strong>Opening Balance</strong></label>
+              <input
+                type="number"
+                class="form-control rounded-pill"
+                placeholder="Opening Balance"
+                formControlName="Opening_balance"
+              />
+            </div>
+            <div class="col-sm-6">
+              <label><strong>Opening Balance Type</strong></label>
+              <input
+                type="text"
+                class="form-control rounded-pill"
+                placeholder="Opening Balance Type"
+                formControlName="Opening_balance_type"
+              />
+            </div>
+          </div>
+
+          <div class="form-group text-center">
+            <button
+              type="submit"
+              value="submit"
+              class="btn btn-primary btn-user rounded-pill"
+              [disabled]="!customerMaster.valid"
+            >
+              Submit
+            </button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

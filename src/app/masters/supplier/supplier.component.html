@@ -1,0 +1,116 @@
+<h3 class="h3 mb-4 text-gray-800 border-bottom pb-2">Add Business Product</h3>
+
+<div class="card shadow mb-4">
+  <div class="card-body">
+    <form
+      [formGroup]="supplierMaster"
+      #formDirective="ngForm"
+      (ngSubmit)="onSubmit()"
+    >
+      <div class="form-group">
+        <input
+          formControlName="Supplier"
+          [typeahead]="supplierList"
+          typeaheadOptionField="Supplier_name"
+          (typeaheadOnSelect)="onSelect($event)"
+          [typeaheadOptionsInScrollableView]="5"
+          class="form-control rounded-pill"
+          placeholder="Search Supplier"
+          adaptivePosition="true"
+        />
+        <app-error-message [control]="Supplier"></app-error-message>
+      </div>
+
+      <div class="form-group">
+        <input
+          type="hidden"
+          formControlName="Supplier_code"
+          class="form-control rounded-pill"
+        />
+      </div>
+
+      <div class="card">
+        <div class="card-body">
+          <div class="form-group">
+            <label><strong>Supplier Name</strong></label>
+            <input
+              type="text"
+              class="form-control rounded-pill"
+              placeholder="Supplier Name"
+              [value]="Supplier_name"
+              readonly
+            />
+          </div>
+
+          <div class="form-group">
+            <label><strong>Address</strong></label>
+            <textarea
+              type="text"
+              class="form-control rounded-pill"
+              placeholder="Address"
+              [value]="Address"
+              readonly
+            ></textarea>
+          </div>
+
+          <div class="form-group">
+            <label><strong>Phone No. 1</strong></label>
+            <input
+              type="text"
+              class="form-control rounded-pill"
+              placeholder="Phone No. 1"
+              [value]="Phone1"
+              readonly
+            />
+          </div>
+
+          <div class="form-group">
+            <label><strong>Phone No. 2</strong></label>
+            <input
+              type="text"
+              class="form-control rounded-pill"
+              placeholder="Phone No. 2"
+              [value]="Phone2"
+              readonly
+            />
+          </div>
+
+          <div class="form-group">
+            <label><strong>Email ID</strong></label>
+            <input
+              type="email"
+              class="form-control rounded-pill"
+              placeholder="Email ID"
+              [value]="Email_id"
+              readonly
+            />
+          </div>
+
+          <div class="form-group">
+            <label><strong>Opening Balance Type</strong></label>
+            <select
+              class="form-control rounded-pill"
+              [value]="Opening_bal_type"
+              disabled
+            >
+              <option value="">Scheduled</option>
+              <option value="1">Yes</option>
+              <option value="2">No</option>
+            </select>
+          </div>
+
+          <div class="form-group text-center">
+            <button
+              type="submit"
+              value="submit"
+              class="btn btn-primary btn-user rounded-pill"
+              [disabled]="!supplierMaster.valid"
+            >
+              Submit
+            </button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

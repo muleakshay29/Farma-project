@@ -1,0 +1,17 @@
+<div id="wrapper">
+  <app-header *ngIf="headerShow"></app-header>
+
+  <div id="content-wrapper" class="d-flex flex-column">
+    <div id="content">
+      <app-navigations *ngIf="navShow"></app-navigations>
+
+      <!-- Begin Page Content -->
+      <div class="container-fluid">
+        <router-outlet></router-outlet>
+      </div>
+      <!-- /.container-fluid -->
+    </div>
+
+    <!-- <app-footer></app-footer> -->
+  </div>
+</div>

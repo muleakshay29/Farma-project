@@ -1,0 +1,59 @@
+<h3 class="h3 mb-4 text-gray-800 border-bottom pb-2">Product Master</h3>
+
+<div class="card">
+  <div class="card-header text-right">
+    <button type="button" routerLink="/add-product-master" class="btn btn-success">
+      <i class="fas fa-plus-circle"></i> &nbsp; Add New
+    </button>
+  </div>
+
+  <div class="card-body">
+    <div class="form-group">
+      <input type="search" (keyup)="applyFilter($event.target.value)" class="form-control rounded-pill"
+        placeholder="Search">
+    </div>
+
+    <div class="table-responsive shadow">
+
+      <table mat-table [dataSource]="dataSource" matSort class="table table-bordered table-hover mb-0">
+        <ng-container matColumnDef="Action">
+          <th *matHeaderCellDef class="text-center"> Action </th>
+          <td class="text-center" *matCellDef="let element">
+            <!-- <a href="javascript:void(0)" (click)="deleteProduct(element.PRO_Id)" matTooltip="Delete" matTooltipPosition="above"> -->
+              <a href="javascript:void(0)" (click)="openModalWithComponent(element.PRO_Name, element.PRO_Id)" matTooltip="Delete" matTooltipPosition="above">
+              <i class="fas fa-times"></i>
+            </a>
+            &nbsp; | &nbsp;
+            <a routerLink="/add-product-master/{{element.PRO_Id}}" matTooltip="Edit" matTooltipPosition="above">
+              <i class="fas fa-pencil-alt"></i>
+            </a>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="PRO_code">
+          <th *matHeaderCellDef class="text-center" mat-sort-header> Product Code </th>
+          <td *matCellDef="let element" class="text-center"> {{element.PRO_code}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="PRO_Name">
+          <th *matHeaderCellDef class="text-center" mat-sort-header> Product Name </th>
+          <td *matCellDef="let element" class="text-center"> {{element.PRO_Name}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="PRO_Manufraturer">
+          <th *matHeaderCellDef class="text-center" mat-sort-header> Product Manufraturer </th>
+          <td *matCellDef="let element" class="text-center"> {{element.PRO_Manufraturer}} </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns" class="text-center thead-dark"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="text-center"></tr>
+      </table>
+
+    </div>
+  </div>
+
+  <div class="card-footer p-0">
+    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+  </div>
+
+</div>

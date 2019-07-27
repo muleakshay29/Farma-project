@@ -1,0 +1,90 @@
+<h3 class="h3 mb-4 text-gray-800 border-bottom pb-2">Common Master</h3>
+
+<div class="card shadow mb-4">
+  <div class="card-body">
+    <form
+      [formGroup]="stockTrans"
+      #formDirective="ngForm"
+      (ngSubmit)="onSubmit()"
+    >
+      <div class="form-group">
+        <input
+          type="text"
+          class="form-control rounded-pill"
+          formControlName="Invoice_no"
+          placeholder="Serial No."
+          readonly
+        />
+        <app-error-message [control]="Invoice_no"></app-error-message>
+      </div>
+
+      <div class="form-group">
+        <input
+          type="text"
+          class="form-control rounded-pill"
+          formControlName="Product"
+          placeholder="Search Product"
+          [typeahead]="allProductList"
+          typeaheadOptionField="PRO_Name"
+          adaptivePosition="true"
+          (typeaheadOnSelect)="onSelect($event)"
+          [typeaheadOptionsInScrollableView]="5"
+        />
+        <app-error-message [control]="Product"></app-error-message>
+      </div>
+
+      <div class="form-group">
+        <input
+          type="hidden"
+          formControlName="PRO_code"
+          class="form-control rounded-pill"
+        />
+      </div>
+
+      <div class="form-group">
+        <input
+          type="text"
+          class="form-control rounded-pill"
+          formControlName="PRO_batch"
+          placeholder="Batch"
+        />
+        <app-error-message [control]="PRO_batch"></app-error-message>
+      </div>
+
+      <div class="form-group">
+        <input
+          type="text"
+          class="form-control rounded-pill"
+          formControlName="PRO_purchase_unit"
+          placeholder="Purchase Unit Opening Quantity"
+        />
+        <app-error-message [control]="PRO_purchase_unit"></app-error-message>
+      </div>
+
+      <div class="form-group text-center">
+        <span><strong>OR</strong></span>
+      </div>
+
+      <div class="form-group">
+        <input
+          type="text"
+          class="form-control rounded-pill"
+          formControlName="PRO_sales_unit"
+          placeholder="Sales Unit Opening Quantity"
+        />
+        <app-error-message [control]="PRO_sales_unit"></app-error-message>
+      </div>
+
+      <div class="form-group text-center">
+        <button
+          type="submit"
+          value="submit"
+          class="btn btn-primary btn-user rounded-pill"
+          [disabled]="!stockTrans.valid"
+        >
+          Submit
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

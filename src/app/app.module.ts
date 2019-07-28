@@ -25,6 +25,7 @@ import { MastersModule } from "./masters/masters.module";
 import { SharedModule } from "./_shared/shared.module";
 import { AuthenticationModule } from "./authentication/authentication.module";
 import { TransactionsModule } from "./transactions/transactions.module";
+import { UniqueRecordsDirective } from './_helpers/unique-records.directive';
 /** ***************************Feature Modules***************************  **/
 
 @NgModule({
@@ -33,7 +34,8 @@ import { TransactionsModule } from "./transactions/transactions.module";
     HeaderComponent,
     DashboardComponent,
     NavigationsComponent,
-    DeleteConfirmationComponent
+    DeleteConfirmationComponent,
+    UniqueRecordsDirective
   ],
   imports: [
     BrowserModule,

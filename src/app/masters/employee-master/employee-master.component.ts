@@ -4,6 +4,7 @@ import { MasterServiceService } from "../../_services/master-service.service";
 import { Validations } from "../../_helpers/validations";
 import { Router, ActivatedRoute } from "@angular/router";
 import { AlertService } from "../../_services/alert.service";
+import { empCodeCheckValidator } from "../../_helpers/unique-records.directive";
 
 @Component({
   selector: "app-employee-master",
@@ -11,6 +12,7 @@ import { AlertService } from "../../_services/alert.service";
 })
 export class EmployeeMasterComponent implements OnInit {
   empMaster: FormGroup;
+  userTypes = [];
 
   constructor(
     private fb: FormBuilder,
@@ -22,7 +24,11 @@ export class EmployeeMasterComponent implements OnInit {
 
   ngOnInit() {
     this.empMaster = this.fb.group({
-      Emp_code: ["", Validators.required],
+      Emp_code: [
+        "",
+        [Validators.required],
+        empCodeCheckValidator(this.masterservice)
+      ],
       Emp_name: ["", [Validators.required, Validations.alphaNumericPattern]],
       Emp_address: ["", [Validators.required, Validations.alphaNumericPattern]],
       Emp_city: ["", [Validators.required, Validations.alphaNumericPattern]],
@@ -36,9 +42,24 @@ export class EmployeeMasterComponent implements OnInit {
           Validators.maxLength(12)
         ]
       ],
-      Emp_pan: ["", [Validators.required, Validations.alphaNumericPattern]],
+      Emp_pan: [
+        "",
+        [
+          Validators.required,
+          Validations.alphaNumericPattern,
+          Validators.minLength(10),
+          Validators.maxLength(10)
+        ]
+      ],
       User_name: ["", [Validators.required, Validations.alphaNumericPattern]],
-      Password: ["", Validators.required],
+      Password: [
+        "",
+        [
+          Validators.required,
+          Validators.minLength(8),
+          Validations.passwordValidator
+        ]
+      ],
       Email_id: ["", [Validators.required, Validators.email]],
       Mobile_no: [
         "",
@@ -51,6 +72,8 @@ export class EmployeeMasterComponent implements OnInit {
       ],
       Type_of_user: ["", Validators.required]
     });
+
+    this.fetchCommonMaster(3);
   }
 
   get Emp_code() {
@@ -115,6 +138,15 @@ export class EmployeeMasterComponent implements OnInit {
           "Error adding record. Please try again."
         );
       }
+    });
+  }
+
+  fetchCommonMaster(CM_Id) {
+    this.masterservice.fetchCommonChildFromCM(CM_Id).subscribe(list => {
+      this.userTypes = list;
+      this.userTypes = this.userTypes.filter(function(e) {
+        return e.CMC_Id > 10;
+      });
     });
   }
 }

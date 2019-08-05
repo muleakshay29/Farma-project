@@ -6,6 +6,7 @@ import { Router } from "@angular/router";
 import { TypeaheadMatch } from "ngx-bootstrap/typeahead/typeahead-match.class";
 import { StocksService } from "../../_services/stocks.service";
 import { AlertService } from "../../_services/alert.service";
+import { Validations } from "../../_helpers/validations";
 
 @Component({
   selector: "app-common-stock-trans",
@@ -21,6 +22,7 @@ export class CommonStockTransComponent implements OnInit {
   y: number;
   today: any;
   Stock_type: number;
+  invoiceNo: number = 0;
 
   constructor(
     private fb: FormBuilder,
@@ -32,12 +34,13 @@ export class CommonStockTransComponent implements OnInit {
 
   ngOnInit() {
     this.fetchAllProducts();
+    this.fetchInvoiceNo();
 
     this.stockTrans = this.fb.group({
-      Invoice_no: ["123"],
+      Invoice_no: [""],
       Product: ["", Validators.required],
       PRO_code: [""],
-      PRO_batch: ["", Validators.required],
+      PRO_batch: ["", [Validators.required, Validations.alphaNumericPattern]],
       PRO_purchase_unit: [""],
       PRO_sales_unit: [""]
     });
@@ -76,26 +79,20 @@ export class CommonStockTransComponent implements OnInit {
     const formData = this.stockTrans.value;
     formData.Date = this.today;
 
-    // console.log("Purchase_op_qty :" + this.Purchase_op_qty.value);
-    // console.log("Sales_op_qty :" + this.Sales_op_qty.value);
-
     if (this.PRO_sales_unit.value === "" || this.PRO_sales_unit.value === 0) {
       this.Stock_type = 1; //Stock Type - Purchase
-      // delete formData.PRO_sales_unit;
     } else {
       this.Stock_type = 2; //Stock Type - Sales
-      // delete formData.PRO_purchase_unit;
     }
 
-    // console.log("Stock_type :" + this.Stock_type);
     formData.Stock_type = this.Stock_type;
     delete formData.Product;
-    console.log(formData);
 
     this.sservice.addCommonStockTrans(formData).subscribe(data => {
       if (data > 0) {
         this.alertService.openSnackBar("Stock added successfuly");
         this.stockTrans.reset();
+        this.fetchInvoiceNo();
         this.router.navigate(["/common-stocks"]);
       } else {
         this.alertService.openSnackBar("Error adding stock. Please try again.");
@@ -113,6 +110,17 @@ export class CommonStockTransComponent implements OnInit {
     // console.log(event.item);
     this.stockTrans.patchValue({
       PRO_code: event.item.PRO_code
+    });
+  }
+
+  fetchInvoiceNo() {
+    this.sservice.fetchInvoiceNo().subscribe(data => {
+      if (data.Invoice_no === null) {
+        this.invoiceNo = 1;
+      } else {
+        this.invoiceNo = data.Invoice_no;
+        this.invoiceNo++;
+      }
     });
   }
 }

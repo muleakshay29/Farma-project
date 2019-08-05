@@ -124,6 +124,13 @@ export class MasterServiceService {
       .pipe(catchError(this.handleError<any>("checkcmname")));
   }
 
+  checkempcode(Emp_code): Observable<any> {
+    const URL = `${this.API_URL}employee-master/checkempname/${Emp_code}`;
+    return this.http
+      .get<any>(URL, httpOptions)
+      .pipe(catchError(this.handleError<any>("checkempcode")));
+  }
+
   private handleError<T>(operation = "operation", result?: T) {
     return (error: any): Observable<T> => {
       // TODO: send the error to remote logging infrastructure

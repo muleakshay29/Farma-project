@@ -67,8 +67,6 @@ export class ProductMasterService {
 
   checkProcode(PRO_code): Observable<any> {
     const URL = `${this.API_URL}checkprocode/${PRO_code}`;
-    console.log(URL);
-    console.log(PRO_code)
     return this.http
       .get<any>(URL, httpOptions)
       .pipe(catchError(this.handleError<any>("checkProcode")));

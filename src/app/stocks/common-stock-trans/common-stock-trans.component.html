@@ -1,4 +1,4 @@
-<h3 class="h3 mb-4 text-gray-800 border-bottom pb-2">Common Master</h3>
+<h3 class="h3 mb-4 text-gray-800 border-bottom pb-2">Stock Transaction</h3>
 
 <div class="card shadow mb-4">
   <div class="card-body">
@@ -13,6 +13,7 @@
           class="form-control rounded-pill"
           formControlName="Invoice_no"
           placeholder="Serial No."
+          [value]="invoiceNo"
           readonly
         />
         <app-error-message [control]="Invoice_no"></app-error-message>

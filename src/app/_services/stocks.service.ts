@@ -25,6 +25,13 @@ export class StocksService {
       .pipe(catchError(this.handleError<any>("addCommonStockTrans")));
   }
 
+  fetchInvoiceNo(): Observable<any> {
+    const URL = `${this.API_URL}fetchinvoiceno`;
+    return this.http
+      .get<any>(URL, httpOptions)
+      .pipe(catchError(this.handleError<any>("fetchInvoiceNo")));
+  }
+
   private handleError<T>(operation = "operation", result?: T) {
     return (error: any): Observable<T> => {
       console.error(error); // log to console instead

@@ -124,6 +124,13 @@ export class MasterServiceService {
       .pipe(catchError(this.handleError<any>("checkcmname")));
   }
 
+  checkcmcname(CMC_Name): Observable<any> {
+    const URL = `${this.API_URL}commonmaster/checkcmcname/${CMC_Name}`;
+    return this.http
+      .get<any>(URL, httpOptions)
+      .pipe(catchError(this.handleError<any>("checkcmcname")));
+  }
+
   checkempcode(Emp_code): Observable<any> {
     const URL = `${this.API_URL}employee-master/checkempname/${Emp_code}`;
     return this.http

@@ -12,13 +12,26 @@ import { MasterServiceService } from "../_services/master-service.service";
 import { ProductMasterService } from "../_services/product-master.service";
 
 export function cmnameCheckValidator(
-  masterservice: MasterServiceService,
-  pservice: ProductMasterService
+  masterservice: MasterServiceService
 ): AsyncValidatorFn {
   return (
     c: AbstractControl
   ): Promise<ValidationErrors | null> | Observable<ValidationErrors | null> => {
     return masterservice.checkcmname(c.value).pipe(
+      map(data => {
+        return data === true ? { alreadyExist: true } : null;
+      })
+    );
+  };
+}
+
+export function cmcnameCheckValidator(
+  masterservice: MasterServiceService
+): AsyncValidatorFn {
+  return (
+    c: AbstractControl
+  ): Promise<ValidationErrors | null> | Observable<ValidationErrors | null> => {
+    return masterservice.checkcmcname(c.value).pipe(
       map(data => {
         return data === true ? { alreadyExist: true } : null;
       })

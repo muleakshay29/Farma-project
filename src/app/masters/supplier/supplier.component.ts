@@ -44,6 +44,8 @@ export class SupplierComponent implements OnInit {
     return this.supplierMaster.get("Supplier_code");
   }
 
+  onSelect(event) {}
+
   onSubmit() {
     const formData = this.supplierMaster.value;
     console.log(formData);

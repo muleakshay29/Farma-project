@@ -74,18 +74,14 @@ export class MasterServiceService {
   }
 
   deleteCommonMasterChild(cmcId): Observable<any> {
-    const URL = `${
-      this.API_URL
-    }commonmasterchild/deletecommonmasterchild/${cmcId}`;
+    const URL = `${this.API_URL}commonmasterchild/deletecommonmasterchild/${cmcId}`;
     return this.http
       .delete<any>(URL, httpOptions)
       .pipe(catchError(this.handleError<any>("deleteCommonMasterChild")));
   }
 
   fetchCommonMasterChildDetails(cmcId): Observable<any> {
-    const URL = `${
-      this.API_URL
-    }commonmasterchild/fetchcommonmasterchild/${cmcId}`;
+    const URL = `${this.API_URL}commonmasterchild/fetchcommonmasterchild/${cmcId}`;
     return this.http
       .get<any>(URL, httpOptions)
       .pipe(catchError(this.handleError<any>("fetchCommonMasterChildDetails")));
@@ -100,9 +96,7 @@ export class MasterServiceService {
   /* Common Master Child */
 
   fetchCommonChildFromCM(CM_Id): Observable<any> {
-    const URL = `${
-      this.API_URL
-    }commonmasterchild/fetchCommonChildFromCM/${CM_Id}`;
+    const URL = `${this.API_URL}commonmasterchild/fetchCommonChildFromCM/${CM_Id}`;
     return this.http
       .get<any>(URL, httpOptions)
       .pipe(catchError(this.handleError<any>("fetchCommonMasterChild")));
@@ -125,7 +119,7 @@ export class MasterServiceService {
   }
 
   checkcmcname(CMC_Name): Observable<any> {
-    const URL = `${this.API_URL}commonmaster/checkcmcname/${CMC_Name}`;
+    const URL = `${this.API_URL}commonmasterchild/checkcmcname/${CMC_Name}`;
     return this.http
       .get<any>(URL, httpOptions)
       .pipe(catchError(this.handleError<any>("checkcmcname")));

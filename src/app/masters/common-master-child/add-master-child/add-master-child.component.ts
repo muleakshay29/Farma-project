@@ -92,7 +92,7 @@ export class AddMasterChildComponent implements OnInit {
       .fetchCommonMasterChildDetails(this.cmcID)
       .subscribe(details => {
         this.commonMasterChild.setValue({
-          CM_Id: details.CM_id,
+          CM_id: details.CM_id,
           CMC_Name: details.CMC_Name
         });
       });

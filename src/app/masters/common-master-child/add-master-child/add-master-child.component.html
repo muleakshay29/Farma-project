@@ -2,32 +2,57 @@
 
 <div class="card shadow mb-4">
   <div class="card-body">
-    <form [formGroup]="commonMasterChild" #formDirective="ngForm" (ngSubmit)="onSubmit()">
+    <form
+      [formGroup]="commonMasterChild"
+      #formDirective="ngForm"
+      (ngSubmit)="onSubmit()"
+    >
       <div class="form-group">
         <select class="form-control rounded-pill" formControlName="CM_id">
           <option value="">Select Common Master</option>
-          <option value="{{ CM.CM_Id }}" *ngFor="let CM of commonMasterList">{{ CM.CM_Name }}</option>
+          <option value="{{ CM.CM_Id }}" *ngFor="let CM of commonMasterList">{{
+            CM.CM_Name
+          }}</option>
         </select>
+        <app-error-message [control]="CM_id"></app-error-message>
       </div>
-      <app-error-message [control]="CM_id"></app-error-message>
 
       <div class="form-group">
-        <input type="text" class="form-control rounded-pill" formControlName="CMC_Name" placeholder="Enter Master Child Name">
+        <input
+          type="text"
+          class="form-control rounded-pill"
+          formControlName="CMC_Name"
+          placeholder="Enter Master Child Name"
+        />
+        <app-error-message [control]="CMC_Name"></app-error-message>
       </div>
-      <app-error-message [control]="CMC_Name"></app-error-message>
 
       <div class="form-group text-center">
-        <button type="submit" value="submit" class="btn btn-primary btn-user rounded-pill"
-          [disabled]="!commonMasterChild.valid" *ngIf="addFlag">
+        <button
+          type="submit"
+          value="submit"
+          class="btn btn-primary btn-user rounded-pill"
+          [disabled]="!commonMasterChild.valid"
+          *ngIf="addFlag"
+        >
           Submit
         </button>
 
-        <button type="submit" value="submit" class="btn btn-primary btn-user rounded-pill mx-1"
-          [disabled]="!commonMasterChild.valid" *ngIf="updateFlag">
+        <button
+          type="submit"
+          value="submit"
+          class="btn btn-primary btn-user rounded-pill mx-1"
+          [disabled]="!commonMasterChild.valid"
+          *ngIf="updateFlag"
+        >
           Update
         </button>
 
-        <button type="button" class="btn btn-warning btn-user rounded-pill mx-1" (click)="onCancel()">
+        <button
+          type="button"
+          class="btn btn-warning btn-user rounded-pill mx-1"
+          (click)="onCancel()"
+        >
           Cancel
         </button>
       </div>

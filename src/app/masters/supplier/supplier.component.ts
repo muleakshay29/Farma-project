@@ -14,7 +14,7 @@ import { DeleteConfirmationComponent } from "../../_helpers/delete-confirmation/
 export class SupplierComponent implements OnInit {
 
   dataSource: MatTableDataSource<any>;
-  displayedColumns: string[] = ['Action','SUP_id','SUP_code','SUP_CompanyName'];
+  displayedColumns: string[] = ['Action','SUP_code','SUP_CompanyName'];
   bsModalRef: BsModalRef;
 
   @ViewChild(MatSort) sort: MatSort;

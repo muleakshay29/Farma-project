@@ -7,7 +7,7 @@
       #formDirective="ngForm"
       (ngSubmit)="onSubmit()"
     >
-      <div class="form-group">
+      <!-- <div class="form-group">
         <input
           formControlName="SUP_CompanyName"
           [typeahead]="supplierList"
@@ -18,93 +18,101 @@
           placeholder="Search Supplier"
           adaptivePosition="true"
         />
-        
-      </div>
+      </div> -->
 
       <div class="card">
         <div class="card-body">
           <div class="row">
-          <div class="col-sm-6 mb-3 mb-sm-0">
-            <div class="form-group">
-              <label><strong>Supplier Code</strong></label>
-              <input
-                type="text"
-                class="form-control rounded-pill"
-                placeholder="Supplier Code"
-                formControlName="SUP_code"
-              />
-              <app-error-message [control]="SUP_code"></app-error-message>
+            <div class="col-sm-6 mb-3 mb-sm-0">
+              <div class="form-group">
+                <label><strong>Supplier Code</strong></label>
+                <input
+                  type="text"
+                  class="form-control rounded-pill"
+                  placeholder="Supplier Code"
+                  formControlName="SUP_code"
+                />
+                <app-error-message [control]="SUP_code"></app-error-message>
+              </div>
             </div>
 
-            <div class="form-group">
-              <label><strong>Supplier Name</strong></label>
-              <input
-                type="text"
-                class="form-control rounded-pill"
-                placeholder="Supplier Name"
-                formControlName="SUP_CompanyName"
-              />
-              <app-error-message [control]="SUP_CompanyName"></app-error-message>
+            <div class="col-sm-6 mb-3 mb-sm-0">
+              <div class="form-group">
+                <label><strong>Supplier Name</strong></label>
+                <input
+                  type="text"
+                  class="form-control rounded-pill"
+                  placeholder="Supplier Name"
+                  formControlName="SUP_CompanyName"
+                />
+                <app-error-message
+                  [control]="SUP_CompanyName"
+                ></app-error-message>
+              </div>
             </div>
 
-            <div class="form-group">
-              <label><strong>Address</strong></label>
-              <textarea
-                type="text"
-                class="form-control rounded-pill"
-                placeholder="Address"
-                formControlName="SUP_Address"
-              ></textarea>
+            <div class="col-sm-6 mb-3 mb-sm-0">
+              <div class="form-group">
+                <label><strong>Phone No. 1</strong></label>
+                <input
+                  type="text"
+                  class="form-control rounded-pill"
+                  placeholder="Phone No. 1"
+                  formControlName="SUP_ContactNumber1"
+                />
+                <app-error-message
+                  [control]="SUP_ContactNumber1"
+                ></app-error-message>
+              </div>
             </div>
 
-            <div class="form-group">
-              <label><strong>Phone No. 1</strong></label>
-              <input
-                type="text"
-                class="form-control rounded-pill"
-                placeholder="Phone No. 1"
-                formControlName="SUP_ContactNumber1"
-              />
-              <app-error-message [control]="SUP_ContactNumber1"></app-error-message>
+            <div class="col-sm-6 mb-3 mb-sm-0">
+              <div class="form-group">
+                <label><strong>Phone No. 2</strong></label>
+                <input
+                  type="text"
+                  class="form-control rounded-pill"
+                  placeholder="Phone No. 2"
+                  formControlName="SUP_ContactNumber2"
+                />
+                <app-error-message
+                  [control]="SUP_ContactNumber2"
+                ></app-error-message>
+              </div>
             </div>
 
-            <div class="form-group">
-              <label><strong>Phone No. 2</strong></label>
-              <input
-                type="text"
-                class="form-control rounded-pill"
-                placeholder="Phone No. 2"
-                formControlName="SUP_ContactNumber2" 
-              />
-              <app-error-message [control]="SUP_ContactNumber2"></app-error-message>
-            </div>
-          
-            <div class="form-group">
-              <label><strong>Supplier Owner Name</strong></label>
-              <input
-                type="text"
-                class="form-control rounded-pill"
-                placeholder="Supplier Owner Name"
-                formControlName="SUP_OwnerName"
-              />
-              <app-error-message [control]="SUP_OwnerName"></app-error-message>
+            <div class="col-sm-6 mb-3 mb-sm-0">
+              <div class="form-group">
+                <label><strong>Supplier Owner Name</strong></label>
+                <input
+                  type="text"
+                  class="form-control rounded-pill"
+                  placeholder="Supplier Owner Name"
+                  formControlName="SUP_OwnerName"
+                />
+                <app-error-message
+                  [control]="SUP_OwnerName"
+                ></app-error-message>
+              </div>
             </div>
 
-            <div class="form-group">
-              <label><strong>Supplier GST Number</strong></label>
-              <input
-                type="text"
-                class="form-control rounded-pill"
-                placeholder="Supplier GST Number"
-                formControlName="SUP_GSTNumber"
-              />
-              <app-error-message [control]="SUP_GSTNumber"></app-error-message>
+            <div class="col-sm-6 mb-3 mb-sm-0">
+              <div class="form-group">
+                <label><strong>Supplier GST Number</strong></label>
+                <input
+                  type="text"
+                  class="form-control rounded-pill"
+                  placeholder="Supplier GST Number"
+                  formControlName="SUP_GSTNumber"
+                />
+                <app-error-message
+                  [control]="SUP_GSTNumber"
+                ></app-error-message>
+              </div>
             </div>
 
-          </div>
-          <div class="col-sm-6 mb-3 mb-sm-0">
-
-            <div class="form-group">
+            <div class="col-sm-6 mb-3 mb-sm-0">
+              <div class="form-group">
                 <label><strong>Supplier Drug Licence Number</strong></label>
                 <input
                   type="text"
@@ -113,91 +121,116 @@
                   formControlName="SUP_DrNo"
                 />
                 <app-error-message [control]="SUP_DrNo"></app-error-message>
-            </div>
-            <div class="form-group">
-              <label><strong>Supplier PAN Number</strong></label>
-              <input
-                type="text"
-                class="form-control rounded-pill"
-                placeholder="Supplier Pan No"
-                formControlName="SUP_PanNo"
-              />
-              <app-error-message [control]="SUP_PanNo"></app-error-message>
+              </div>
             </div>
 
-            <div class="form-group">
-              <label><strong>Supplier Whatsapp Number</strong></label>
-              <input
-                type="text"
-                class="form-control rounded-pill"
-                placeholder="Supplier Whatsapp Number"
-                formControlName="SUP_WhatsappNumber"
-              />
-              <app-error-message [control]="SUP_WhatsappNumber"></app-error-message>
+            <div class="col-sm-6 mb-3 mb-sm-0">
+              <div class="form-group">
+                <label><strong>Supplier PAN Number</strong></label>
+                <input
+                  type="text"
+                  class="form-control rounded-pill"
+                  placeholder="Supplier Pan No"
+                  formControlName="SUP_PanNo"
+                />
+                <app-error-message [control]="SUP_PanNo"></app-error-message>
+              </div>
             </div>
 
-            <div class="form-group">
-              <label><strong>Email ID</strong></label>
-              <input
-                type="email"
-                class="form-control rounded-pill"
-                placeholder="Email ID"
-                formControlName="SUP_BizMailid"
-                
-              />
-              <app-error-message [control]="SUP_BizMailid"></app-error-message>
+            <div class="col-sm-6 mb-3 mb-sm-0">
+              <div class="form-group">
+                <label><strong>Supplier Whatsapp Number</strong></label>
+                <input
+                  type="text"
+                  class="form-control rounded-pill"
+                  placeholder="Supplier Whatsapp Number"
+                  formControlName="SUP_WhatsappNumber"
+                />
+                <app-error-message
+                  [control]="SUP_WhatsappNumber"
+                ></app-error-message>
+              </div>
             </div>
 
-            <div class="form-group">
+            <div class="col-sm-6 mb-3 mb-sm-0">
+              <div class="form-group">
+                <label><strong>Email ID</strong></label>
+                <input
+                  type="email"
+                  class="form-control rounded-pill"
+                  placeholder="Email ID"
+                  formControlName="SUP_BizMailId"
+                />
+                <app-error-message
+                  [control]="SUP_BizMailId"
+                ></app-error-message>
+              </div>
+            </div>
+
+            <div class="col-sm-12 mb-3 mb-sm-0">
+              <div class="form-group">
+                <label><strong>Address</strong></label>
+                <textarea
+                  type="text"
+                  class="form-control rounded-pill"
+                  placeholder="Address"
+                  formControlName="SUP_Address"
+                ></textarea>
+              </div>
+            </div>
+
+            <div class="col-sm-6 mb-3 mb-sm-0">
+              <div class="form-group">
                 <label><strong>Supplier State</strong></label>
                 <input
                   type="text"
                   class="form-control rounded-pill"
                   placeholder="Supplier State"
                   formControlName="SUP_State"
-                  
                 />
                 <app-error-message [control]="SUP_State"></app-error-message>
               </div>
+            </div>
 
-                <div class="form-group">
-                  <label><strong>Supplier District</strong></label>
-                  <input
-                    type="text"
-                    class="form-control rounded-pill"
-                    placeholder="Supplier District"
-                    formControlName="SUP_Dist"
-                    
-                  />
-                  <app-error-message [control]="SUP_Dist"></app-error-message>
-                </div>
+            <div class="col-sm-6 mb-3 mb-sm-0">
+              <div class="form-group">
+                <label><strong>Supplier District</strong></label>
+                <input
+                  type="text"
+                  class="form-control rounded-pill"
+                  placeholder="Supplier District"
+                  formControlName="SUP_Dist"
+                />
+                <app-error-message [control]="SUP_Dist"></app-error-message>
+              </div>
+            </div>
 
-                <div class="form-group">
-                    <label><strong>Supplier City</strong></label>
-                    <input
-                      type="text"
-                      class="form-control rounded-pill"
-                      placeholder="Supplier City"
-                      formControlName="SUP_City"
-                      
-                    />
-                    <app-error-message [control]="SUP_City"></app-error-message>
-                </div>
+            <div class="col-sm-6 mb-3 mb-sm-0">
+              <div class="form-group">
+                <label><strong>Supplier City</strong></label>
+                <input
+                  type="text"
+                  class="form-control rounded-pill"
+                  placeholder="Supplier City"
+                  formControlName="SUP_City"
+                />
+                <app-error-message [control]="SUP_City"></app-error-message>
+              </div>
+            </div>
 
-                <div class="form-group">
-                      <label><strong>Supplier Pin</strong></label>
-                      <input
-                        type="text"
-                        class="form-control rounded-pill"
-                        placeholder="Supplier Pin"
-                        formControlName="SUP_Pin"
-                        
-                      />
-                      <app-error-message [control]="SUP_Pin"></app-error-message>
-                </div>
-
-          </div> 
-        </div>  
+            <div class="col-sm-6 mb-3 mb-sm-0">
+              <div class="form-group">
+                <label><strong>Supplier Pin</strong></label>
+                <input
+                  type="text"
+                  class="form-control rounded-pill"
+                  placeholder="Supplier Pin"
+                  formControlName="SUP_Pin"
+                />
+                <app-error-message [control]="SUP_Pin"></app-error-message>
+              </div>
+            </div>
+          </div>
           <div class="form-group text-center">
             <button
               type="submit"
@@ -208,7 +241,6 @@
               Submit
             </button>
           </div>
-         
         </div>
       </div>
     </form>

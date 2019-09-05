@@ -1,53 +1,84 @@
-import { Component, OnInit } from "@angular/core";
-import { Validators, FormGroup, FormBuilder } from "@angular/forms";
-import { ProductMasterService } from "../../_services/product-master.service";
+import { Component, OnInit,ViewChild } from "@angular/core";
+import { MatTableDataSource, MatSort, MatPaginator } from "@angular/material";
 import { MasterServiceService } from "../../_services/master-service.service";
-import { TypeaheadMatch } from "ngx-bootstrap/typeahead/typeahead-match.class";
+import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { AlertService } from "../../_services/alert.service";
-import { Router } from "@angular/router";
+import { Router, ActivatedRoute } from "@angular/router";
+import { DeleteConfirmationComponent } from "../../_helpers/delete-confirmation/delete-confirmation.component";
+
 
 @Component({
   selector: "app-supplier",
   templateUrl: "./supplier.component.html"
 })
 export class SupplierComponent implements OnInit {
-  supplierMaster: FormGroup;
-  supplierList: [];
 
-  Supplier_name: string = "";
-  Address: string = "";
-  Phone1: number = 0;
-  Phone2: number = 0;
-  Email_id: string = "";
-  Opening_bal_type: number = 0;
+  dataSource: MatTableDataSource<any>;
+  displayedColumns: string[] = ['Action','SUP_id','SUP_code','SUP_CompanyName'];
+  bsModalRef: BsModalRef;
+
+  @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+
+  supplierList = [];
+  addFlag = false;
+  updateFlag = false;
+  supId:any;
 
   constructor(
-    private fb: FormBuilder,
-    private pservice: ProductMasterService,
     private masterservice: MasterServiceService,
     private router: Router,
+    private modalService: BsModalService,
     private alertService: AlertService
   ) {}
 
   ngOnInit() {
-    this.supplierMaster = this.fb.group({
-      Supplier: ["", Validators.required],
-      Supplier_code: [""]
+      this.fetchSuppliers();
+    }
+
+    applyFilter(filterValue: string) {
+      this.dataSource.filter = filterValue.trim().toLowerCase();
+  
+      if (this.dataSource.paginator) {
+        this.dataSource.paginator.firstPage();
+      }
+    }
+
+  fetchSuppliers(){
+    this.masterservice.fetchSuppliers().subscribe( (res) => {
+      this.supplierList = res;
+      this.dataSource = new MatTableDataSource(res);
+      this.dataSource.sort = this.sort;
+      this.dataSource.paginator = this.paginator;
     });
   }
 
-  get Supplier() {
-    return this.supplierMaster.get("Supplier");
+  deleteSupplier(SUP_Id) {
+    this.masterservice.deleteSupplier(SUP_Id)
+      .subscribe( (data) => {
+        if(data > 0) {
+          this.alertService.openSnackBar('Record deleted successfuly');
+          this.fetchSuppliers();
+        } else {
+          this.alertService.openSnackBar('Error deleting record');
+        }
+      })
   }
 
-  get Supplier_code() {
-    return this.supplierMaster.get("Supplier_code");
+  openModalWithComponent(SUP_Name: string, SUP_Id: number) {
+    const initialState = {
+      message: 'Are you sure to delete ' + SUP_Name +'?',
+      title: 'Delete Confirmation'
+    };
+    this.bsModalRef = this.modalService.show(DeleteConfirmationComponent, {initialState});
+    this.bsModalRef.content.onClose.subscribe((result: boolean) => {
+      if(result == true) {
+        this.deleteSupplier(SUP_Id);
+      }
+    });
   }
 
-  onSelect(event) {}
-
-  onSubmit() {
-    const formData = this.supplierMaster.value;
-    console.log(formData);
+  onCancel() {
+    this.router.navigate(["/supplier-master"]);
   }
 }

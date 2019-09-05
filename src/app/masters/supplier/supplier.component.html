@@ -1,116 +1,59 @@
-<h3 class="h3 mb-4 text-gray-800 border-bottom pb-2">Add Business Product</h3>
+<h3 class="h3 mb-4 text-gray-800 border-bottom pb-2">Supplier Master</h3>
 
-<div class="card shadow mb-4">
-  <div class="card-body">
-    <form
-      [formGroup]="supplierMaster"
-      #formDirective="ngForm"
-      (ngSubmit)="onSubmit()"
-    >
-      <div class="form-group">
-        <input
-          formControlName="Supplier"
-          [typeahead]="supplierList"
-          typeaheadOptionField="Supplier_name"
-          (typeaheadOnSelect)="onSelect($event)"
-          [typeaheadOptionsInScrollableView]="5"
-          class="form-control rounded-pill"
-          placeholder="Search Supplier"
-          adaptivePosition="true"
-        />
-        <app-error-message [control]="Supplier"></app-error-message>
-      </div>
-
-      <div class="form-group">
-        <input
-          type="hidden"
-          formControlName="Supplier_code"
-          class="form-control rounded-pill"
-        />
-      </div>
-
-      <div class="card">
-        <div class="card-body">
-          <div class="form-group">
-            <label><strong>Supplier Name</strong></label>
-            <input
-              type="text"
-              class="form-control rounded-pill"
-              placeholder="Supplier Name"
-              [value]="Supplier_name"
-              readonly
-            />
-          </div>
-
-          <div class="form-group">
-            <label><strong>Address</strong></label>
-            <textarea
-              type="text"
-              class="form-control rounded-pill"
-              placeholder="Address"
-              [value]="Address"
-              readonly
-            ></textarea>
-          </div>
-
-          <div class="form-group">
-            <label><strong>Phone No. 1</strong></label>
-            <input
-              type="text"
-              class="form-control rounded-pill"
-              placeholder="Phone No. 1"
-              [value]="Phone1"
-              readonly
-            />
-          </div>
-
-          <div class="form-group">
-            <label><strong>Phone No. 2</strong></label>
-            <input
-              type="text"
-              class="form-control rounded-pill"
-              placeholder="Phone No. 2"
-              [value]="Phone2"
-              readonly
-            />
-          </div>
-
-          <div class="form-group">
-            <label><strong>Email ID</strong></label>
-            <input
-              type="email"
-              class="form-control rounded-pill"
-              placeholder="Email ID"
-              [value]="Email_id"
-              readonly
-            />
-          </div>
-
-          <div class="form-group">
-            <label><strong>Opening Balance Type</strong></label>
-            <select
-              class="form-control rounded-pill"
-              [value]="Opening_bal_type"
-              disabled
-            >
-              <option value="">Scheduled</option>
-              <option value="1">Yes</option>
-              <option value="2">No</option>
-            </select>
-          </div>
-
-          <div class="form-group text-center">
-            <button
-              type="submit"
-              value="submit"
-              class="btn btn-primary btn-user rounded-pill"
-              [disabled]="!supplierMaster.valid"
-            >
-              Submit
-            </button>
-          </div>
-        </div>
-      </div>
-    </form>
+<div class="card">
+  <div class="card-header text-right">
+    <button type="button" routerLink="/add-supplier-master" class="btn btn-success">
+      <i class="fas fa-plus-circle"></i> &nbsp; Add New
+    </button>
   </div>
+
+  <div class="card-body">
+    <div class="form-group">
+      <input type="search" (keyup)="applyFilter($event.target.value)" class="form-control rounded-pill"
+        placeholder="Search">
+    </div>
+
+    <div class="table-responsive shadow">
+
+      <table mat-table [dataSource]="dataSource" matSort class="table table-bordered table-hover mb-0">
+        <ng-container matColumnDef="Action">
+          <th *matHeaderCellDef class="text-center"> Action </th>
+          <td class="text-center" *matCellDef="let element">
+            <!-- <a href="javascript:void(0)" (click)="deleteProduct(element.SUP_id)" matTooltip="Delete" matTooltipPosition="above"> -->
+              <a href="javascript:void(0)" (click)="openModalWithComponent(element.SUP_CompanyName, element.SUP_id)" matTooltip="Delete" matTooltipPosition="above">
+              <i class="fas fa-times"></i>
+            </a>
+            &nbsp; | &nbsp;
+            <a routerLink="/add-supplier-master/{{element.SUP_id}}" matTooltip="Edit" matTooltipPosition="above">
+              <i class="fas fa-pencil-alt"></i>
+            </a>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="SUP_id">
+          <th *matHeaderCellDef class="text-center" mat-sort-header> Supplier Id </th>
+          <td *matCellDef="let element" class="text-center"> {{element.SUP_id}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="SUP_code">
+          <th *matHeaderCellDef class="text-center" mat-sort-header> Supplier Code </th>
+          <td *matCellDef="let element" class="text-center"> {{element.SUP_code}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="SUP_CompanyName">
+          <th *matHeaderCellDef class="text-center" mat-sort-header> Supplier Company Name </th>
+          <td *matCellDef="let element" class="text-center"> {{element.SUP_CompanyName}} </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns" class="text-center thead-dark"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="text-center"></tr>
+      </table>
+
+    </div>
+  </div>
+
+  <div class="card-footer p-0">
+    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+  </div>
+
 </div>

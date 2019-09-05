@@ -1,0 +1,183 @@
+import { Component, OnInit } from "@angular/core";
+import { Validators, FormGroup, FormBuilder } from "@angular/forms";
+import { MasterServiceService } from "../../../_services/master-service.service";
+import { TypeaheadMatch } from "ngx-bootstrap/typeahead/typeahead-match.class";
+import { AlertService } from "../../../_services/alert.service";
+import { Router, ActivatedRoute } from "@angular/router";
+import { Validations } from '../../../_helpers/validations';
+import { DeleteConfirmationComponent } from "../../../_helpers/delete-confirmation/delete-confirmation.component";
+
+
+@Component({
+  selector: "app-add-supplier",
+  templateUrl: "./add-supplier.component.html"
+})
+export class AddSupplierComponent implements OnInit {
+  supplierMaster: FormGroup;
+  supplierList = [];
+  addFlag = false;
+  updateFlag = false;
+  supId:any;
+
+  constructor(
+    private fb: FormBuilder,
+    private masterservice: MasterServiceService,
+    private router: Router,
+    private route: ActivatedRoute,
+    private alertService: AlertService
+  ) {}
+
+  ngOnInit() {
+    this.supplierMaster = this.fb.group({
+      SUP_code: ["", [Validators.required, Validations.floatnumberPattern]],
+      SUP_CompanyName:["",Validators.required],
+      SUP_Address:[""],
+      SUP_ContactNumber1:["",[Validators.required,Validations.floatnumberPattern]],
+      SUP_ContactNumber2:["",Validations.floatnumberPattern],
+      SUP_OwnerName:["",Validators.required],
+      SUP_GSTNumber:["", Validators.required],
+      SUP_DrNo:["",Validators.required],
+      SUP_PanNo:[],
+      SUP_BizMailid:["",[Validators.required, Validators.email]],
+      SUP_WhatsappNumber:["",Validations.floatnumberPattern],
+      SUP_State:[""],
+      SUP_Dist:[""],
+      SUP_City:[""],
+      SUP_Pin:[""]
+    });
+
+    this.supId = this.route.snapshot.paramMap.get("id");
+    if (this.supId == "" || this.supId == null) {
+      this.addFlag = true;
+      this.updateFlag = false;
+      this.fetchSuppliers();
+    } else {
+      this.addFlag = false;
+      this.updateFlag = true;
+      this.fetchSupDetails();
+    }
+  }
+
+  get SUP_code() {
+    return this.supplierMaster.get("SUP_code");
+  }
+  get SUP_CompanyName() {
+    return this.supplierMaster.get("SUP_CompanyName");
+  }
+  get SUP_Address() {
+    return this.supplierMaster.get("SUP_Address");
+  }
+  get SUP_ContactNumber1() {
+    return this.supplierMaster.get("SUP_ContactNumber1");
+  }
+  get SUP_ContactNumber2() {
+    return this.supplierMaster.get("SUP_ContactNumber2");
+  }
+  get SUP_OwnerName() {
+    return this.supplierMaster.get("SUP_OwnerName");
+  }
+  get SUP_GSTNumber() {
+    return this.supplierMaster.get("SUP_GSTNumber");
+  }
+  get SUP_DrNo() {
+    return this.supplierMaster.get("SUP_DrNo");
+  }
+  get SUP_PanNo() {
+    return this.supplierMaster.get("SUP_PanNo");
+  }
+  get SUP_BizMailid() {
+    return this.supplierMaster.get("SUP_BizMailid");
+  }
+  get SUP_WhatsappNumber() {
+    return this.supplierMaster.get("SUP_WhatsappNumber");
+  }
+  get SUP_State() {
+    return this.supplierMaster.get("SUP_State");
+  }
+  get SUP_Dist() {
+    return this.supplierMaster.get("SUP_Dist");
+  }
+  get SUP_City() {
+    return this.supplierMaster.get("SUP_City");
+  }
+  get SUP_Pin() {
+    return this.supplierMaster.get("SUP_Pin");
+  }
+
+  onSelect(event) {}
+
+  onSubmit() {
+    if (this.supId == "" || this.supId == null) {
+      const formData = this.supplierMaster.value;
+      //console.log(formData);
+      this.masterservice.addSupplier(formData).subscribe( e => {
+        if (e > 0) {
+          this.alertService.openSnackBar("Record added successfuly");
+          this.supplierMaster.reset();
+          this.router.navigate(["/supplier-master"]);
+        } else {
+          this.alertService.openSnackBar("Error adding record");
+        }
+      });
+    }
+    else{
+      const formData = {
+        SUP_Id: this.supId,
+        SUP_code: this.SUP_code,
+        SUP_CompanyName:this.SUP_CompanyName,
+        SUP_Address:this.SUP_Address,
+        SUP_ContactNumber1:this.SUP_ContactNumber1,
+        SUP_ContactNumber2:this.SUP_ContactNumber2,
+        SUP_OwnerName:this.SUP_OwnerName,
+        SUP_GSTNumber:this.SUP_GSTNumber,
+        SUP_DrNo:this.SUP_DrNo,
+        SUP_PanNo:this.SUP_PanNo,
+        SUP_BizMailid:this.SUP_BizMailid,
+        SUP_WhatsappNumber:this.SUP_WhatsappNumber,
+        SUP_State:this.SUP_State,
+        SUP_Dist:this.SUP_Dist,
+        SUP_City:this.SUP_City,
+        SUP_Pin:this.SUP_Pin
+      };
+
+      this.masterservice.updateSupplier(formData).subscribe(data => {
+        if (data > 0) {
+          this.alertService.openSnackBar("Record updated successfuly");
+          this.router.navigate(["/supplier-master"]);
+        } else {
+          this.alertService.openSnackBar("Error updating record");
+        }
+      });
+    }
+  }
+
+  fetchSuppliers(){
+    this.masterservice.fetchSuppliers().subscribe( res => this.supplierList = res);
+  }
+
+  fetchSupDetails() {
+    this.masterservice.fetchSupplierDetails(this.supId).subscribe(details => {
+      this.supplierMaster.setValue({
+      SUP_code: details.SUP_code,
+      SUP_CompanyName:details.SUP_CompanyName,
+      SUP_Address:details.SUP_Address,
+      SUP_ContactNumber1:details.SUP_ContactNumber1,
+      SUP_ContactNumber2:details.SUP_ContactNumber2,
+      SUP_OwnerName:details.SUP_OwnerName,
+      SUP_GSTNumber:details.SUP_GSTNumber,
+      SUP_DrNo:details.SUP_DrNo,
+      SUP_PanNo:details.SUP_PanNo,
+      SUP_BizMailid:details.SUP_BizMailid,
+      SUP_WhatsappNumber:details.SUP_WhatsappNumber,
+      SUP_State:details.SUP_State,
+      SUP_Dist:details.SUP_Dist,
+      SUP_City:details.SUP_City,
+      SUP_Pin:details.SUP_Pin
+      });
+    });
+  }
+
+  onCancel() {
+    this.router.navigate(["/supplier-master"]);
+  }
+}

@@ -13,6 +13,7 @@ import { BizProductMasterComponent } from "./biz-product-master/biz-product-mast
 import { CustomerMasterComponent } from "./customer-master/customer-master.component";
 import { EmployeeMasterComponent } from "./employee-master/employee-master.component";
 import { SupplierComponent } from "./supplier/supplier.component";
+import { AddSupplierComponent } from "./supplier/add-supplier/add-supplier.component";
 
 const routes: Routes = [
   // {
@@ -94,6 +95,18 @@ const routes: Routes = [
   {
     path: "supplier-master",
     component: SupplierComponent,
+    canActivate: [AuthGuard],
+    data: { roles: [Role.Admin] }
+  },
+  {
+    path: "add-supplier-master",
+    component: AddSupplierComponent,
+    canActivate: [AuthGuard],
+    data: { roles: [Role.Admin] }
+  },
+  {
+    path: "add-supplier-master/:id",
+    component: AddSupplierComponent,
     canActivate: [AuthGuard],
     data: { roles: [Role.Admin] }
   }

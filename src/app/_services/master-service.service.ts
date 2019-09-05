@@ -132,6 +132,43 @@ export class MasterServiceService {
       .pipe(catchError(this.handleError<any>("checkempcode")));
   }
 
+  //*** supplier master */
+
+  addSupplier(data: any): Observable<any> {
+    const URL = `${this.API_URL}suppliermaster/addsupplier`;
+    return this.http
+      .post<any>(URL, data, httpOptions)
+      .pipe(catchError(this.handleError<any>("addSupplier")));
+  }
+
+  fetchSuppliers(): Observable<any> {
+    const URL = `${this.API_URL}suppliermaster/fetchsupplier`;
+    return this.http
+      .get<any>(URL, httpOptions)
+      .pipe(catchError(this.handleError<any>("fetchSuppliers")));
+  }
+
+  deleteSupplier(cmcId): Observable<any> {
+    const URL = `${this.API_URL}suppliermaster/deletesupplier/${cmcId}`;
+    return this.http
+      .delete<any>(URL, httpOptions)
+      .pipe(catchError(this.handleError<any>("deleteSupplier")));
+  }
+
+  fetchSupplierDetails(cmcId): Observable<any> {
+    const URL = `${this.API_URL}suppliermaster/fetchsupdetails/${cmcId}`;
+    return this.http
+      .get<any>(URL, httpOptions)
+      .pipe(catchError(this.handleError<any>("fetchSupplierDetails")));
+  }
+
+  updateSupplier(data): Observable<any> {
+    const URL = `${this.API_URL}suppliermaster/updatesupplier`;
+    return this.http
+      .put<any>(URL, data, httpOptions)
+      .pipe(catchError(this.handleError<any>("updateSupplier")));
+  }
+
   private handleError<T>(operation = "operation", result?: T) {
     return (error: any): Observable<T> => {
       // TODO: send the error to remote logging infrastructure

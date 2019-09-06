@@ -6,6 +6,7 @@ import { AlertService } from "../../../_services/alert.service";
 import { Router, ActivatedRoute } from "@angular/router";
 import { Validations } from "../../../_helpers/validations";
 import { DeleteConfirmationComponent } from "../../../_helpers/delete-confirmation/delete-confirmation.component";
+import { checkSupplierCode } from "../../../_helpers/unique-records.directive";
 
 @Component({
   selector: "app-add-supplier",
@@ -27,27 +28,6 @@ export class AddSupplierComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.supplierMaster = this.fb.group({
-      SUP_code: ["", [Validators.required, Validations.alphaNumericPattern]],
-      SUP_CompanyName: ["", Validators.required],
-      SUP_Address: [""],
-      SUP_ContactNumber1: [
-        "",
-        [Validators.required, Validations.floatnumberPattern]
-      ],
-      SUP_ContactNumber2: ["", Validations.floatnumberPattern],
-      SUP_OwnerName: ["", Validators.required],
-      SUP_GSTNumber: ["", Validators.required],
-      SUP_DrNo: ["", Validators.required],
-      SUP_PanNo: [],
-      SUP_BizMailId: ["", [Validators.required, Validators.email]],
-      SUP_WhatsappNumber: ["", Validations.floatnumberPattern],
-      SUP_Dist: [""],
-      SUP_City: [""],
-      SUP_Pin: [""],
-      SUP_State: [""]
-    });
-
     this.supId = this.route.snapshot.paramMap.get("id");
     if (this.supId == "" || this.supId == null) {
       this.addFlag = true;
@@ -58,6 +38,58 @@ export class AddSupplierComponent implements OnInit {
       this.updateFlag = true;
       this.fetchSupDetails();
     }
+
+    this.supplierMaster = this.fb.group({
+      SUP_code: [
+        "",
+        [Validators.required, Validations.alphaNumericPattern],
+        checkSupplierCode(this.masterservice)
+      ],
+      SUP_CompanyName: [
+        "",
+        [Validators.required, Validations.alphaNumericPattern]
+      ],
+      SUP_Address: [""],
+      SUP_ContactNumber1: [
+        "",
+        [
+          Validators.required,
+          Validations.floatnumberPattern,
+          Validators.minLength(10),
+          Validators.maxLength(10)
+        ]
+      ],
+      SUP_ContactNumber2: [
+        "",
+        [
+          Validators.required,
+          Validations.floatnumberPattern,
+          Validators.minLength(10),
+          Validators.maxLength(10)
+        ]
+      ],
+      SUP_OwnerName: ["", Validators.required],
+      SUP_GSTNumber: [
+        "",
+        [Validators.required, Validations.characterNumberPattern]
+      ],
+      SUP_DrNo: ["", [Validators.required, Validations.characterNumberPattern]],
+      SUP_PanNo: ["", Validations.characterNumberPattern],
+      SUP_BizMailId: ["", [Validators.required, Validators.email]],
+      SUP_WhatsappNumber: [
+        "",
+        [
+          Validators.required,
+          Validations.floatnumberPattern,
+          Validators.minLength(10),
+          Validators.maxLength(10)
+        ]
+      ],
+      SUP_Dist: [""],
+      SUP_City: [""],
+      SUP_Pin: ["", Validations.floatnumberPattern],
+      SUP_State: [""]
+    });
   }
 
   get SUP_code() {

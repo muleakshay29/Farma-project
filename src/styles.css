@@ -2,10 +2,21 @@
 
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
 
-.mat-sort-header-container, .mat-paginator-container {
-    justify-content: center !important;
+.mat-sort-header-container,
+.mat-paginator-container {
+  justify-content: center !important;
 }
 
 .cursor-pointer {
-    cursor: pointer;
+  cursor: pointer;
+}
+
+.form-control:focus {
+  border: solid 2px lightgreen;
+  outline: 0;
+  box-shadow: none;
+}
+
+.ng-dirty.ng-touched.ng-invalid:not(form) {
+  border: solid 2px lightcoral;
 }

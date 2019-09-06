@@ -7,7 +7,11 @@ export class Validations {
       null: "Required field",
       required: "Required field",
       email: "Invalid email",
-      invalidFormat: "Only characters are allowed",
+      invalidFormat: "Only characters, numbers and -, _ are allowed",
+      characterFormat:
+        "Only characters and numbers are allowed. Minimum length should be 3.",
+      characterNumberFormat: "Only characters and numbers are allowed.",
+      floatNumbers: "Only numbers are allowed",
       invallidNumbers: "Only numbers are allowed",
       alreadyExist: "Already exist",
       invalidBarcode: "Invalid barcode pattern",
@@ -24,12 +28,36 @@ export class Validations {
 
   static characterPattern(control) {
     if (control.value === null) {
-      return { invalidFormat: true };
+      return { characterFormat: true };
     } else {
       if (control.value.match(/^[a-zA-Z]{3,100}$/)) {
         return null;
       } else {
-        return { invalidFormat: true };
+        return { characterFormat: true };
+      }
+    }
+  }
+
+  static characterNumberPattern(control) {
+    if (control.value === null) {
+      return { characterNumberFormat: true };
+    } else {
+      if (control.value.match(/^[a-zA-Z0-9]*$/)) {
+        return null;
+      } else {
+        return { characterNumberFormat: true };
+      }
+    }
+  }
+
+  static floatnumberPattern(control) {
+    if (control.value === null) {
+      return { floatNumbers: true };
+    } else {
+      if (control.value.match("^(?=.)([+-]?([0-9]*)(.([0-9]+))?)$")) {
+        return null;
+      } else {
+        return { floatNumbers: true };
       }
     }
   }
@@ -50,7 +78,7 @@ export class Validations {
     if (control.value === null) {
       return { invalidFormat: true };
     } else {
-      if (control.value.match(/^[a-zA-Z0-9&_ ]*$/)) {
+      if (control.value.match(/^[a-zA-Z0-9&-_ ]*$/)) {
         return null;
       } else {
         return { invalidFormat: true };
@@ -69,18 +97,6 @@ export class Validations {
         return null;
       } else {
         return { invalidPassword: true };
-      }
-    }
-  }
-
-  static floatnumberPattern(control) {
-    if (control.value === null) {
-      return { invallidNumbers: true };
-    } else {
-      if (control.value.match("^(?=.)([+-]?([0-9]*)(.([0-9]+))?)$")) {
-        return null;
-      } else {
-        return { invallidNumbers: true };
       }
     }
   }

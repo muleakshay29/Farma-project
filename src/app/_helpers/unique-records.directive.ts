@@ -65,6 +65,20 @@ export function checkProcode(pservice: ProductMasterService): AsyncValidatorFn {
   };
 }
 
+export function checkSupplierCode(
+  masterservice: MasterServiceService
+): AsyncValidatorFn {
+  return (
+    c: AbstractControl
+  ): Promise<ValidationErrors | null> | Observable<ValidationErrors | null> => {
+    return masterservice.checkSupplierCode(c.value).pipe(
+      map(data => {
+        return data === true ? { alreadyExist: true } : null;
+      })
+    );
+  };
+}
+
 @Directive({
   selector: "[appUniqueRecords]",
   providers: [

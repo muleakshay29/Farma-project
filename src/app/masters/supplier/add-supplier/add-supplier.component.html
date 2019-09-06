@@ -23,7 +23,20 @@
       <div class="card">
         <div class="card-body">
           <div class="row">
-            <div class="col-sm-6 mb-3 mb-sm-0">
+            <div class="col-sm-6 mb-3 mb-sm-0" *ngIf="addFlag">
+              <div class="form-group">
+                <label><strong>Supplier Code</strong></label>
+                <input
+                  type="text"
+                  class="form-control rounded-pill"
+                  placeholder="Supplier Code"
+                  formControlName="SUP_code"
+                />
+                <app-error-message [control]="SUP_code"></app-error-message>
+              </div>
+            </div>
+
+            <div class="col-sm-6 mb-3 mb-sm-0" *ngIf="updateFlag">
               <div class="form-group">
                 <label><strong>Supplier Code</strong></label>
                 <input
@@ -237,8 +250,27 @@
               value="submit"
               class="btn btn-primary btn-user rounded-pill"
               [disabled]="!supplierMaster.valid"
+              *ngIf="addFlag"
             >
               Submit
+            </button>
+
+            <button
+              type="submit"
+              value="submit"
+              class="btn btn-primary btn-user rounded-pill mx-1"
+              [disabled]="!supplierMaster.valid"
+              *ngIf="updateFlag"
+            >
+              Update
+            </button>
+
+            <button
+              type="button"
+              class="btn btn-warning btn-user rounded-pill mx-1"
+              (click)="onCancel()"
+            >
+              Cancel
             </button>
           </div>
         </div>

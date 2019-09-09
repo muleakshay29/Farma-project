@@ -18,7 +18,7 @@ export class ErrorMessageComponent implements OnInit {
       if (
         this.control.errors.hasOwnProperty(propertyName) &&
         this.control.invalid &&
-        (this.control.dirty || this.control.touched)
+        this.control.dirty //|| this.control.touched
       ) {
         return Validations.getValidatorErrorMessage(
           propertyName,

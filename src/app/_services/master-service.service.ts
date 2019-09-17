@@ -135,14 +135,16 @@ export class MasterServiceService {
   //*** supplier master */
 
   addSupplier(data: any): Observable<any> {
-    const URL = `${this.API_URL}suppliermaster/addsupplier`;
+    // const URL = `${this.API_URL}suppliermaster/addsupplier`;
+    const URL = `https://ak-mead-test-heroku.herokuapp.com/add-suppliers`;
     return this.http
       .post<any>(URL, data, httpOptions)
       .pipe(catchError(this.handleError<any>("addSupplier")));
   }
 
   fetchSuppliers(): Observable<any> {
-    const URL = `${this.API_URL}suppliermaster/fetchsupplier`;
+    // const URL = `${this.API_URL}suppliermaster/fetchsupplier`;
+    const URL = `https://ak-mead-test-heroku.herokuapp.com/fetch-suppliers`;
     return this.http
       .get<any>(URL, httpOptions)
       .pipe(catchError(this.handleError<any>("fetchSuppliers")));

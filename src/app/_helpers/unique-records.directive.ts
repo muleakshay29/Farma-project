@@ -19,7 +19,7 @@ export function cmnameCheckValidator(
   ): Promise<ValidationErrors | null> | Observable<ValidationErrors | null> => {
     return masterservice.checkcmname(c.value).pipe(
       map(data => {
-        return data === true ? { alreadyExist: true } : null;
+        return Object.keys(data).length > 0 ? { alreadyExist: true } : null;
       })
     );
   };

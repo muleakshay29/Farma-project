@@ -24,37 +24,42 @@ export class MasterServiceService {
   constructor(private http: HttpClient) {}
 
   addCommonMaster(data: any): Observable<any> {
-    const URL = `${this.API_URL}commonmaster/addcommonmaster`;
+    // const URL = `${this.API_URL}commonmaster/addcommonmaster`;
+    const URL = `http://localhost:3000/add-commonmaster`;
     return this.http
       .post<any>(URL, data, httpOptions)
       .pipe(catchError(this.handleError<any>("addCommonMaster")));
   }
 
   fetchCommonMaster(): Observable<any> {
-    const URL = `${this.API_URL}commonmaster/fetchcommonmaster`;
+    // const URL = `${this.API_URL}commonmaster/fetchcommonmaster`;
+    const URL = `http://localhost:3000/fetch-commonmaster`;
     return this.http
       .get<any>(URL, httpOptions)
       .pipe(catchError(this.handleError<any>("fetchCommonMaster")));
   }
 
   deleteCommonMaster(cmId): Observable<any> {
-    const URL = `${this.API_URL}commonmaster/deletecommonmaster/${cmId}`;
+    // const URL = `${this.API_URL}commonmaster/deletecommonmaster/${cmId}`;
+    const URL = `http://localhost:3000/commonmaster/${cmId}`;
     return this.http
       .delete<any>(URL, httpOptions)
       .pipe(catchError(this.handleError<any>("deleteCommonMaster")));
   }
 
   fetchCommonMasterDetails(cmId): Observable<any> {
-    const URL = `${this.API_URL}commonmaster/fetchcommonmaster/${cmId}`;
+    // const URL = `${this.API_URL}commonmaster/fetchcommonmaster/${cmId}`;
+    const URL = `http://localhost:3000/fetch-commonmaster-details/${cmId}`;
     return this.http
       .get<any>(URL, httpOptions)
       .pipe(catchError(this.handleError<any>("fetchCommonMasterDetails")));
   }
 
-  updateCommonMaster(data): Observable<any> {
-    const URL = `${this.API_URL}commonmaster/updatecommonmaster`;
+  updateCommonMaster(id, data): Observable<any> {
+    // const URL = `${this.API_URL}commonmaster/updatecommonmaster`;
+    const URL = `http://localhost:3000/update-commonmaster/${id}`;
     return this.http
-      .put<any>(URL, data, httpOptions)
+      .patch<any>(URL, data, httpOptions)
       .pipe(catchError(this.handleError<any>("updateCommonMaster")));
   }
 
@@ -112,11 +117,19 @@ export class MasterServiceService {
   /* Employee Master */
 
   checkcmname(CM_Name): Observable<any> {
+    const data = { CM_Name: CM_Name };
+    const URL = `http://localhost:3000/check-cmname`;
+    return this.http
+      .post<any>(URL, data, httpOptions)
+      .pipe(catchError(this.handleError<any>("checkcmname")));
+  }
+
+  /* checkcmname(CM_Name): Observable<any> {
     const URL = `${this.API_URL}commonmaster/checkcmname/${CM_Name}`;
     return this.http
       .get<any>(URL, httpOptions)
       .pipe(catchError(this.handleError<any>("checkcmname")));
-  }
+  } */
 
   checkcmcname(CMC_Name): Observable<any> {
     const URL = `${this.API_URL}commonmasterchild/checkcmcname/${CMC_Name}`;

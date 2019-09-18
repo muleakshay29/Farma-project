@@ -52,7 +52,7 @@ export class AddCommonMasterComponent implements OnInit {
     if (this.cmID == "" || this.cmID == null) {
       const formData = this.commonMaster.value;
       this.masterservice.addCommonMaster(formData).subscribe(data => {
-        if (data > 0) {
+        if (data != null) {
           this.alertService.openSnackBar("Record added successfuly");
           this.commonMaster.reset();
           this.router.navigate(["/common-master"]);
@@ -63,19 +63,25 @@ export class AddCommonMasterComponent implements OnInit {
         }
       });
     } else {
-      const formData = {
+      /* const formData = {
         CM_Id: this.cmID,
+        CM_Name: this.CM_Name.value
+      }; */
+
+      const formData = {
         CM_Name: this.CM_Name.value
       };
 
-      this.masterservice.updateCommonMaster(formData).subscribe(data => {
-        if (data > 0) {
-          this.alertService.openSnackBar("Record updated successfuly");
-          this.router.navigate(["/common-master"]);
-        } else {
-          this.alertService.openSnackBar("Error updating record");
-        }
-      });
+      this.masterservice
+        .updateCommonMaster(this.cmID, formData)
+        .subscribe(data => {
+          if (data != null) {
+            this.alertService.openSnackBar("Record updated successfuly");
+            this.router.navigate(["/common-master"]);
+          } else {
+            this.alertService.openSnackBar("Error updating record");
+          }
+        });
     }
   }
 

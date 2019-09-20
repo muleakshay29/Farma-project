@@ -71,58 +71,66 @@ export class AuthenticationService {
 }
  */
 
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { User } from '../_models/user';
+import { Injectable } from "@angular/core";
+import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { BehaviorSubject, Observable } from "rxjs";
+import { map } from "rxjs/operators";
+import { User } from "../_models/user";
 
 const httpOptions = {
   headers: new HttpHeaders({
-    'Content-Type': 'application/json',
+    "Content-Type": "application/json"
     // 'Authorization': 'my-auth-token'
   })
 };
 
-@Injectable({ providedIn: 'root' })
+@Injectable({ providedIn: "root" })
 export class AuthenticationService {
-    private currentUserSubject: BehaviorSubject<User>;
-    public currentUser: Observable<User>;
-    // API_URL = `http://localhost/FarmaAPI/public/index.php/authentication/`;
-    API_URL = `http://farma.sareeline.com/FarmaAPI/public/index.php/authentication/`;
+  private currentUserSubject: BehaviorSubject<User>;
+  public currentUser: Observable<User>;
+  // API_URL = `http://localhost/FarmaAPI/public/index.php/authentication/`;
+  API_URL = `http://farma.sareeline.com/FarmaAPI/public/index.php/authentication/`;
 
-    constructor(private http: HttpClient) {
-        this.currentUserSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('currentUser')));
-        this.currentUser = this.currentUserSubject.asObservable();
-    }
+  constructor(private http: HttpClient) {
+    this.currentUserSubject = new BehaviorSubject<User>(
+      JSON.parse(localStorage.getItem("currentUser"))
+    );
+    this.currentUser = this.currentUserSubject.asObservable();
+  }
 
-    public get currentUserValue(): User {
-        return this.currentUserSubject.value;
-    }
+  public get currentUserValue(): User {
+    return this.currentUserSubject.value;
+  }
 
-    login(userData: any) {
-        return this.http.post<any>(`${this.API_URL}login`, userData)
-            .pipe(map(user => {
-                // login successful if there's a jwt token in the response
-                // if (user && user.token) {
-                if (user) {
-                    // store user details and jwt token in local storage to keep user logged in between page refreshes
-                    localStorage.setItem('currentUser', JSON.stringify(user));
-                    this.currentUserSubject.next(user);
-                }
+  login(userData: any) {
+    // const URL = `${this.API_URL}login`;
+    const URL = `http://localhost:3000/login`;
 
-                return user;
-            }));
-    }
+    return this.http.post<any>(URL, userData).pipe(
+      map(user => {
+        console.log(user);
+        // login successful if there's a jwt token in the response
+        // if (user && user.token) {
+        if (user) {
+          // store user details and jwt token in local storage to keep user logged in between page refreshes
+          localStorage.setItem("currentUser", JSON.stringify(user));
+          this.currentUserSubject.next(user);
+        }
 
-    logout() {
-        // remove user from local storage to log user out
-        localStorage.removeItem('currentUser');
-        this.currentUserSubject.next(null);
-    }
+        return user;
+      })
+    );
+  }
 
-    register(insertData): Observable<any> {
-      const URL = `${this.API_URL}register`;
-      return this.http.post<any>(URL, insertData, httpOptions);
-    }
+  logout() {
+    // remove user from local storage to log user out
+    localStorage.removeItem("currentUser");
+    this.currentUserSubject.next(null);
+  }
+
+  register(insertData): Observable<any> {
+    // const URL = `${this.API_URL}register`;
+    const URL = `http://localhost:3000/registration`;
+    return this.http.post<any>(URL, insertData, httpOptions);
+  }
 }

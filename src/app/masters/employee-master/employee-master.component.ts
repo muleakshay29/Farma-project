@@ -13,6 +13,9 @@ import { empCodeCheckValidator } from "../../_helpers/unique-records.directive";
 export class EmployeeMasterComponent implements OnInit {
   empMaster: FormGroup;
   userTypes = [];
+  imgURL = "../../../assets/img/images.png";
+  selectedImage: File;
+  uploadedImg: any;
 
   constructor(
     private fb: FormBuilder,
@@ -126,7 +129,6 @@ export class EmployeeMasterComponent implements OnInit {
 
   onSubmit() {
     const formData = this.empMaster.value;
-    console.log(formData);
 
     this.masterservice.addEmployeeMaster(formData).subscribe(data => {
       if (data > 0) {
@@ -147,6 +149,35 @@ export class EmployeeMasterComponent implements OnInit {
       this.userTypes = this.userTypes.filter(function(e) {
         return e.CMC_Id > 10;
       });
+    });
+  }
+
+  onFileChange(event) {
+    if (event.target.files.length > 0) {
+      this.selectedImage = <File>event.target.files[0];
+      var reader = new FileReader();
+      reader.readAsDataURL(event.target.files[0]);
+      reader.onload = (imgsrc: any) => {
+        this.imgURL = imgsrc.target.result;
+      };
+    }
+  }
+
+  onProductPhotoUpload() {
+    let input = new FormData();
+    input.append(
+      "Emp_profile_img",
+      this.selectedImage,
+      this.selectedImage.name
+    );
+    this.masterservice.employeePhotoUpload(input).subscribe(data => {
+      console.log(data);
+      if (data.status == 1) {
+        this.uploadedImg = data.filename;
+        this.alertService.openSnackBar("Image Uploaded successfuly");
+      } else {
+        this.alertService.openSnackBar(data.message);
+      }
     });
   }
 }

@@ -129,6 +129,29 @@
         <app-error-message [control]="Type_of_user"></app-error-message>
       </div>
 
+      <div class="form-group row">
+        <div class="col-sm-6 mb-3 mb-sm-0 d-flex align-items-center">
+          <input
+            type="file"
+            (change)="onFileChange($event)"
+            class="border w-100 border-dark rounded p-2"
+            #fileInput
+          />
+        </div>
+
+        <div class="col-sm-6 text-center">
+          <img [src]="imgURL" width="200" class="img-thumbnail" /> <br />
+          <button
+            type="button"
+            *ngIf="fileInput.value"
+            class="btn btn-primary btn-icon-split btn-sm m-1"
+            (click)="onProductPhotoUpload()"
+          >
+            <span class="text">Upload</span>
+          </button>
+        </div>
+      </div>
+
       <div class="form-group text-center">
         <button
           type="submit"

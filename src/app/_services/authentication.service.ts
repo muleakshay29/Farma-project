@@ -104,7 +104,7 @@ export class AuthenticationService {
 
   login(userData: any) {
     // const URL = `${this.API_URL}login`;
-    const URL = `http://localhost:3000/login`;
+    const URL = `https://ak-mead-test-heroku.herokuapp.com/login`;
 
     return this.http.post<any>(URL, userData).pipe(
       map(user => {
@@ -130,7 +130,7 @@ export class AuthenticationService {
 
   register(insertData): Observable<any> {
     // const URL = `${this.API_URL}register`;
-    const URL = `http://localhost:3000/registration`;
+    const URL = `https://ak-mead-test-heroku.herokuapp.com/registration`;
     return this.http.post<any>(URL, insertData, httpOptions);
   }
 }

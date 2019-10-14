@@ -19,13 +19,14 @@ const httpOptions = {
 })
 export class MasterServiceService {
   // API_URL = `http://localhost/FarmaAPI/public/index.php/masters/`;   //localhost
-  API_URL = `http://farma.sareeline.com/FarmaAPI/public/index.php/masters/`; //server
+  // API_URL = `http://farma.sareeline.com/FarmaAPI/public/index.php/masters/`; //server
+  API_URL = `https://ak-mead-test-heroku.herokuapp.com/`; //Node server
 
   constructor(private http: HttpClient) {}
 
   addCommonMaster(data: any): Observable<any> {
     // const URL = `${this.API_URL}commonmaster/addcommonmaster`;
-    const URL = `http://localhost:3000/add-commonmaster`;
+    const URL = `${this.API_URL}add-commonmaster`;
     return this.http
       .post<any>(URL, data, httpOptions)
       .pipe(catchError(this.handleError<any>("addCommonMaster")));
@@ -33,7 +34,7 @@ export class MasterServiceService {
 
   fetchCommonMaster(): Observable<any> {
     // const URL = `${this.API_URL}commonmaster/fetchcommonmaster`;
-    const URL = `http://localhost:3000/fetch-commonmaster`;
+    const URL = `${this.API_URL}fetch-commonmaster`;
     return this.http
       .get<any>(URL, httpOptions)
       .pipe(catchError(this.handleError<any>("fetchCommonMaster")));
@@ -41,7 +42,7 @@ export class MasterServiceService {
 
   deleteCommonMaster(cmId): Observable<any> {
     // const URL = `${this.API_URL}commonmaster/deletecommonmaster/${cmId}`;
-    const URL = `http://localhost:3000/commonmaster/${cmId}`;
+    const URL = `${this.API_URL}commonmaster/${cmId}`;
     return this.http
       .delete<any>(URL, httpOptions)
       .pipe(catchError(this.handleError<any>("deleteCommonMaster")));
@@ -49,7 +50,7 @@ export class MasterServiceService {
 
   fetchCommonMasterDetails(cmId): Observable<any> {
     // const URL = `${this.API_URL}commonmaster/fetchcommonmaster/${cmId}`;
-    const URL = `http://localhost:3000/fetch-commonmaster-details/${cmId}`;
+    const URL = `${this.API_URL}fetch-commonmaster-details/${cmId}`;
     return this.http
       .get<any>(URL, httpOptions)
       .pipe(catchError(this.handleError<any>("fetchCommonMasterDetails")));
@@ -57,7 +58,7 @@ export class MasterServiceService {
 
   updateCommonMaster(id, data): Observable<any> {
     // const URL = `${this.API_URL}commonmaster/updatecommonmaster`;
-    const URL = `http://localhost:3000/update-commonmaster/${id}`;
+    const URL = `${this.API_URL}update-commonmaster/${id}`;
     return this.http
       .patch<any>(URL, data, httpOptions)
       .pipe(catchError(this.handleError<any>("updateCommonMaster")));
@@ -109,16 +110,25 @@ export class MasterServiceService {
 
   /* Employee Master */
   addEmployeeMaster(data: any): Observable<any> {
-    const URL = `${this.API_URL}employee-master/addempmaster`;
+    // const URL = `${this.API_URL}employee-master/addempmaster`;
+    const URL = `${this.API_URL}add-employee`;
     return this.http
       .post<any>(URL, data, httpOptions)
       .pipe(catchError(this.handleError<any>("addEmployeeMaster")));
+  }
+
+  employeePhotoUpload(data: any): Observable<any> {
+    const URL = `${this.API_URL}employee-avatar-upload`;
+    // const URL = `http://localhost:3000/employee-avatar-upload`;
+    return this.http
+      .post<any>(URL, data)
+      .pipe(catchError(this.handleError<any>("employeePhotoUpload")));
   }
   /* Employee Master */
 
   checkcmname(CM_Name): Observable<any> {
     const data = { CM_Name: CM_Name };
-    const URL = `http://localhost:3000/check-cmname`;
+    const URL = `${this.API_URL}check-cmname`;
     return this.http
       .post<any>(URL, data, httpOptions)
       .pipe(catchError(this.handleError<any>("checkcmname")));

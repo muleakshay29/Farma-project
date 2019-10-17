@@ -29,6 +29,7 @@ export class AddSupplierComponent implements OnInit {
 
   ngOnInit() {
     this.supId = this.route.snapshot.paramMap.get("id");
+   // alert(this.supId);
     if (this.supId == "" || this.supId == null) {
       this.addFlag = true;
       this.updateFlag = false;

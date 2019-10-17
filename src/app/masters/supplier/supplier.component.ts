@@ -66,6 +66,7 @@ export class SupplierComponent implements OnInit {
   }
 
   openModalWithComponent(SUP_Name: string, SUP_Id: number) {
+    alert(SUP_Id);
     const initialState = {
       message: 'Are you sure to delete ' + SUP_Name +'?',
       title: 'Delete Confirmation'

@@ -4,6 +4,10 @@ import { NgModule } from "@angular/core";
 import { HTTP_INTERCEPTORS } from "@angular/common/http";
 import { HashLocationStrategy, LocationStrategy } from "@angular/common";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
+import { MatDatepickerModule, MatNativeDateModule,
+          MatFormFieldModule,
+          MatInputModule } from '@angular/material';
+import { ReactiveFormsModule } from "@angular/forms";
 
 /** ***************************Fixed Components***************************  **/
 import { AppRoutingModule } from "./app-routing.module";
@@ -26,6 +30,7 @@ import { SharedModule } from "./_shared/shared.module";
 import { AuthenticationModule } from "./authentication/authentication.module";
 import { TransactionsModule } from "./transactions/transactions.module";
 import { UniqueRecordsDirective } from './_helpers/unique-records.directive';
+import { PurchaseInvoiceComponent } from './purchase-invoice/purchase-invoice.component';
 /** ***************************Feature Modules***************************  **/
 
 @NgModule({
@@ -35,7 +40,8 @@ import { UniqueRecordsDirective } from './_helpers/unique-records.directive';
     DashboardComponent,
     NavigationsComponent,
     DeleteConfirmationComponent,
-    UniqueRecordsDirective
+    UniqueRecordsDirective,
+    PurchaseInvoiceComponent
   ],
   imports: [
     BrowserModule,
@@ -45,7 +51,12 @@ import { UniqueRecordsDirective } from './_helpers/unique-records.directive';
     SharedModule,
     AuthenticationModule,
     TransactionsModule,
-    StocksModule
+    StocksModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatFormFieldModule,
+    MatInputModule,
+    ReactiveFormsModule
   ],
   providers: [
     MasterServiceService,

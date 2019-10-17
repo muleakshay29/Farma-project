@@ -191,6 +191,17 @@ export class MasterServiceService {
       .pipe(catchError(this.handleError<any>("checkSupplierCode")));
   }
 
+    //*** Invoice */
+
+    CreateInvoice(data: any): Observable<any> {
+      // const URL = `${this.API_URL}suppliermaster/addsupplier`;
+      const URL = `https://ak-mead-test-heroku.herokuapp.com/CreateInvoice`;
+      return this.http
+        .post<any>(URL, data, httpOptions)
+        .pipe(catchError(this.handleError<any>("CreateInvoice")));
+    }
+
+
   private handleError<T>(operation = "operation", result?: T) {
     return (error: any): Observable<T> => {
       // TODO: send the error to remote logging infrastructure

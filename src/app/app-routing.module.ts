@@ -3,6 +3,7 @@ import { Routes, RouterModule } from "@angular/router";
 import { AuthGuard } from "./_guards/auth.guard";
 
 import { DashboardComponent } from "./dashboard/dashboard.component";
+import { PurchaseInvoiceComponent } from "./purchase-invoice/purchase-invoice.component";
 
 const routes: Routes = [
   {
@@ -22,6 +23,11 @@ const routes: Routes = [
   {
     path: "stocks",
     loadChildren: "./stocks/stocks.module#StocksModule"
+  },
+  {
+    path: "invoice",
+    component: PurchaseInvoiceComponent,
+    canActivate: [AuthGuard]
   }
 ];
 

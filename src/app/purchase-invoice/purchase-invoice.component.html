@@ -1,0 +1,202 @@
+<h3 class="h3 mb-4 text-gray-800 border-bottom pb-2">Purchase Invoice </h3>
+
+<div class="card shadow mb-4">
+  <div class="card-body">
+    <form
+      [formGroup]="invoiceMaster"
+      #formDirective="ngForm"
+      (ngSubmit)="onSubmit()"
+    >
+  
+
+      <div class="card">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-sm-6 mb-3 mb-sm-0">
+              <div class="form-group">
+                <label><strong>Date</strong></label>
+              </div>
+
+              <mat-form-field>
+                  <input matInput [matDatepicker]="picker1" placeholder="Choose a date" formControlName="InvoiceDate">
+                  <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                  <mat-datepicker #picker1></mat-datepicker>
+                </mat-form-field>
+            </div>
+
+            <div class="col-sm-6 mb-3 mb-sm-0">
+              <div class="form-group">
+                <label><strong>Invoice Number</strong></label>
+                <input
+                  type="text"
+                  class="form-control rounded-pill"
+                  placeholder="Invoice Number"
+                  formControlName="InvoiceNo"
+                />
+                <app-error-message [control]="InvoiceNo"></app-error-message>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="card col-sm-12 mb-3 mb-sm-0">
+              <div class="card-header text-right">
+                <button type="button" (click)="addProduct()" class="btn btn-success">
+                  <i class="fas fa-plus-circle"></i> &nbsp; Add New
+                </button>
+              </div>
+            
+              <div class="card-body">
+
+                <div class="table-responsive shadow">
+            
+                  <table class="table table-bordered table-hover mb-0">
+                    <thead>
+                      <tr>
+                        <th> Product Name </th>
+                        <th> Quantity </th>
+                        <th> Rate </th>
+                      
+                      </tr>
+                    </thead>
+                    <tbody formArrayName="ProdList">
+                    <tr  *ngFor="let item of invoiceMaster.get('ProdList').controls; let i = index">
+                      <ng-container [formGroupName]="i">
+                          <td> 
+                              <input
+                              type="text"
+                              class="form-control rounded-pill"
+                              formControlName="itemName"
+                              placeholder="Item Name"
+                              /> 
+                          </td>
+                          <td> <input
+                              type="text"
+                              class="form-control rounded-pill"
+                              formControlName="itemQty"
+                              placeholder="Quantity"
+                              />  
+                          </td>
+                          <td> <input
+                            type="text"
+                            class="form-control rounded-pill"
+                            formControlName="itemPrice"
+                            placeholder="Price"
+                            />  
+                          </td>
+                        </ng-container>  
+                      </tr>
+                     </tbody>
+                    <tr>
+                        <td> 
+                           
+                        </td>
+                        <td>
+                            SubTotal 
+                        </td>
+                        <td> <input
+                            type="text"
+                            class="form-control rounded-pill" 
+                            formControlName="SubTotal"
+                            (focus)="getsubtotal();"
+                            /> 
+                        </td>
+                      </tr>
+
+                      <tr>
+                        <td> 
+                           
+                        </td>
+                        <td>
+                            CGST 
+                        </td>
+                        <td> <input
+                            type="text"
+                            class="form-control rounded-pill"
+                            value=""
+                            formControlName="CGST"
+                            /> 
+                        </td>
+                      </tr>
+
+                      <tr>
+                        <td> 
+                           
+                        </td>
+                        <td>
+                          SGST 
+                        </td>
+                        <td> <input
+                            type="text"
+                            class="form-control rounded-pill"
+                            value=""
+                            formControlName="SGST"
+                            /> 
+                        </td>
+                      </tr>
+
+                      <tr>
+                        <td> 
+                           
+                        </td>
+                        <td>
+                          IGST 
+                        </td>
+                        <td> <input
+                            type="text"
+                            class="form-control rounded-pill"
+                            value=""
+                            formControlName="IGST"
+                            /> 
+                        </td>
+                      </tr>
+
+                      <tr>
+                        <td> 
+                           
+                        </td>
+                        <td>
+                          Total 
+                        </td>
+                        <td> <input
+                            type="text"
+                            class="form-control rounded-pill"
+                            value=""
+                            formControlName="Total"
+                            (focus)="gettotal();"
+                            /> 
+                        </td>
+                      </tr>
+
+                  </table>
+            
+                </div>
+              </div>
+            
+            
+            </div>
+          </div>
+          <br>
+          <div class="form-group text-center">
+            <button
+              type="submit"
+              value="submit"
+              class="btn btn-primary btn-user rounded-pill"
+              [disabled]="!invoiceMaster.valid" 
+            >
+              Submit
+            </button>
+
+            <button
+              type="button"
+              class="btn btn-warning btn-user rounded-pill mx-1"
+              (click)="onCancel()"
+            >
+              Clear
+            </button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

@@ -29,51 +29,51 @@ export class RegistrationComponent implements OnInit {
 
   ngOnInit() {
     this.registerForm = this.fb.group({
-      Business_name: ["", Validators.required],
-      User_name: ["", Validators.required],
-      Email_id: ["", [Validators.required, Validators.email]],
-      Password: ["", [Validators.required, Validations.passwordValidator]],
+      R_BusinessName: ["", Validators.required],
+      R_UserName: ["", Validators.required],
+      R_EmailId: ["", [Validators.required, Validators.email]],
+      R_Password: ["", [Validators.required, Validations.passwordValidator]],
       Confirm_password: ["", Validators.required],
-      Type_of_use: ["", Validators.required],
-      Business_type: ["", Validators.required],
-      User_type: ["", Validators.required]
+      R_TypeOfUse: ["", Validators.required],
+      R_BizType: ["", Validators.required],
+      R_UserType: ["", Validators.required]
     });
 
-    this.fetchCommonMaster(1);
-    this.fetchCommonMaster(2);
-    this.fetchCommonMaster(3);
+    this.fetchCommonMaster("5da8128075c9ae635c147dab");
+    this.fetchCommonMaster("5da8126775c9ae635c147da9");
+    this.fetchCommonMaster("5da8127175c9ae635c147daa");
   }
 
-  get Business_name() {
-    return this.registerForm.get("Business_name");
+  get R_BusinessName() {
+    return this.registerForm.get("R_BusinessName");
   }
 
-  get User_name() {
-    return this.registerForm.get("User_name");
+  get R_UserName() {
+    return this.registerForm.get("R_UserName");
   }
 
-  get Email_id() {
-    return this.registerForm.get("Email_id");
+  get R_EmailId() {
+    return this.registerForm.get("R_EmailId");
   }
 
-  get Password() {
-    return this.registerForm.get("Password");
+  get R_Password() {
+    return this.registerForm.get("R_Password");
   }
 
   get Confirm_password() {
     return this.registerForm.get("Confirm_password");
   }
 
-  get Type_of_use() {
-    return this.registerForm.get("Type_of_use");
+  get R_TypeOfUse() {
+    return this.registerForm.get("R_TypeOfUse");
   }
 
-  get Business_type() {
-    return this.registerForm.get("Business_type");
+  get R_BizType() {
+    return this.registerForm.get("R_BizType");
   }
 
-  get User_type() {
-    return this.registerForm.get("User_type");
+  get R_UserType() {
+    return this.registerForm.get("R_UserType");
   }
 
   register() {
@@ -86,28 +86,26 @@ export class RegistrationComponent implements OnInit {
     const miliseconds = currentDate.getMilliseconds();
 
     // let R_code = 'CODE_' + new Date().getUTCMilliseconds();
-    let R_code = year + "" + month + "" + day + "" + hours + "" + miliseconds;
+    // let R_code = year + "" + month + "" + day + "" + hours + "" + miliseconds;
 
     const insertData = {
-      R_code: R_code,
-      R_BusinessName: formData.Business_name,
-      R_UserName: formData.User_name,
-      R_EmailId: formData.Email_id,
-      R_Password: formData.Password,
-      R_TypeOfUse: formData.Type_of_use,
-      R_BizType: formData.Business_type,
-      R_IsActive: "1",
-      R_UserType: formData.User_type
+      R_BusinessName: formData.R_BusinessName,
+      R_UserName: formData.R_UserName,
+      R_EmailId: formData.R_EmailId,
+      R_Password: formData.R_Password,
+      R_TypeOfUse: formData.R_TypeOfUse,
+      R_BizType: formData.R_BizType,
+      R_UserType: formData.R_UserType
     };
 
-    if (formData.Password !== formData.Confirm_password) {
+    if (formData.R_Password !== formData.Confirm_password) {
       this.alertService.openSnackBar(
         "Confirm password should be same as Password"
       );
     } else {
       this.auth.register(insertData).subscribe(result => {
         console.log(result);
-        /* if (result != null) {
+        if (result != null) {
           this.registerForm.reset();
           this.alertService.openSnackBar("Registration is successful");
           setTimeout(() => {
@@ -117,26 +115,26 @@ export class RegistrationComponent implements OnInit {
           this.alertService.openSnackBar(
             "There is some error in registration. Please check the information and try again."
           );
-        } */
+        }
       });
     }
   }
 
   fetchCommonMaster(CM_Id) {
     this.master.fetchCommonChildFromCM(CM_Id).subscribe(list => {
-      if (CM_Id == 1) {
+      if (CM_Id == "5da8126775c9ae635c147da9") {
         this.typeOfUse = list;
       }
 
-      if (CM_Id == 2) {
+      if (CM_Id == "5da8127175c9ae635c147daa") {
         this.businessType = list;
       }
 
-      if (CM_Id == 3) {
+      if (CM_Id == "5da8128075c9ae635c147dab") {
         this.userTypes = list;
-        this.userTypes = this.userTypes.filter(function(e) {
-          return e.CMC_Id > 10;
-        });
+        /* this.userTypes = this.userTypes.filter(function(e) {
+          return e.CMC_Name != "Admin";
+        }); */
       }
     });
   }

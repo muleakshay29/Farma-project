@@ -1,6 +1,6 @@
 export enum Role {
-    User = 'User',
-    Admin = '10',
-    Partner = '11',
-    Retailer = '12'
-  }
+  User = "User",
+  Admin = "5da8133275c9ae635c147dba",
+  Partner = "11",
+  Retailer = "12"
+}

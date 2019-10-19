@@ -30,6 +30,7 @@ import { SharedModule } from "./_shared/shared.module";
 import { AuthenticationModule } from "./authentication/authentication.module";
 import { TransactionsModule } from "./transactions/transactions.module";
 import { UniqueRecordsDirective } from "./_helpers/unique-records.directive";
+import { JwtInterceptor } from "./_helpers/jwt.interceptor";
 /** ***************************Feature Modules***************************  **/
 
 @NgModule({
@@ -54,6 +55,7 @@ import { UniqueRecordsDirective } from "./_helpers/unique-records.directive";
   providers: [
     MasterServiceService,
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: LocationStrategy, useClass: PathLocationStrategy }
   ],
   entryComponents: [DeleteConfirmationComponent],

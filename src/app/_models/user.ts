@@ -1,7 +1,11 @@
 export class User {
-    R_code: string;
-    R_IsActive: number;
-    R_UserName: string;
-    R_UserType: any;
-    // token?: string;
+  R_BusinessName: string;
+  R_UserName: number;
+  R_EmailId: string;
+  R_TypeOfUse: any;
+  R_BizType: string;
+  R_IsActive: number;
+  R_UserType: string;
+  user: any;
+  tokens: any;
 }

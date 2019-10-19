@@ -15,7 +15,6 @@ export class JwtInterceptor implements HttpInterceptor {
   ): Observable<HttpEvent<any>> {
     let currentUser = JSON.parse(localStorage.getItem("currentUser"));
     // const token = currentUser.token;
-    console.log(currentUser);
 
     if (!currentUser) {
       return next.handle(request);

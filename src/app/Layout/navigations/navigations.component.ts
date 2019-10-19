@@ -18,7 +18,9 @@ export class NavigationsComponent implements OnInit {
   }
 
   logout() {
-    this.auth.logout().subscribe();
-    // this.router.navigate(["/login"]);
+    this.auth.logout().subscribe(() => {
+      localStorage.removeItem("currentUser");
+      this.router.navigate(["/login"]);
+    });
   }
 }

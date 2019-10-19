@@ -120,9 +120,7 @@ export class AuthenticationService {
 
   logout() {
     const URL = `${this.API_URL}logout`;
-    // localStorage.removeItem("currentUser");
-    // this.currentUserSubject.next(null);
-
+    this.currentUserSubject.next(null);
     return this.http.post<any>(URL, "");
   }
 

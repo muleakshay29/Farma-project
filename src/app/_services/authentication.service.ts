@@ -90,7 +90,8 @@ export class AuthenticationService {
   public currentUser: Observable<User>;
   // API_URL = `http://localhost/FarmaAPI/public/index.php/authentication/`;
   // API_URL = `http://farma.sareeline.com/FarmaAPI/public/index.php/authentication/`;
-  API_URL = `http://localhost:3000/`;
+  // API_URL = `http://localhost:3000/`;
+  API_URL = `https://ak-mead-test-heroku.herokuapp.com/`;
 
   constructor(private http: HttpClient) {
     this.currentUserSubject = new BehaviorSubject<User>(

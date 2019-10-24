@@ -47,7 +47,7 @@ export class CommonMasterChildComponent implements OnInit {
 
   deleteCommonMasterChild(CMC_Id) {
     this.masterservice.deleteCommonMasterChild(CMC_Id).subscribe(data => {
-      if (data > 0) {
+      if (data != null) {
         this.alertService.openSnackBar("Record deleted successfuly");
         this.fetchCommonMasterChild();
       } else {

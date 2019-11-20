@@ -10,6 +10,7 @@ import { AlertService } from "../../_services/alert.service";
   templateUrl: "./employee-master.component.html"
 })
 export class EmployeeMasterComponent implements OnInit {
+<<<<<<< HEAD
   dataSource: MatTableDataSource<any>;
   displayedColumns: string[] = [
     "Action",
@@ -22,6 +23,13 @@ export class EmployeeMasterComponent implements OnInit {
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
+=======
+  empMaster: FormGroup;
+  userTypes = [];
+  imgURL = "../../../assets/img/images.png";
+  selectedImage: File;
+  uploadedImg: any;
+>>>>>>> 3dbcd55f710764e3a00c2ab74c6274989b92b0ef
 
   constructor(
     private masterservice: MasterServiceService,
@@ -71,6 +79,35 @@ export class EmployeeMasterComponent implements OnInit {
     this.bsModalRef.content.onClose.subscribe((result: boolean) => {
       if (result == true) {
         this.deleteEmployee(_id);
+      }
+    });
+  }
+
+  onFileChange(event) {
+    if (event.target.files.length > 0) {
+      this.selectedImage = <File>event.target.files[0];
+      var reader = new FileReader();
+      reader.readAsDataURL(event.target.files[0]);
+      reader.onload = (imgsrc: any) => {
+        this.imgURL = imgsrc.target.result;
+      };
+    }
+  }
+
+  onProductPhotoUpload() {
+    let input = new FormData();
+    input.append(
+      "Emp_profile_img",
+      this.selectedImage,
+      this.selectedImage.name
+    );
+    this.masterservice.employeePhotoUpload(input).subscribe(data => {
+      console.log(data);
+      if (data.status == 1) {
+        this.uploadedImg = data.filename;
+        this.alertService.openSnackBar("Image Uploaded successfuly");
+      } else {
+        this.alertService.openSnackBar(data.message);
       }
     });
   }

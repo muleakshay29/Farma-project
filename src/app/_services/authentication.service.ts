@@ -127,7 +127,11 @@ export class AuthenticationService {
 
   register(insertData): Observable<any> {
     // const URL = `${this.API_URL}register`;
+<<<<<<< HEAD
     const URL = `${this.API_URL}registration`;
+=======
+    const URL = `https://ak-mead-test-heroku.herokuapp.com/registration`;
+>>>>>>> 3dbcd55f710764e3a00c2ab74c6274989b92b0ef
     return this.http.post<any>(URL, insertData, httpOptions);
   }
 }

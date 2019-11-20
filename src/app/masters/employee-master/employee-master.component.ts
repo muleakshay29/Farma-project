@@ -33,6 +33,14 @@ export class EmployeeMasterComponent implements OnInit {
     this.fetchEmployee();
   }
 
+  applyFilter(filterValue: string) {
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
+  }
+
   fetchEmployee() {
     this.masterservice.fetchEmployee().subscribe(list => {
       this.dataSource = new MatTableDataSource(list);

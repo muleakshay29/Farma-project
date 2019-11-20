@@ -5,6 +5,7 @@ import { Validations } from "../../../_helpers/validations";
 import { Router, ActivatedRoute } from "@angular/router";
 import { AlertService } from "../../../_services/alert.service";
 import { empCodeCheckValidator } from "../../../_helpers/unique-records.directive";
+import { AuthenticationService } from "../../../_services/authentication.service";
 
 @Component({
   selector: "app-add-employee",
@@ -17,13 +18,17 @@ export class AddEmployeeComponent implements OnInit {
   empId: any;
   addFlag = false;
   updateFlag = false;
+  yearList = [];
+  currYear: string;
+  loggedInUser: any;
 
   constructor(
     private fb: FormBuilder,
     private masterservice: MasterServiceService,
     private route: ActivatedRoute,
     private router: Router,
-    private alertService: AlertService
+    private alertService: AlertService,
+    private auth: AuthenticationService
   ) {}
 
   ngOnInit() {
@@ -78,7 +83,6 @@ export class AddEmployeeComponent implements OnInit {
     });
 
     this.fetchCommonMaster("5da8128075c9ae635c147dab");
-    this.currentDate = new Date();
 
     this.empId = this.route.snapshot.paramMap.get("id");
     if (this.empId == "" || this.empId == null) {
@@ -88,6 +92,12 @@ export class AddEmployeeComponent implements OnInit {
       this.addFlag = false;
       this.updateFlag = true;
     }
+
+    /* Get current year */
+    this.fetchYear("5da8128f75c9ae635c147dad");
+    this.currentDate = new Date();
+    this.loggedInUser = this.auth.currentUserValue.user;
+    /* Get current year */
   }
 
   get Emp_code() {
@@ -143,6 +153,10 @@ export class AddEmployeeComponent implements OnInit {
     if (this.empId == "" || this.empId == null) {
       console.log("In create");
       const formData = this.empMaster.value;
+      formData.Active_flag = 1;
+      formData.Created_by = this.loggedInUser._id;
+      formData.Updated_by = this.loggedInUser._id;
+      formData.Year_id = this.currYear;
       this.masterservice.addEmployeeMaster(formData).subscribe(data => {
         if (data != null) {
           this.alertService.openSnackBar("Record added successfuly");
@@ -165,5 +179,21 @@ export class AddEmployeeComponent implements OnInit {
         return e._id !== "5da8133275c9ae635c147dba";
       });
     });
+  }
+
+  fetchYear(CM_Id) {
+    this.masterservice.fetchCommonChildFromCM(CM_Id).subscribe(list => {
+      this.yearList = list;
+
+      const year = this.currentDate.getFullYear();
+      const tempYear: any = this.yearList
+        .filter(ele => ele.CMC_Name === year.toString())
+        .map(ele => ele._id);
+      this.currYear = tempYear;
+    });
+  }
+
+  onCancel() {
+    this.router.navigate(["/employee-master"]);
   }
 }

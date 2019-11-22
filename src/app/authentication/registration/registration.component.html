@@ -1,16 +1,16 @@
 <div class="my-2 text-center" *ngFor="let alert of alerts">
-  <alert class="my-2" [type]="alert.type" [dismissOnTimeout]="alert.timeout">{{ alert.msg }}</alert>
+  <alert class="my-2" [type]="alert.type" [dismissOnTimeout]="alert.timeout">{{
+    alert.msg
+  }}</alert>
 </div>
 
 <div class="card o-hidden border-0 shadow-lg my-5">
   <div class="card-body p-0">
-
     <!-- Nested Row within Card Body -->
     <div class="row">
       <div class="col-lg-5 d-none d-lg-block bg-register-image"></div>
 
       <div class="col-lg-7">
-
         <div class="p-5">
           <div class="text-center">
             <h1 class="h4 text-gray-900 mb-4">Create an Account!</h1>
@@ -18,88 +18,132 @@
           <form class="user" [formGroup]="registerForm" (ngSubmit)="register()">
             <div class="form-group row">
               <div class="col-sm-6 mb-3 mb-sm-0">
-                <input type="text" class="form-control form-control-user" formControlName="Business_name"
-                  placeholder="Business Name">
-                <app-error-message [control]="Business_name"></app-error-message>
+                <input
+                  type="text"
+                  class="form-control form-control-user"
+                  formControlName="R_BusinessName"
+                  placeholder="Business Name"
+                />
+                <app-error-message
+                  [control]="R_BusinessName"
+                ></app-error-message>
               </div>
 
               <div class="col-sm-6">
-                <select class="form-control rounded-pill" formControlName="User_type">
+                <select
+                  class="form-control rounded-pill"
+                  formControlName="R_UserType"
+                >
                   <option value="" selected>Select User Type</option>
-                  <option *ngFor="let utype of userTypes" value="{{ utype.CMC_Id }}">
+                  <option
+                    *ngFor="let utype of userTypes"
+                    value="{{ utype._id }}"
+                  >
                     {{ utype.CMC_Name }}
                   </option>
                 </select>
-                <app-error-message [control]="User_type"></app-error-message>
+                <app-error-message [control]="R_UserType"></app-error-message>
               </div>
             </div>
 
             <div class="form-group row">
               <div class="col-sm-6 mb-3 mb-sm-0">
-                <input type="text" class="form-control form-control-user" formControlName="User_name"
-                  placeholder="User Name">
-                <app-error-message [control]="User_name"></app-error-message>
+                <input
+                  type="text"
+                  class="form-control form-control-user"
+                  formControlName="R_UserName"
+                  placeholder="User Name"
+                />
+                <app-error-message [control]="R_UserName"></app-error-message>
               </div>
               <div class="col-sm-6">
-                <input type="email" class="form-control form-control-user" formControlName="Email_id"
-                  placeholder="Email Address">
-                <app-error-message [control]="Email_id"></app-error-message>
+                <input
+                  type="email"
+                  class="form-control form-control-user"
+                  formControlName="R_EmailId"
+                  placeholder="Email Address"
+                />
+                <app-error-message [control]="R_EmailId"></app-error-message>
               </div>
             </div>
 
             <div class="form-group row">
               <div class="col-sm-6 mb-3 mb-sm-0">
-                <input type="password" class="form-control form-control-user" formControlName="Password"
-                  placeholder="Password">
-                <app-error-message [control]="Password"></app-error-message>
+                <input
+                  type="password"
+                  class="form-control form-control-user"
+                  formControlName="R_Password"
+                  placeholder="Password"
+                />
+                <app-error-message [control]="R_Password"></app-error-message>
               </div>
               <div class="col-sm-6">
-                <input type="password" class="form-control form-control-user" formControlName="Confirm_password"
-                  placeholder="Repeat Password">
-                <app-error-message [control]="Confirm_password"></app-error-message>
+                <input
+                  type="password"
+                  class="form-control form-control-user"
+                  formControlName="Confirm_password"
+                  placeholder="Repeat Password"
+                />
+                <app-error-message
+                  [control]="Confirm_password"
+                ></app-error-message>
               </div>
             </div>
 
             <div class="form-group row">
               <div class="col-sm-6 mb-3 mb-sm-0">
-                <select class="form-control rounded-pill" formControlName="Type_of_use">
+                <select
+                  class="form-control rounded-pill"
+                  formControlName="R_TypeOfUse"
+                >
                   <!--style="padding: 10px;"-->
                   <option value="">Select Type of Use</option>
-                  <option *ngFor="let type of typeOfUse" value="{{ type.CMC_Id }}">
+                  <option *ngFor="let type of typeOfUse" value="{{ type._id }}">
                     {{ type.CMC_Name }}
                   </option>
                 </select>
-                <app-error-message [control]="Type_of_use"></app-error-message>
+                <app-error-message [control]="R_TypeOfUse"></app-error-message>
               </div>
               <div class="col-sm-6">
-                <select class="form-control rounded-pill" formControlName="Business_type">
+                <select
+                  class="form-control rounded-pill"
+                  formControlName="R_BizType"
+                >
                   <option value="" selected>Select Business Type</option>
-                  <option *ngFor="let btype of businessType" value="{{ btype.CMC_Id }}">
+                  <option
+                    *ngFor="let btype of businessType"
+                    value="{{ btype._id }}"
+                  >
                     {{ btype.CMC_Name }}
                   </option>
                 </select>
-                <app-error-message [control]="Business_type"></app-error-message>
+                <app-error-message [control]="R_BizType"></app-error-message>
               </div>
             </div>
 
             <div class="form-group text-center">
-              <button type="submit" value="submit" class="btn btn-primary btn-user btn-block"
-                [disabled]="!registerForm.valid">
+              <button
+                type="submit"
+                value="submit"
+                class="btn btn-primary btn-user btn-block"
+                [disabled]="!registerForm.valid"
+              >
                 Register Account
               </button>
             </div>
           </form>
 
-          <hr>
+          <hr />
           <div class="text-center">
             <!-- <a class="small" routerLink="/forgot-password">Forgot Password?</a> -->
           </div>
           <div class="text-center">
-            <a class="small" routerLink="/login">Already have an account? Login!</a>
+            <a class="small" routerLink="/login"
+              >Already have an account? Login!</a
+            >
           </div>
         </div>
       </div>
     </div>
-
   </div>
 </div>

@@ -13,6 +13,7 @@ import { CustomerMasterComponent } from './customer-master/customer-master.compo
 import { EmployeeMasterComponent } from './employee-master/employee-master.component';
 import { SupplierComponent } from './supplier/supplier.component';
 import { AddSupplierComponent } from './supplier/add-supplier/add-supplier.component';
+import { AddEmployeeComponent } from './employee-master/add-employee/add-employee.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { AddSupplierComponent } from './supplier/add-supplier/add-supplier.compo
     CustomerMasterComponent,
     EmployeeMasterComponent,
     SupplierComponent,
-    AddSupplierComponent
+    AddSupplierComponent,
+    AddEmployeeComponent
   ],
   imports: [
     SharedModule,

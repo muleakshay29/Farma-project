@@ -10,7 +10,7 @@
       <div class="form-group">
         <select class="form-control rounded-pill" formControlName="CM_id">
           <option value="">Select Common Master</option>
-          <option value="{{ CM.CM_Id }}" *ngFor="let CM of commonMasterList">{{
+          <option value="{{ CM._id }}" *ngFor="let CM of commonMasterList">{{
             CM.CM_Name
           }}</option>
         </select>

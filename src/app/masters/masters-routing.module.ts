@@ -14,6 +14,7 @@ import { CustomerMasterComponent } from "./customer-master/customer-master.compo
 import { EmployeeMasterComponent } from "./employee-master/employee-master.component";
 import { SupplierComponent } from "./supplier/supplier.component";
 import { AddSupplierComponent } from "./supplier/add-supplier/add-supplier.component";
+import { AddEmployeeComponent } from "./employee-master/add-employee/add-employee.component";
 
 const routes: Routes = [
   // {
@@ -89,6 +90,18 @@ const routes: Routes = [
   {
     path: "emp-master",
     component: EmployeeMasterComponent,
+    canActivate: [AuthGuard],
+    data: { roles: [Role.Admin] }
+  },
+  {
+    path: "add-employee",
+    component: AddEmployeeComponent,
+    canActivate: [AuthGuard],
+    data: { roles: [Role.Admin] }
+  },
+  {
+    path: "add-employee/:id",
+    component: AddEmployeeComponent,
     canActivate: [AuthGuard],
     data: { roles: [Role.Admin] }
   },

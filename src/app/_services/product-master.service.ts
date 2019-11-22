@@ -19,54 +19,57 @@ const httpOptions = {
 })
 export class ProductMasterService {
   // API_URL = `http://localhost/FarmaAPI/public/index.php/product-master/`;   //localhost
-  API_URL = `http://farma.sareeline.com/FarmaAPI/public/index.php/product-master/`; //server
+  // API_URL = `http://farma.sareeline.com/FarmaAPI/public/index.php/product-master/`; //server
+
+  // API_URL = `https://ak-mead-test-heroku.herokuapp.com/`;   //node server
+  API_URL = `http://localhost:3000/`; //node localhost
 
   constructor(private http: HttpClient) {}
 
   addProduct(data: any): Observable<any> {
-    const URL = `${this.API_URL}addproductmaster`;
+    const URL = `${this.API_URL}add-product`;
     return this.http
       .post<any>(URL, data, httpOptions)
       .pipe(catchError(this.handleError<any>("addproductmaster")));
   }
 
   productPhotoUpload(data: any): Observable<any> {
-    const URL = `${this.API_URL}productphotoupload`;
+    const URL = `${this.API_URL}product-image-upload`;
     return this.http
       .post<any>(URL, data)
       .pipe(catchError(this.handleError<any>("productPhotoUpload")));
   }
 
   fetchProduct(): Observable<any> {
-    const URL = `${this.API_URL}fetchproduct`;
+    const URL = `${this.API_URL}fetch-products`;
     return this.http
       .get<any>(URL, httpOptions)
       .pipe(catchError(this.handleError<any>("fetchProduct")));
   }
 
   fetchProductDetails(pId): Observable<any> {
-    const URL = `${this.API_URL}fetchproduct/${pId}`;
+    const URL = `${this.API_URL}fetch-product-details/${pId}`;
     return this.http
       .get<any>(URL, httpOptions)
       .pipe(catchError(this.handleError<any>("fetchProductDetails")));
   }
 
   updateProduct(data): Observable<any> {
-    const URL = `${this.API_URL}updateproduct`;
+    const URL = `${this.API_URL}update-product`;
     return this.http
       .put<any>(URL, data, httpOptions)
       .pipe(catchError(this.handleError<any>("updateProduct")));
   }
 
   deleteProduct(pId): Observable<any> {
-    const URL = `${this.API_URL}deleteproduct/${pId}`;
+    const URL = `${this.API_URL}product-master/${pId}`;
     return this.http
       .delete<any>(URL, httpOptions)
       .pipe(catchError(this.handleError<any>("deleteProduct")));
   }
 
   checkProcode(PRO_code): Observable<any> {
-    const URL = `${this.API_URL}checkprocode/${PRO_code}`;
+    const URL = `${this.API_URL}check-product-code/${PRO_code}`;
     return this.http
       .get<any>(URL, httpOptions)
       .pipe(catchError(this.handleError<any>("checkProcode")));

@@ -33,7 +33,7 @@ export function cmcnameCheckValidator(
   ): Promise<ValidationErrors | null> | Observable<ValidationErrors | null> => {
     return masterservice.checkcmcname(c.value).pipe(
       map(data => {
-        return data === true ? { alreadyExist: true } : null;
+        return Object.keys(data).length > 0 ? { alreadyExist: true } : null;
       })
     );
   };
@@ -47,7 +47,7 @@ export function empCodeCheckValidator(
   ): Promise<ValidationErrors | null> | Observable<ValidationErrors | null> => {
     return masterservice.checkempcode(c.value).pipe(
       map(data => {
-        return data === true ? { alreadyExist: true } : null;
+        return Object.keys(data).length > 0 ? { alreadyExist: true } : null;
       })
     );
   };
@@ -59,7 +59,7 @@ export function checkProcode(pservice: ProductMasterService): AsyncValidatorFn {
   ): Promise<ValidationErrors | null> | Observable<ValidationErrors | null> => {
     return pservice.checkProcode(c.value).pipe(
       map(data => {
-        return data === true ? { alreadyExist: true } : null;
+        return Object.keys(data).length > 0 ? { alreadyExist: true } : null;
       })
     );
   };
@@ -73,7 +73,7 @@ export function checkSupplierCode(
   ): Promise<ValidationErrors | null> | Observable<ValidationErrors | null> => {
     return masterservice.checkSupplierCode(c.value).pipe(
       map(data => {
-        return data === true ? { alreadyExist: true } : null;
+        return Object.keys(data).length > 0 ? { alreadyExist: true } : null;
       })
     );
   };

@@ -1,0 +1,175 @@
+<h3 class="h3 mb-4 text-gray-800 border-bottom pb-2">Employee Master</h3>
+
+<div class="card shadow mb-4">
+  <div class="card-body">
+    <form
+      [formGroup]="empMaster"
+      #formDirective="ngForm"
+      (ngSubmit)="onSubmit()"
+    >
+      <div class="form-group row">
+        <div class="col-sm-6 mb-3 mb-sm-0">
+          <input
+            type="text"
+            class="form-control rounded-pill"
+            formControlName="Emp_code"
+            placeholder="Enter Employee Code"
+          />
+          <app-error-message [control]="Emp_code"></app-error-message>
+        </div>
+
+        <div class="col-sm-6 mb-3 mb-sm-0">
+          <input
+            type="text"
+            class="form-control rounded-pill"
+            formControlName="Emp_name"
+            placeholder="Enter Employee Name"
+          />
+          <app-error-message [control]="Emp_name"></app-error-message>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <div class="col-sm-6 mb-3 mb-sm-0">
+          <input
+            type="text"
+            class="form-control rounded-pill"
+            formControlName="Emp_city"
+            placeholder="City"
+          />
+          <app-error-message [control]="Emp_city"></app-error-message>
+        </div>
+
+        <div class="col-sm-6 mb-3 mb-sm-0">
+          <input
+            type="text"
+            class="form-control rounded-pill"
+            formControlName="Emp_state"
+            placeholder="State"
+          />
+          <app-error-message [control]="Emp_state"></app-error-message>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <div class="col-sm-6 mb-3 mb-sm-0">
+          <textarea
+            class="form-control rounded-pill"
+            formControlName="Emp_address"
+            placeholder="Enter Address"
+          ></textarea>
+          <app-error-message [control]="Emp_address"></app-error-message>
+        </div>
+
+        <div class="col-sm-6 mb-3 mb-sm-0">
+          <select
+            class="form-control rounded-pill"
+            formControlName="Type_of_user"
+          >
+            <option value="" selected>Select User Type</option>
+            <option *ngFor="let utype of userTypes" value="{{ utype._id }}">
+              {{ utype.CMC_Name }}
+            </option>
+          </select>
+          <app-error-message [control]="Type_of_user"></app-error-message>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <div class="col-sm-6 mb-3 mb-sm-0">
+          <input
+            type="text"
+            class="form-control rounded-pill"
+            formControlName="Emp_adhar"
+            placeholder="Adhar Card Number"
+          />
+          <app-error-message [control]="Emp_adhar"></app-error-message>
+        </div>
+
+        <div class="col-sm-6 mb-3 mb-sm-0">
+          <input
+            type="text"
+            class="form-control rounded-pill"
+            formControlName="Emp_pan"
+            placeholder="Pan Number"
+          />
+          <app-error-message [control]="Emp_pan"></app-error-message>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <div class="col-sm-6 mb-3 mb-sm-0">
+          <input
+            type="text"
+            class="form-control rounded-pill"
+            formControlName="User_name"
+            placeholder="Username"
+          />
+          <app-error-message [control]="User_name"></app-error-message>
+        </div>
+
+        <div class="col-sm-6 mb-3 mb-sm-0">
+          <input
+            type="password"
+            class="form-control rounded-pill"
+            formControlName="Password"
+            placeholder="Password"
+          />
+          <app-error-message [control]="Password"></app-error-message>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <div class="col-sm-6 mb-3 mb-sm-0">
+          <input
+            type="text"
+            class="form-control rounded-pill"
+            formControlName="Email_id"
+            placeholder="Email ID"
+          />
+          <app-error-message [control]="Email_id"></app-error-message>
+        </div>
+
+        <div class="col-sm-6 mb-3 mb-sm-0">
+          <input
+            type="text"
+            class="form-control rounded-pill"
+            formControlName="Mobile_no"
+            placeholder="Mobile No."
+          />
+          <app-error-message [control]="Mobile_no"></app-error-message>
+        </div>
+      </div>
+
+      <div class="form-group text-center">
+        <button
+          type="submit"
+          value="submit"
+          class="btn btn-primary btn-user rounded-pill"
+          [disabled]="!empMaster.valid"
+          *ngIf="addFlag"
+        >
+          Submit
+        </button>
+
+        <button
+          type="submit"
+          value="submit"
+          class="btn btn-primary btn-user rounded-pill mx-1"
+          [disabled]="!empMaster.valid"
+          *ngIf="updateFlag"
+        >
+          Update
+        </button>
+
+        <button
+          type="button"
+          class="btn btn-warning btn-user rounded-pill mx-1"
+          (click)="onCancel()"
+        >
+          Cancel
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

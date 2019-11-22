@@ -89,7 +89,9 @@ export class AuthenticationService {
   private currentUserSubject: BehaviorSubject<User>;
   public currentUser: Observable<User>;
   // API_URL = `http://localhost/FarmaAPI/public/index.php/authentication/`;
-  API_URL = `http://farma.sareeline.com/FarmaAPI/public/index.php/authentication/`;
+  // API_URL = `http://farma.sareeline.com/FarmaAPI/public/index.php/authentication/`;
+  // API_URL = `http://localhost:3000/`;
+  API_URL = `https://ak-mead-test-heroku.herokuapp.com/`;
 
   constructor(private http: HttpClient) {
     this.currentUserSubject = new BehaviorSubject<User>(
@@ -103,16 +105,11 @@ export class AuthenticationService {
   }
 
   login(userData: any) {
-    // const URL = `${this.API_URL}login`;
-    const URL = `https://ak-mead-test-heroku.herokuapp.com/login`;
+    const URL = `${this.API_URL}login`;
 
     return this.http.post<any>(URL, userData).pipe(
       map(user => {
-        console.log(user);
-        // login successful if there's a jwt token in the response
-        // if (user && user.token) {
-        if (user) {
-          // store user details and jwt token in local storage to keep user logged in between page refreshes
+        if (user && user.token) {
           localStorage.setItem("currentUser", JSON.stringify(user));
           this.currentUserSubject.next(user);
         }
@@ -123,14 +120,14 @@ export class AuthenticationService {
   }
 
   logout() {
-    // remove user from local storage to log user out
-    localStorage.removeItem("currentUser");
+    const URL = `${this.API_URL}logout`;
     this.currentUserSubject.next(null);
+    return this.http.post<any>(URL, "");
   }
 
   register(insertData): Observable<any> {
     // const URL = `${this.API_URL}register`;
-    const URL = `https://ak-mead-test-heroku.herokuapp.com/registration`;
+    const URL = `${this.API_URL}registration`;
     return this.http.post<any>(URL, insertData, httpOptions);
   }
 }

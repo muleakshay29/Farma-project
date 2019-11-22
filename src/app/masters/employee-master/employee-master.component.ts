@@ -10,7 +10,6 @@ import { AlertService } from "../../_services/alert.service";
   templateUrl: "./employee-master.component.html"
 })
 export class EmployeeMasterComponent implements OnInit {
-<<<<<<< HEAD
   dataSource: MatTableDataSource<any>;
   displayedColumns: string[] = [
     "Action",
@@ -23,13 +22,11 @@ export class EmployeeMasterComponent implements OnInit {
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
-=======
-  empMaster: FormGroup;
+  // empMaster: FormGroup;
   userTypes = [];
   imgURL = "../../../assets/img/images.png";
   selectedImage: File;
   uploadedImg: any;
->>>>>>> 3dbcd55f710764e3a00c2ab74c6274989b92b0ef
 
   constructor(
     private masterservice: MasterServiceService,

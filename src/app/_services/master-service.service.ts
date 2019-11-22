@@ -137,6 +137,14 @@ export class MasterServiceService {
       .delete<any>(URL, httpOptions)
       .pipe(catchError(this.handleError<any>("deleteEmployee")));
   }
+
+  employeePhotoUpload(data: any): Observable<any> {
+    const URL = `${this.API_URL}employee-avatar-upload`;
+    // const URL = `http://localhost:3000/employee-avatar-upload`;
+    return this.http
+      .post<any>(URL, data)
+      .pipe(catchError(this.handleError<any>("employeePhotoUpload")));
+  }
   /* Employee Master */
 
   checkcmname(CM_Name): Observable<any> {

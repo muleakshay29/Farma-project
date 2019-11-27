@@ -11,7 +11,9 @@ import {
   MatTableModule,
   MatFormFieldModule,
   MatInputModule,
-  MatAutocompleteModule
+  MatAutocompleteModule,
+  MatDatepickerModule,
+  MatNativeDateModule
 } from "@angular/material";
 
 import { ErrorMessageComponent } from "../_helpers/error-message/error-message.component";
@@ -20,7 +22,8 @@ import {
   PopoverModule,
   PaginationModule,
   ModalModule,
-  TypeaheadModule
+  TypeaheadModule,
+  BsDatepickerModule
 } from "ngx-bootstrap";
 
 @NgModule({
@@ -35,13 +38,16 @@ import {
     PaginationModule.forRoot(),
     ModalModule.forRoot(),
     TypeaheadModule.forRoot(),
+    BsDatepickerModule.forRoot(),
     MatPaginatorModule,
     MatSnackBarModule,
     MatSortModule,
     MatTableModule,
     MatFormFieldModule,
     MatInputModule,
-    MatAutocompleteModule
+    MatAutocompleteModule,
+    MatDatepickerModule,
+    MatNativeDateModule
   ],
   exports: [
     CommonModule,
@@ -53,12 +59,15 @@ import {
     PaginationModule,
     ModalModule,
     TypeaheadModule,
+    BsDatepickerModule,
     MatPaginatorModule,
     MatSnackBarModule,
     MatSortModule,
     MatTableModule,
     MatFormFieldModule,
     MatInputModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
     MatAutocompleteModule,
     ErrorMessageComponent
   ]

@@ -21,8 +21,8 @@ export class ProductMasterService {
   // API_URL = `http://localhost/FarmaAPI/public/index.php/product-master/`;   //localhost
   // API_URL = `http://farma.sareeline.com/FarmaAPI/public/index.php/product-master/`; //server
 
-  // API_URL = `https://ak-mead-test-heroku.herokuapp.com/`;   //node server
-  API_URL = `http://localhost:3000/`; //node localhost
+  API_URL = `https://ak-mead-test-heroku.herokuapp.com/`; //node server
+  //API_URL = `http://localhost:3000/`; //node localhost
 
   constructor(private http: HttpClient) {}
 
@@ -69,14 +69,15 @@ export class ProductMasterService {
   }
 
   checkProcode(PRO_code): Observable<any> {
-    const URL = `${this.API_URL}check-product-code/${PRO_code}`;
+    const data = { PRO_code };
+    const URL = `${this.API_URL}check-product-code`;
     return this.http
-      .get<any>(URL, httpOptions)
+      .post<any>(URL, data, httpOptions)
       .pipe(catchError(this.handleError<any>("checkProcode")));
   }
 
   addBizProduct(data: any): Observable<any> {
-    const URL = `${this.API_URL}addbizproduct`;
+    const URL = `${this.API_URL}add-biz-product`;
     return this.http
       .post<any>(URL, data, httpOptions)
       .pipe(catchError(this.handleError<any>("addbizproduct")));

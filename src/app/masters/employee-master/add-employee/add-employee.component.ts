@@ -155,7 +155,7 @@ export class AddEmployeeComponent implements OnInit {
       const formData = this.empMaster.value;
       formData.Active_flag = 1;
       formData.Created_by = this.loggedInUser._id;
-      formData.Updated_by = this.loggedInUser._id;
+      formData.Created_date = this.currentDate;
       formData.Year_id = this.currYear;
       this.masterservice.addEmployeeMaster(formData).subscribe(data => {
         if (data != null) {
@@ -189,7 +189,7 @@ export class AddEmployeeComponent implements OnInit {
       const tempYear: any = this.yearList
         .filter(ele => ele.CMC_Name === year.toString())
         .map(ele => ele._id);
-      this.currYear = tempYear;
+      this.currYear = tempYear[0];
     });
   }
 

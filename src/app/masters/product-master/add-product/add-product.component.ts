@@ -38,21 +38,16 @@ export class AddProductComponent implements OnInit {
       PRO_Name: ["", [Validators.required, Validations.alphaNumericPattern]],
       PRO_Barcode: ["", [Validators.required, Validations.alphaNumericPattern]],
       PRO_Manufraturer: ["", Validators.required],
-      PRO_SGST: ["", [Validators.required, Validations.floatnumberPattern]],
-      PRO_CGST: ["", [Validators.required, Validations.floatnumberPattern]],
-      PRO_IGST: ["", [Validators.required, Validations.floatnumberPattern]],
+      PRO_SGST: ["", Validators.required],
+      PRO_CGST: ["", Validators.required],
+      PRO_IGST: ["", Validators.required],
+      PRO_Price: ["0"],
       PRO_CESS: [""],
       PRO_HSN: ["", Validators.required],
       PRO_ScheduledUnder: ["", Validators.required],
       PRO_Content: ["", Validators.required],
-      PRO_ReorderLevel: [
-        "",
-        [Validators.required, Validations.floatnumberPattern]
-      ],
-      PRO_Minimum_stock: [
-        "",
-        [Validators.required, Validations.floatnumberPattern]
-      ],
+      PRO_ReorderLevel: ["", Validators.required],
+      PRO_Minimum_stock: ["", Validators.required],
       PRO_Type: ["", Validators.required]
     });
 
@@ -60,11 +55,11 @@ export class AddProductComponent implements OnInit {
     if (this.pID == "" || this.pID == null) {
       this.addFlag = true;
       this.updateFlag = false;
-      this.fetchCommonMaster(4);
+      this.fetchCommonMaster("5da8128775c9ae635c147dac");
     } else {
       this.addFlag = false;
       this.updateFlag = true;
-      this.fetchCommonMaster(4);
+      this.fetchCommonMaster("5da8128775c9ae635c147dac");
       this.fetchProductDetails();
     }
   }
@@ -95,6 +90,10 @@ export class AddProductComponent implements OnInit {
 
   get PRO_IGST() {
     return this.productMaster.get("PRO_IGST");
+  }
+
+  get PRO_Price() {
+    return this.productMaster.get("PRO_Price");
   }
 
   get PRO_CESS() {
@@ -154,7 +153,7 @@ export class AddProductComponent implements OnInit {
       const formData = this.productMaster.value;
       formData.PRO_Image = this.uploadedImg;
       this.pservice.addProduct(formData).subscribe(data => {
-        if (data > 0) {
+        if (data !== null) {
           this.alertService.openSnackBar("Record added successfuly");
           this.productMaster.reset();
           this.imgURL = "../../../assets/img/images.png";
@@ -174,6 +173,7 @@ export class AddProductComponent implements OnInit {
         PRO_SGST: this.PRO_SGST.value,
         PRO_CGST: this.PRO_CGST.value,
         PRO_IGST: this.PRO_IGST.value,
+        PRO_Price: this.PRO_Price.value,
         PRO_CESS: this.PRO_CESS.value,
         PRO_HSN: this.PRO_HSN.value,
         PRO_ScheduledUnder: this.PRO_ScheduledUnder.value,
@@ -211,6 +211,7 @@ export class AddProductComponent implements OnInit {
         PRO_SGST: details.PRO_SGST,
         PRO_CGST: details.PRO_CGST,
         PRO_IGST: details.PRO_IGST,
+        PRO_Price: details.PRO_Price,
         PRO_CESS: details.PRO_CESS,
         PRO_HSN: details.PRO_HSN,
         PRO_ScheduledUnder: details.PRO_ScheduledUnder,

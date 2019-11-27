@@ -2,81 +2,145 @@
 
 <div class="card shadow mb-4">
   <div class="card-body">
-
-    <form [formGroup]="productMaster" #formDirective="ngForm" (ngSubmit)="onSubmit()">
+    <form
+      [formGroup]="productMaster"
+      #formDirective="ngForm"
+      (ngSubmit)="onSubmit()"
+    >
       <div class="form-group row">
         <div class="col-sm-6 mb-3 mb-sm-0">
-          <input type="text" class="form-control rounded-pill" formControlName="PRO_code" placeholder="Product Code">
+          <input
+            type="text"
+            class="form-control rounded-pill"
+            formControlName="PRO_code"
+            placeholder="Product Code"
+          />
           <app-error-message [control]="PRO_code"></app-error-message>
         </div>
         <div class="col-sm-6">
-          <input type="text" class="form-control rounded-pill" formControlName="PRO_Name" placeholder="Product Name">
+          <input
+            type="text"
+            class="form-control rounded-pill"
+            formControlName="PRO_Name"
+            placeholder="Product Name"
+          />
           <app-error-message [control]="PRO_Name"></app-error-message>
         </div>
       </div>
 
       <div class="form-group row">
         <div class="col-sm-6 mb-3 mb-sm-0">
-          <input type="text" class="form-control rounded-pill" formControlName="PRO_Barcode" placeholder="Barcode">
+          <input
+            type="text"
+            class="form-control rounded-pill"
+            formControlName="PRO_Barcode"
+            placeholder="Barcode"
+          />
           <app-error-message [control]="PRO_Barcode"></app-error-message>
         </div>
         <div class="col-sm-6">
-          <input type="text" class="form-control rounded-pill" formControlName="PRO_Manufraturer"
-            placeholder="Manufraturer Name">
+          <input
+            type="text"
+            class="form-control rounded-pill"
+            formControlName="PRO_Manufraturer"
+            placeholder="Manufraturer Name"
+          />
           <app-error-message [control]="PRO_Manufraturer"></app-error-message>
         </div>
       </div>
 
       <div class="form-group row">
         <div class="col-sm-6 mb-3 mb-sm-0">
-          <input type="number" class="form-control rounded-pill" formControlName="PRO_SGST" placeholder="SGST">
+          <input
+            type="number"
+            class="form-control rounded-pill"
+            formControlName="PRO_SGST"
+            placeholder="SGST"
+          />
           <app-error-message [control]="PRO_SGST"></app-error-message>
         </div>
         <div class="col-sm-6">
-          <input type="number" class="form-control rounded-pill" formControlName="PRO_CGST" placeholder="CGST">
+          <input
+            type="number"
+            class="form-control rounded-pill"
+            formControlName="PRO_CGST"
+            placeholder="CGST"
+          />
           <app-error-message [control]="PRO_CGST"></app-error-message>
         </div>
       </div>
 
       <div class="form-group row">
         <div class="col-sm-6 mb-3 mb-sm-0">
-          <input type="number" class="form-control rounded-pill" formControlName="PRO_IGST" placeholder="IGST">
+          <input
+            type="number"
+            class="form-control rounded-pill"
+            formControlName="PRO_IGST"
+            placeholder="IGST"
+          />
           <app-error-message [control]="PRO_IGST"></app-error-message>
         </div>
         <div class="col-sm-6">
-          <input type="number" class="form-control rounded-pill" formControlName="PRO_CESS" placeholder="Product CESS">
+          <input
+            type="number"
+            class="form-control rounded-pill"
+            formControlName="PRO_Price"
+            placeholder="Product Price"
+          />
+          <app-error-message [control]="PRO_Price"></app-error-message>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <div class="col-sm-6">
+          <input
+            type="number"
+            class="form-control rounded-pill"
+            formControlName="PRO_CESS"
+            placeholder="Product CESS"
+          />
           <app-error-message [control]="PRO_CESS"></app-error-message>
         </div>
-      </div>
 
-      <div class="form-group row">
         <div class="col-sm-6 mb-3 mb-sm-0">
-          <input type="text" class="form-control rounded-pill" formControlName="PRO_HSN" placeholder="HSN">
+          <input
+            type="text"
+            class="form-control rounded-pill"
+            formControlName="PRO_HSN"
+            placeholder="HSN"
+          />
           <app-error-message [control]="PRO_HSN"></app-error-message>
         </div>
-
-        <div class="col-sm-6">
-          <input type="text" class="form-control rounded-pill" formControlName="PRO_Content" placeholder="Content">
-          <app-error-message [control]="PRO_Content"></app-error-message>
-        </div>
       </div>
 
       <div class="form-group row">
-        <div class="col-sm-6 mb-3 mb-sm-0">
-          <input type="number" class="form-control rounded-pill" formControlName="PRO_ReorderLevel"
-            placeholder="Reorder Level">
-          <app-error-message [control]="PRO_ReorderLevel"></app-error-message>
-        </div>
         <div class="col-sm-6">
-          <input type="number" class="form-control rounded-pill" formControlName="PRO_Minimum_stock"
-            placeholder="Minimum Stock">
+          <input
+            type="number"
+            class="form-control rounded-pill"
+            formControlName="PRO_Minimum_stock"
+            placeholder="Minimum Stock"
+          />
           <app-error-message [control]="PRO_Minimum_stock"></app-error-message>
         </div>
+
+        <div class="col-sm-6 mb-3 mb-sm-0">
+          <input
+            type="number"
+            class="form-control rounded-pill"
+            formControlName="PRO_ReorderLevel"
+            placeholder="Reorder Level"
+          />
+          <app-error-message [control]="PRO_ReorderLevel"></app-error-message>
+        </div>
       </div>
 
       <div class="form-group row">
         <div class="col-sm-6 mb-3 mb-sm-0">
-          <select class="form-control rounded-pill" formControlName="PRO_ScheduledUnder">
+          <select
+            class="form-control rounded-pill"
+            formControlName="PRO_ScheduledUnder"
+          >
             <option value="">Scheduled</option>
             <option value="1">Yes</option>
             <option value="2">No</option>
@@ -87,41 +151,80 @@
         <div class="col-sm-6">
           <select class="form-control rounded-pill" formControlName="PRO_Type">
             <option value="">Type of Product</option>
-            <option value="{{ ptype.CMC_Id }}" *ngFor="let ptype of typeOfProduct">{{ ptype.CMC_Name }}</option>
+            <option
+              value="{{ ptype._id }}"
+              *ngFor="let ptype of typeOfProduct"
+              >{{ ptype.CMC_Name }}</option
+            >
           </select>
           <app-error-message [control]="PRO_Type"></app-error-message>
         </div>
       </div>
 
       <div class="form-group row">
+        <div class="col-sm-6">
+          <textarea
+            type="text"
+            class="form-control rounded-pill"
+            formControlName="PRO_Content"
+            placeholder="Content"
+          ></textarea>
+          <app-error-message [control]="PRO_Content"></app-error-message>
+        </div>
+      </div>
+
+      <div class="form-group row">
         <div class="col-sm-6 mb-3 mb-sm-0 d-flex align-items-center">
-          <input type="file" (change)="onFileChange($event)" class="border w-100 border-dark rounded p-2" #fileInput>     
+          <input
+            type="file"
+            (change)="onFileChange($event)"
+            class="border w-100 border-dark rounded p-2"
+            #fileInput
+          />
         </div>
 
         <div class="col-sm-6 text-center">
-          <img [src]="imgURL" width="200" class="img-thumbnail"> <br>
-          <button type="button" *ngIf="fileInput.value" class="btn btn-primary btn-icon-split btn-sm m-1" (click)="onProductPhotoUpload()">
+          <img [src]="imgURL" width="200" class="img-thumbnail" /> <br />
+          <button
+            type="button"
+            *ngIf="fileInput.value"
+            class="btn btn-primary btn-icon-split btn-sm m-1"
+            (click)="onProductPhotoUpload()"
+          >
             <span class="text">Upload</span>
           </button>
         </div>
       </div>
 
       <div class="form-group text-center">
-        <button type="submit" value="submit" class="btn btn-primary btn-user rounded-pill"
-          [disabled]="!productMaster.valid" *ngIf="addFlag">
+        <button
+          type="submit"
+          value="submit"
+          class="btn btn-primary btn-user rounded-pill"
+          [disabled]="!productMaster.valid"
+          *ngIf="addFlag"
+        >
           Submit
         </button>
 
-        <button type="submit" value="submit" class="btn btn-primary btn-user rounded-pill mx-1"
-          [disabled]="!productMaster.valid" *ngIf="updateFlag">
+        <button
+          type="submit"
+          value="submit"
+          class="btn btn-primary btn-user rounded-pill mx-1"
+          [disabled]="!productMaster.valid"
+          *ngIf="updateFlag"
+        >
           Update
         </button>
 
-        <button type="button" class="btn btn-warning btn-user rounded-pill mx-1" (click)="onCancel()">
+        <button
+          type="button"
+          class="btn btn-warning btn-user rounded-pill mx-1"
+          (click)="onCancel()"
+        >
           Cancel
         </button>
       </div>
     </form>
-
   </div>
 </div>

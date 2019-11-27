@@ -68,24 +68,6 @@ export class BizProductMasterComponent implements OnInit {
     return this.bizProductMaster.get("PRO_code");
   }
 
-  onSubmit() {
-    const formData = this.bizProductMaster.value;
-    formData.Date = this.today;
-    delete formData.Product;
-
-    this.pservice.addBizProduct(formData).subscribe(data => {
-      if (data > 0) {
-        this.alertService.openSnackBar("Product added successfuly");
-        this.bizProductMaster.reset();
-        this.router.navigate(["/add-business-product"]);
-      } else {
-        this.alertService.openSnackBar(
-          "Error adding product. Please try again."
-        );
-      }
-    });
-  }
-
   fetchProduct() {
     this.pservice.fetchProduct().subscribe(productlist => {
       this.productList = productlist;
@@ -117,6 +99,26 @@ export class BizProductMasterComponent implements OnInit {
   fetchCommonMaster(CM_Id) {
     this.masterservice.fetchCommonChildFromCM(CM_Id).subscribe(list => {
       this.typeOfProduct = list;
+    });
+  }
+
+  onSubmit() {
+    const formData = this.bizProductMaster.value;
+    formData.Date = this.today;
+    // delete formData.Product;
+    console.log(formData);
+    console.log(this.selectedProduct);
+
+    this.pservice.addBizProduct(this.selectedProduct).subscribe(data => {
+      if (data != null) {
+        this.alertService.openSnackBar("Product added successfuly");
+        this.bizProductMaster.reset();
+        this.router.navigate(["/add-business-product"]);
+      } else {
+        this.alertService.openSnackBar(
+          "Error adding product. Please try again."
+        );
+      }
     });
   }
 }

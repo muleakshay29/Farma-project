@@ -9,7 +9,7 @@
     >
       <div class="card">
         <div class="card-body">
-          <div class="form-group row">
+          <div class="form-group row justify-content-md-center">
             <div class="col-sm-6 mb-3 mb-sm-0">
               <input
                 type="text"
@@ -21,12 +21,12 @@
                   adaptivePosition: true,
                   dateInputFormat: 'DD-MM-YYYY'
                 }"
-                [bsValue]="today_date"
+                [bsValue]="TodayDate"
               />
               <app-error-message [control]="InvoiceDate"></app-error-message>
             </div>
 
-            <div class="col-sm-6 mb-3 mb-sm-0">
+            <!-- <div class="col-sm-6 mb-3 mb-sm-0">
               <input
                 type="text"
                 class="form-control rounded-pill"
@@ -34,7 +34,7 @@
                 placeholder="Invoice Number"
               />
               <app-error-message [control]="InvoiceNo"></app-error-message>
-            </div>
+            </div> -->
           </div>
 
           <div class="row">
@@ -101,7 +101,7 @@
                       </tr>
                     </tbody>
 
-                    <tr>
+                    <!-- <tr>
                       <td></td>
                       <td>
                         SubTotal
@@ -175,7 +175,7 @@
                           (focus)="gettotal()"
                         />
                       </td>
-                    </tr>
+                    </tr> -->
                   </table>
                 </div>
               </div>

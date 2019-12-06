@@ -23,7 +23,7 @@
     >
   </li>
 
-  <hr class="sidebar-divider my-0" />
+  <hr class="sidebar-divider my-0" *ngIf="isAdmin" />
   <li class="nav-item" *ngIf="isAdmin">
     <a
       class="nav-link collapsed"
@@ -51,7 +51,7 @@
     </div>
   </li>
 
-  <hr class="sidebar-divider my-0" />
+  <hr class="sidebar-divider my-0" *ngIf="isAdmin" />
   <li class="nav-item" *ngIf="isAdmin">
     <a class="nav-link" routerLink="/add-business-product">
       <i class="fas fa-arrow-right"></i>
@@ -59,7 +59,7 @@
     </a>
   </li>
 
-  <hr class="sidebar-divider my-0" />
+  <hr class="sidebar-divider my-0" *ngIf="isAdmin" />
   <li class="nav-item" *ngIf="isAdmin">
     <a class="nav-link" routerLink="/customer-master">
       <i class="fas fa-arrow-right"></i>
@@ -67,7 +67,7 @@
     </a>
   </li>
 
-  <hr class="sidebar-divider my-0" />
+  <hr class="sidebar-divider my-0" *ngIf="isAdmin" />
   <li class="nav-item" *ngIf="isAdmin">
     <a class="nav-link" routerLink="/emp-master">
       <i class="fas fa-arrow-right"></i>
@@ -75,7 +75,7 @@
     </a>
   </li>
 
-  <hr class="sidebar-divider my-0" />
+  <hr class="sidebar-divider my-0" *ngIf="isAdmin" />
   <li class="nav-item" *ngIf="isAdmin">
     <a class="nav-link" routerLink="/supplier-master">
       <i class="fas fa-arrow-right"></i>
@@ -83,7 +83,15 @@
     </a>
   </li>
 
-  <hr class="sidebar-divider my-0" />
+  <hr class="sidebar-divider my-0" *ngIf="isAdmin" />
+  <li class="nav-item" *ngIf="isAdmin">
+    <a class="nav-link" routerLink="/scheme">
+      <i class="fas fa-arrow-right"></i>
+      <span>Scheme Master</span>
+    </a>
+  </li>
+
+  <hr class="sidebar-divider my-0" *ngIf="isAdmin" />
   <li class="nav-item" *ngIf="isAdmin">
     <a class="nav-link" routerLink="/purchase">
       <i class="fas fa-arrow-right"></i>
@@ -91,7 +99,7 @@
     </a>
   </li>
 
-  <hr class="sidebar-divider my-0" />
+  <hr class="sidebar-divider my-0" *ngIf="isAdmin" />
   <li class="nav-item" *ngIf="isAdmin">
     <a class="nav-link" routerLink="/account-master">
       <i class="fas fa-arrow-right"></i>
@@ -100,7 +108,7 @@
   </li>
 
   <!-- Divider -->
-  <hr class="sidebar-divider my-0" />
+  <hr class="sidebar-divider my-0" *ngIf="isAdmin" />
   <li class="nav-item" *ngIf="isAdmin">
     <a
       class="nav-link collapsed"
@@ -128,7 +136,7 @@
   </li>
 
   <!-- Divider -->
-  <hr class="sidebar-divider my-0" />
+  <hr class="sidebar-divider my-0" *ngIf="isRetailer" />
   <li class="nav-item" *ngIf="isRetailer">
     <a class="nav-link" routerLink="/product-master">
       <i class="fas fa-arrow-right"></i>
@@ -143,38 +151,23 @@
   </div>
 
   <li class="nav-item">
-    <a class="nav-link" routerLink="/product-master"> <span>&nbsp;</span></a>
+    <a class="nav-link" href="#"> <span>&nbsp;</span></a>
   </li>
 
   <li class="nav-item">
-    <a class="nav-link" routerLink="/product-master"> <span>&nbsp;</span></a>
+    <a class="nav-link" href="#"> <span>&nbsp;</span></a>
   </li>
 
   <li class="nav-item">
-    <a class="nav-link" routerLink="/product-master"> <span>&nbsp;</span></a>
+    <a class="nav-link" href="#"> <span>&nbsp;</span></a>
   </li>
 
   <li class="nav-item">
-    <a class="nav-link" routerLink="/product-master"> <span>&nbsp;</span></a>
+    <a class="nav-link" href="#"> <span>&nbsp;</span></a>
   </li>
 
   <li class="nav-item">
-    <a class="nav-link" routerLink="/product-master"> <span>&nbsp;</span></a>
+    <a class="nav-link" href="#"> <span>&nbsp;</span></a>
   </li>
-
-  <!-- <li class="nav-item">
-    <a class="nav-link" routerLink="/product-master">
-      <span>&nbsp;</span></a>
-  </li>
-
-  <li class="nav-item">
-    <a class="nav-link" routerLink="/product-master">
-      <span>&nbsp;</span></a>
-  </li>
-
-  <li class="nav-item">
-    <a class="nav-link" routerLink="/product-master">
-      <span>&nbsp;</span></a>
-  </li> -->
 </ul>
 <!-- End of Sidebar -->

@@ -23,6 +23,7 @@ export class PurchaseComponent implements OnInit {
   allProduct: [];
   selectedProduct: any;
   public ProdList: FormArray;
+  public TodayDate: any;
 
   constructor(
     private fb: FormBuilder,
@@ -34,7 +35,7 @@ export class PurchaseComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    const today_date =
+    this.TodayDate =
       this.date.getDate() +
       "-" +
       this.date.getMonth() +
@@ -42,8 +43,8 @@ export class PurchaseComponent implements OnInit {
       this.date.getFullYear();
 
     this.purchase = this.fb.group({
-      InvoiceDate: [today_date],
-      InvoiceNo: ["", [Validators.required, Validations.numberPattern]],
+      InvoiceDate: [this.TodayDate],
+      // InvoiceNo: ["", [Validators.required, Validations.numberPattern]],
       SubTotal: ["", [Validators.required, Validations.floatnumberPattern]],
       CGST: [""],
       SGST: [""],
@@ -84,9 +85,9 @@ export class PurchaseComponent implements OnInit {
     return this.purchase.get("InvoiceDate");
   }
 
-  get InvoiceNo() {
-    return this.purchase.get("InvoiceNo");
-  }
+  // get InvoiceNo() {
+  //   return this.purchase.get("InvoiceNo");
+  // }
   get SubTotal() {
     return this.purchase.get("SubTotal");
   }

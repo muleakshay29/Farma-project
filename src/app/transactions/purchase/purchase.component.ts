@@ -12,6 +12,7 @@ import { Router, ActivatedRoute } from "@angular/router";
 import { Validations } from "../../_helpers/validations";
 import { ProductMasterService } from "../../_services/product-master.service";
 import { TypeaheadMatch } from "ngx-bootstrap/typeahead/typeahead-match.class";
+import { TransactionService } from "../../_services/transaction.service";
 
 @Component({
   selector: "app-purchase",
@@ -24,11 +25,13 @@ export class PurchaseComponent implements OnInit {
   selectedProduct: any;
   public ProdList: FormArray;
   public TodayDate: any;
+  productSchemeList: [];
 
   constructor(
     private fb: FormBuilder,
     private masterservice: MasterServiceService,
     private pservice: ProductMasterService,
+    private transervice: TransactionService,
     private router: Router,
     private route: ActivatedRoute,
     private alertService: AlertService
@@ -44,12 +47,6 @@ export class PurchaseComponent implements OnInit {
 
     this.purchase = this.fb.group({
       InvoiceDate: [this.TodayDate],
-      // InvoiceNo: ["", [Validators.required, Validations.numberPattern]],
-      SubTotal: ["", [Validators.required, Validations.floatnumberPattern]],
-      CGST: [""],
-      SGST: [""],
-      IGST: [""],
-      Total: ["", Validators.required],
       ProductList: this.fb.array([this.createProduct()])
     });
 
@@ -64,9 +61,10 @@ export class PurchaseComponent implements OnInit {
 
   createProduct(): FormGroup {
     return this.fb.group({
-      itemName: [""],
-      itemQty: [""],
-      itemPrice: [""]
+      itemName: ["", Validators.required],
+      itemScheme: [""],
+      itemQty: ["", Validators.required],
+      itemFreeQty: ["", Validators.required]
     });
   }
 
@@ -83,26 +81,6 @@ export class PurchaseComponent implements OnInit {
 
   get InvoiceDate() {
     return this.purchase.get("InvoiceDate");
-  }
-
-  // get InvoiceNo() {
-  //   return this.purchase.get("InvoiceNo");
-  // }
-  get SubTotal() {
-    return this.purchase.get("SubTotal");
-  }
-  get CGST() {
-    return this.purchase.get("CGST");
-  }
-  get SGST() {
-    return this.purchase.get("SGST");
-  }
-  get IGST() {
-    return this.purchase.get("IGST");
-  }
-
-  get Total() {
-    return this.purchase.get("Total");
   }
 
   addProduct() {
@@ -128,11 +106,10 @@ export class PurchaseComponent implements OnInit {
   onSelect(event: TypeaheadMatch, index): void {
     this.selectedProduct = event.item;
 
-    this.getProdFormGroup(index).controls["itemPrice"].setValue(
+    /* this.getProdFormGroup(index).controls["itemPrice"].setValue(
       this.selectedProduct.PRO_Price
-    );
-
-    console.log(this.getProdFormGroup(index).controls["itemPrice"].value);
+    ); */
+    this.fetchProductSchemes(this.selectedProduct._id);
   }
 
   getProdFormGroup(index): FormGroup {
@@ -141,33 +118,22 @@ export class PurchaseComponent implements OnInit {
     return formGroup;
   }
 
-  getsubtotal() {
-    let all_item = this.purchase.controls.ProdList.value;
-
-    if (all_item.length > 0) {
-      // console.log(all_item[0].itemPrice);
-      let count_subTotal = Number(
-        Object.values(all_item).reduce(
-          (t, { itemPrice }) => Number(t) + Number(itemPrice),
-          0
-        )
-      );
-      // this.purchase.controls.SubTotal.setValue(count_subTotal);
-    }
+  fetchProductSchemes(productID) {
+    this.transervice.fetchProductSchemes(productID).subscribe(proSchemes => {
+      this.productSchemeList = proSchemes;
+    });
   }
 
-  gettotal() {
-    let IGST = this.purchase.controls.IGST.value;
-    let SGST = this.purchase.controls.SGST.value;
-    let CGST = this.purchase.controls.CGST.value;
-    let SubTotal = this.purchase.controls.SubTotal.value;
-
-    let orderTotal =
-      Number(IGST) + Number(SGST) + Number(CGST) + Number(SubTotal);
-    this.purchase.controls.Total.setValue(orderTotal);
+  onSchemeSelect(event) {
+    const selectedScheme = event.target.value;
+    const data = this.productSchemeList.find(element => {
+      element["_id"] == selectedScheme;
+      console.log(element["_id"]);
+    });
+    console.log(data);
   }
 
   onCancel() {
-    this.router.navigate(["/invoice"]);
+    this.router.navigate(["/purchase"]);
   }
 }

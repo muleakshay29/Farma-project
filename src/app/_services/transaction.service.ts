@@ -43,18 +43,25 @@ export class TransactionService {
       .pipe(catchError(this.handleError<any>("fetchScheme")));
   }
 
-  deleteScheme(cmId): Observable<any> {
-    const URL = `${this.API_URL}scheme/${cmId}`;
+  deleteScheme(schemeID): Observable<any> {
+    const URL = `${this.API_URL}scheme/${schemeID}`;
     return this.http
       .delete<any>(URL, httpOptions)
       .pipe(catchError(this.handleError<any>("deleteScheme")));
   }
 
-  fetchSchemeDetails(cmId): Observable<any> {
-    const URL = `${this.API_URL}fetch-scheme-details/${cmId}`;
+  fetchSchemeDetails(schemeID): Observable<any> {
+    const URL = `${this.API_URL}fetch-scheme-details/${schemeID}`;
     return this.http
       .get<any>(URL, httpOptions)
       .pipe(catchError(this.handleError<any>("fetchSchemeDetails")));
+  }
+
+  fetchProductSchemes(_id): Observable<any> {
+    const URL = `${this.API_URL}fetch-scheme-by-product/${_id}`;
+    return this.http
+      .get<any>(URL, httpOptions)
+      .pipe(catchError(this.handleError<any>("fetchProductSchemes")));
   }
 
   private handleError<T>(operation = "operation", result?: T) {

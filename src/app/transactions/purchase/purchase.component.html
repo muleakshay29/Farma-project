@@ -55,8 +55,10 @@
                     <thead>
                       <tr>
                         <th>Product Name</th>
+                        <th>Scheme</th>
                         <th>Quantity</th>
-                        <th>Rate</th>
+                        <th>Free Quantity</th>
+                        <th>Action</th>
                       </tr>
                     </thead>
 
@@ -82,8 +84,24 @@
                             />
                           </td>
                           <td>
+                            <select
+                              class="form-control rounded-pill"
+                              formControlName="itemScheme"
+                              (change)="onSchemeSelect($event)"
+                            >
+                              <option value="">Select Scheme</option>
+                              <option
+                                value="{{ scheme._id }}"
+                                *ngFor="let scheme of productSchemeList"
+                              >
+                                Scheme : {{ scheme.Quantity }} -
+                                {{ scheme.Free_Quantity }}
+                              </option>
+                            </select>
+                          </td>
+                          <td>
                             <input
-                              type="text"
+                              type="number"
                               class="form-control rounded-pill"
                               formControlName="itemQty"
                               placeholder="Quantity"
@@ -93,11 +111,20 @@
                             <input
                               type="number"
                               class="form-control rounded-pill"
-                              formControlName="itemPrice"
-                              placeholder="Price"
+                              formControlName="itemFreeQty"
+                              placeholder="Free Quantity"
                             />
                           </td>
-                        </ng-container>
+                          <td>
+                            <button
+                              type="button"
+                              class="btn btn-primary btn-user rounded-pill"
+                              (click)="removeContact()"
+                            >
+                              Remove
+                            </button>
+                          </td></ng-container
+                        >
                       </tr>
                     </tbody>
 

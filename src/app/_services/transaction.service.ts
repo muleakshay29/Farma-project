@@ -36,6 +36,13 @@ export class TransactionService {
       .pipe(catchError(this.handleError<any>("addTransactionChild")));
   }
 
+  fetchSalesOrder(): Observable<any> {
+    const URL = `${this.API_URL}fetch-sales-order`;
+    return this.http
+      .get<any>(URL, httpOptions)
+      .pipe(catchError(this.handleError<any>("fetchSalesOrder")));
+  }
+
   addScheme(data: any): Observable<any> {
     const URL = `${this.API_URL}add-scheme`;
     return this.http

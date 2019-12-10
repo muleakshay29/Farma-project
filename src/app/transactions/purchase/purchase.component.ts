@@ -25,7 +25,9 @@ export class PurchaseComponent implements OnInit {
   selectedProduct: any;
   public ProdList: FormArray;
   public TodayDate: any;
-  productSchemeList: [];
+  productSchemeList: any;
+  readonly: boolean = false;
+  itemScheme = [];
 
   constructor(
     private fb: FormBuilder,
@@ -61,23 +63,13 @@ export class PurchaseComponent implements OnInit {
 
   createProduct(): FormGroup {
     return this.fb.group({
-      itemName: ["", Validators.required],
-      itemScheme: [""],
-      itemQty: ["", Validators.required],
-      itemFreeQty: ["", Validators.required]
+      Product_id: [""],
+      Product_Name: ["", Validators.required],
+      Product_Scheme: [""],
+      Product_Quantity: ["", Validators.required],
+      Product_Free_Quantity: ["", Validators.required]
     });
   }
-
-  /* get itemName() {
-    // return this.purchase.get("itemName");
-    return this.prodFormGroup.get("itemName");
-  }
-  get itemQty() {
-    return this.purchase.get("itemQty");
-  }
-  get itemPrice() {
-    return this.purchase.get("itemPrice");
-  } */
 
   get InvoiceDate() {
     return this.purchase.get("InvoiceDate");
@@ -94,7 +86,43 @@ export class PurchaseComponent implements OnInit {
 
   onSubmit() {
     const formData = this.purchase.value;
-    console.log(formData);
+    const schemeProductList = formData.ProductList;
+
+    const transData = {
+      InvoiceDate: formData.InvoiceDate,
+      PurchaseFlag: 1
+    };
+
+    this.transervice.addPurchase(transData).subscribe(data => {
+      if (data != null) {
+        schemeProductList.forEach(element => {
+          const transSchemeData = {
+            InvoiceDate: formData.InvoiceDate,
+            PurchaseTransId: data._id,
+            Product_id: element.Product_id,
+            Product_Name: element.Product_Name,
+            Product_Scheme: element.Product_Scheme,
+            Product_Quantity: element.Product_Quantity,
+            Product_Free_Quantity: element.Product_Free_Quantity
+          };
+
+          this.transervice
+            .addTransactionChild(transSchemeData)
+            .subscribe(dataChild => {
+              console.log(dataChild);
+            });
+        });
+
+        this.alertService.openSnackBar("Purchase is successfuly");
+        while (this.ProdList.length) {
+          this.ProdList.removeAt(0);
+        }
+        this.purchase.reset();
+        this.router.navigate(["/purchase"]);
+      } else {
+        this.alertService.openSnackBar("Error ordering purchase");
+      }
+    });
   }
 
   fetchProduct() {
@@ -103,37 +131,44 @@ export class PurchaseComponent implements OnInit {
     });
   }
 
-  onSelect(event: TypeaheadMatch, index): void {
+  onSelect(event: TypeaheadMatch, index) {
     this.selectedProduct = event.item;
-
-    /* this.getProdFormGroup(index).controls["itemPrice"].setValue(
-      this.selectedProduct.PRO_Price
-    ); */
-    this.fetchProductSchemes(this.selectedProduct._id);
+    this.fetchProductSchemes(this.selectedProduct._id, index);
   }
 
   getProdFormGroup(index): FormGroup {
-    // this.contactList = this.form.get('contacts') as FormArray;
     const formGroup = this.ProdList.controls[index] as FormGroup;
     return formGroup;
   }
 
-  fetchProductSchemes(productID) {
+  fetchProductSchemes(productID, index) {
     this.transervice.fetchProductSchemes(productID).subscribe(proSchemes => {
       this.productSchemeList = proSchemes;
     });
   }
 
-  onSchemeSelect(event) {
+  onSchemeSelect(event, index) {
     const selectedScheme = event.target.value;
     const data = this.productSchemeList.find(element => {
-      element["_id"] == selectedScheme;
-      console.log(element["_id"]);
+      return element["_id"] === selectedScheme;
     });
-    console.log(data);
+
+    this.getProdFormGroup(index).controls["Product_id"].patchValue(
+      data["PRO_ID"]
+    );
+    this.getProdFormGroup(index).controls["Product_Quantity"].patchValue(
+      data["Quantity"]
+    );
+    this.getProdFormGroup(index).controls["Product_Free_Quantity"].patchValue(
+      data["Free_Quantity"]
+    );
+    return true;
   }
 
   onCancel() {
-    this.router.navigate(["/purchase"]);
+    while (this.ProdList.length) {
+      this.ProdList.removeAt(0);
+    }
+    this.purchase.reset();
   }
 }

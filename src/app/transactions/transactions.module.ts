@@ -6,9 +6,10 @@ import { AccountMasterComponent } from "./account-master/account-master.componen
 import { PurchaseComponent } from './purchase/purchase.component';
 import { SchemaMasterComponent } from './schema-master/schema-master.component';
 import { AddSchemaComponent } from './schema-master/add-schema/add-schema.component';
+import { SaleComponent } from './sale/sale.component';
 
 @NgModule({
-  declarations: [AccountMasterComponent, PurchaseComponent, SchemaMasterComponent, AddSchemaComponent],
+  declarations: [AccountMasterComponent, PurchaseComponent, SchemaMasterComponent, AddSchemaComponent, SaleComponent],
   imports: [SharedModule, TransactionsRoutingModule]
 })
 export class TransactionsModule {}

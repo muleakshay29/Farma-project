@@ -22,6 +22,20 @@ export class TransactionService {
 
   constructor(private http: HttpClient) {}
 
+  addPurchase(data: any): Observable<any> {
+    const URL = `${this.API_URL}add-purchase-transaction`;
+    return this.http
+      .post<any>(URL, data, httpOptions)
+      .pipe(catchError(this.handleError<any>("addPurchase")));
+  }
+
+  addTransactionChild(data: any): Observable<any> {
+    const URL = `${this.API_URL}add-transaction-child`;
+    return this.http
+      .post<any>(URL, data, httpOptions)
+      .pipe(catchError(this.handleError<any>("addTransactionChild")));
+  }
+
   addScheme(data: any): Observable<any> {
     const URL = `${this.API_URL}add-scheme`;
     return this.http

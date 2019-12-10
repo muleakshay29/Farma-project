@@ -5,6 +5,7 @@ import { AccountMasterComponent } from "./account-master/account-master.componen
 import { PurchaseComponent } from "./purchase/purchase.component";
 import { SchemaMasterComponent } from "./schema-master/schema-master.component";
 import { AddSchemaComponent } from "./schema-master/add-schema/add-schema.component";
+import { SaleComponent } from "./sale/sale.component";
 import { AuthGuard } from "../_guards/auth.guard";
 import { Role } from "../_models/role";
 
@@ -36,6 +37,12 @@ const routes: Routes = [
   {
     path: "add-scheme/:id",
     component: AddSchemaComponent,
+    canActivate: [AuthGuard],
+    data: { roles: [Role.Admin] }
+  },
+  {
+    path: "sales",
+    component: SaleComponent,
     canActivate: [AuthGuard],
     data: { roles: [Role.Admin] }
   }

@@ -74,7 +74,7 @@
                             <input
                               type="text"
                               class="form-control rounded-pill"
-                              formControlName="itemName"
+                              formControlName="Product_Name"
                               placeholder="Item Name"
                               [typeahead]="allProduct"
                               typeaheadOptionField="PRO_Name"
@@ -82,12 +82,14 @@
                               adaptivePosition="true"
                               (typeaheadOnSelect)="onSelect($event, i)"
                             />
+
+                            <input type="hidden" formControlName="Product_id" />
                           </td>
                           <td>
                             <select
                               class="form-control rounded-pill"
-                              formControlName="itemScheme"
-                              (change)="onSchemeSelect($event)"
+                              formControlName="Product_Scheme"
+                              (change)="onSchemeSelect($event, i)"
                             >
                               <option value="">Select Scheme</option>
                               <option
@@ -103,7 +105,7 @@
                             <input
                               type="number"
                               class="form-control rounded-pill"
-                              formControlName="itemQty"
+                              formControlName="Product_Quantity"
                               placeholder="Quantity"
                             />
                           </td>
@@ -111,7 +113,7 @@
                             <input
                               type="number"
                               class="form-control rounded-pill"
-                              formControlName="itemFreeQty"
+                              formControlName="Product_Free_Quantity"
                               placeholder="Free Quantity"
                             />
                           </td>

@@ -22,20 +22,10 @@
           <th *matHeaderCellDef class="text-center">Action</th>
           <td class="text-center" *matCellDef="let element">
             <a
-              href="javascript:void(0)"
-              (click)="
-                openModalWithComponent(element.PRO_ID.PRO_Name, element._id)
-              "
-              matTooltip="Delete"
+              routerLink="/view-order-details/{{ element._id }}"
+              matTooltip="Order Details"
               matTooltipPosition="above"
-            >
-              <i class="fas fa-times"></i>
-            </a>
-            &nbsp; | &nbsp;
-            <a
-              routerLink="/add-scheme/{{ element._id }}"
-              matTooltip="Edit"
-              matTooltipPosition="above"
+              (click)="openDialog()"
             >
               <i class="fas fa-pencil-alt"></i>
             </a>
@@ -47,25 +37,26 @@
             Invoice Date
           </th>
           <td *matCellDef="let element" class="text-center">
-            {{ element.InvoiceDate }}
+            {{ element.PurchaseTransId.InvoiceDate | date: "dd, MMM yyyy" }}
           </td>
         </ng-container>
 
-        <ng-container matColumnDef="Scheme">
+        <!-- <ng-container matColumnDef="Scheme">
           <th *matHeaderCellDef class="text-center" mat-sort-header>
             Scheme
           </th>
           <td *matCellDef="let element" class="text-center">
-            {{ element.Scheme }}
+            Scheme: {{ element.Product_Scheme.Quantity }} -
+            {{ element.Product_Scheme.Free_Quantity }}
           </td>
-        </ng-container>
+        </ng-container> -->
 
         <ng-container matColumnDef="Product_Name">
           <th *matHeaderCellDef class="text-center" mat-sort-header>
             Product Name
           </th>
           <td *matCellDef="let element" class="text-center">
-            {{ element.Product_Name }}
+            {{ element.Product_id.PRO_Name | uppercase }}
           </td>
         </ng-container>
 

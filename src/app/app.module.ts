@@ -31,6 +31,7 @@ import { AuthenticationModule } from "./authentication/authentication.module";
 import { TransactionsModule } from "./transactions/transactions.module";
 import { UniqueRecordsDirective } from "./_helpers/unique-records.directive";
 import { JwtInterceptor } from "./_helpers/jwt.interceptor";
+import { DialogBoxComponent } from "./_helpers/dialog-box/dialog-box.component";
 /** ***************************Feature Modules***************************  **/
 
 @NgModule({
@@ -40,7 +41,8 @@ import { JwtInterceptor } from "./_helpers/jwt.interceptor";
     DashboardComponent,
     NavigationsComponent,
     DeleteConfirmationComponent,
-    UniqueRecordsDirective
+    UniqueRecordsDirective,
+    DialogBoxComponent
   ],
   imports: [
     BrowserModule,
@@ -58,7 +60,7 @@ import { JwtInterceptor } from "./_helpers/jwt.interceptor";
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: LocationStrategy, useClass: PathLocationStrategy }
   ],
-  entryComponents: [DeleteConfirmationComponent],
+  entryComponents: [DeleteConfirmationComponent, DialogBoxComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

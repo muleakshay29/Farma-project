@@ -17,14 +17,7 @@ import { DialogBoxComponent } from "../../_helpers/dialog-box/dialog-box.compone
 })
 export class SaleComponent implements OnInit {
   dataSource: MatTableDataSource<any>;
-  displayedColumns: string[] = [
-    "Action",
-    "InvoiceDate",
-    // "Scheme",
-    "Product_Name",
-    "Product_Quantity",
-    "Product_Free_Quantity"
-  ];
+  displayedColumns: string[] = ["Action", "InvoiceDate", "Product_Name"];
   bsModalRef: BsModalRef;
 
   @ViewChild(MatSort) sort: MatSort;
@@ -57,9 +50,9 @@ export class SaleComponent implements OnInit {
     });
   }
 
-  openDialog(): void {
+  openDialog(id): void {
     const dialogRef = this.dialog.open(DialogBoxComponent, {
-      width: "250px"
+      data: { id: id }
     });
 
     dialogRef.afterClosed().subscribe(result => {

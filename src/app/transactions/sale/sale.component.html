@@ -22,10 +22,10 @@
           <th *matHeaderCellDef class="text-center">Action</th>
           <td class="text-center" *matCellDef="let element">
             <a
-              routerLink="/view-order-details/{{ element._id }}"
+              href="javascript:void(0)"
               matTooltip="Order Details"
               matTooltipPosition="above"
-              (click)="openDialog()"
+              (click)="openDialog(element._id)"
             >
               <i class="fas fa-pencil-alt"></i>
             </a>
@@ -57,24 +57,6 @@
           </th>
           <td *matCellDef="let element" class="text-center">
             {{ element.Product_id.PRO_Name | uppercase }}
-          </td>
-        </ng-container>
-
-        <ng-container matColumnDef="Product_Quantity">
-          <th *matHeaderCellDef class="text-center" mat-sort-header>
-            Quantity
-          </th>
-          <td *matCellDef="let element" class="text-center">
-            {{ element.Product_Quantity }}
-          </td>
-        </ng-container>
-
-        <ng-container matColumnDef="Product_Free_Quantity">
-          <th *matHeaderCellDef class="text-center" mat-sort-header>
-            Free Quantity
-          </th>
-          <td *matCellDef="let element" class="text-center">
-            {{ element.Product_Free_Quantity }}
           </td>
         </ng-container>
 

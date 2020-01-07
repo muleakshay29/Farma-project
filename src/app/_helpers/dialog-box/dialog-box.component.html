@@ -1,3 +1,85 @@
-<p>
-  dialog-box works!
-</p>
+<!-- <div class="modal-header">
+  <h4 class="modal-title pull-left text-dark">{{ title }}</h4>
+</div>
+<div class="modal-body">
+  <div class="card shadow mb-4">
+    <div class="card-body">
+      <form [formGroup]="sales" #formDirective="ngForm" (ngSubmit)="onSubmit()">
+        <div class="form-group">
+          <input
+            type="text"
+            class="form-control rounded-pill"
+            formControlName="CM_Name"
+            placeholder="Enter Name"
+          />
+        </div>
+      </form>
+    </div>
+  </div>
+</div> -->
+
+<div class="card">
+  <div class="card-body">
+    <div class="table-responsive shadow">
+      <table
+        mat-table
+        [dataSource]="dataSource"
+        matSort
+        class="table table-bordered table-hover mb-0"
+      >
+        <ng-container matColumnDef="Product_Name">
+          <th *matHeaderCellDef class="text-center">
+            Product Name
+          </th>
+          <td *matCellDef="let element" class="text-center">
+            {{ element.Product_id.PRO_Name }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="Product_Barcode">
+          <th *matHeaderCellDef class="text-center">
+            Product Barcode
+          </th>
+          <td *matCellDef="let element" class="text-center">
+            {{ element.Product_id.PRO_Barcode }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="Product_Quantity">
+          <th *matHeaderCellDef class="text-center">
+            Quantity
+          </th>
+          <td *matCellDef="let element" class="text-center">
+            {{ element.Product_Quantity }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="Product_Free_Quantity">
+          <th *matHeaderCellDef class="text-center">
+            Free Quantity
+          </th>
+          <td *matCellDef="let element" class="text-center">
+            {{ element.Product_Free_Quantity }}
+          </td>
+        </ng-container>
+
+        <tr
+          mat-header-row
+          *matHeaderRowDef="displayedColumns"
+          class="text-center thead-dark"
+        ></tr>
+        <tr
+          mat-row
+          *matRowDef="let row; columns: displayedColumns"
+          class="text-center"
+        ></tr>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div class="modal-footer">
+  <button type="button" class="btn btn-primary" (click)="closeDialog()">
+    Cancel
+  </button>
+</div>

@@ -85,6 +85,13 @@ export class TransactionService {
       .pipe(catchError(this.handleError<any>("fetchProductSchemes")));
   }
 
+  fetchSalesDetails(salesData): Observable<any> {
+    const URL = `${this.API_URL}fetch-sales-details`;
+    return this.http
+      .post<any>(URL, salesData, httpOptions)
+      .pipe(catchError(this.handleError<any>("fetchSalesDetails")));
+  }
+
   private handleError<T>(operation = "operation", result?: T) {
     return (error: any): Observable<T> => {
       console.error(error);

@@ -23,19 +23,9 @@
           <td class="text-center" *matCellDef="let element">
             <a
               href="javascript:void(0)"
-              (click)="
-                openModalWithComponent(element.PRO_ID.PRO_Name, element._id)
-              "
-              matTooltip="Delete"
+              matTooltip="Order Details"
               matTooltipPosition="above"
-            >
-              <i class="fas fa-times"></i>
-            </a>
-            &nbsp; | &nbsp;
-            <a
-              routerLink="/add-scheme/{{ element._id }}"
-              matTooltip="Edit"
-              matTooltipPosition="above"
+              (click)="openDialog(element._id)"
             >
               <i class="fas fa-pencil-alt"></i>
             </a>
@@ -47,43 +37,26 @@
             Invoice Date
           </th>
           <td *matCellDef="let element" class="text-center">
-            {{ element.InvoiceDate }}
+            {{ element.PurchaseTransId.InvoiceDate | date: "dd, MMM yyyy" }}
           </td>
         </ng-container>
 
-        <ng-container matColumnDef="Scheme">
+        <!-- <ng-container matColumnDef="Scheme">
           <th *matHeaderCellDef class="text-center" mat-sort-header>
             Scheme
           </th>
           <td *matCellDef="let element" class="text-center">
-            {{ element.Scheme }}
+            Scheme: {{ element.Product_Scheme.Quantity }} -
+            {{ element.Product_Scheme.Free_Quantity }}
           </td>
-        </ng-container>
+        </ng-container> -->
 
         <ng-container matColumnDef="Product_Name">
           <th *matHeaderCellDef class="text-center" mat-sort-header>
             Product Name
           </th>
           <td *matCellDef="let element" class="text-center">
-            {{ element.Product_Name }}
-          </td>
-        </ng-container>
-
-        <ng-container matColumnDef="Product_Quantity">
-          <th *matHeaderCellDef class="text-center" mat-sort-header>
-            Quantity
-          </th>
-          <td *matCellDef="let element" class="text-center">
-            {{ element.Product_Quantity }}
-          </td>
-        </ng-container>
-
-        <ng-container matColumnDef="Product_Free_Quantity">
-          <th *matHeaderCellDef class="text-center" mat-sort-header>
-            Free Quantity
-          </th>
-          <td *matCellDef="let element" class="text-center">
-            {{ element.Product_Free_Quantity }}
+            {{ element.Product_id.PRO_Name | uppercase }}
           </td>
         </ng-container>
 

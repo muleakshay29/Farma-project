@@ -13,7 +13,8 @@ import {
   MatInputModule,
   MatAutocompleteModule,
   MatDatepickerModule,
-  MatNativeDateModule
+  MatNativeDateModule,
+  MatProgressSpinnerModule
 } from "@angular/material";
 
 import { ErrorMessageComponent } from "../_helpers/error-message/error-message.component";
@@ -47,7 +48,8 @@ import {
     MatInputModule,
     MatAutocompleteModule,
     MatDatepickerModule,
-    MatNativeDateModule
+    MatNativeDateModule,
+    MatProgressSpinnerModule
   ],
   exports: [
     CommonModule,
@@ -68,6 +70,7 @@ import {
     MatInputModule,
     MatDatepickerModule,
     MatNativeDateModule,
+    MatProgressSpinnerModule,
     MatAutocompleteModule,
     ErrorMessageComponent
   ]

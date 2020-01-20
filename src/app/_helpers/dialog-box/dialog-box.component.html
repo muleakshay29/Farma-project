@@ -1,0 +1,131 @@
+<!-- <div class="modal-header">
+  <h4 class="modal-title pull-left text-dark">{{ title }}</h4>
+</div>
+<div class="modal-body">
+  <div class="card shadow mb-4">
+    <div class="card-body">
+      <form [formGroup]="sales" #formDirective="ngForm" (ngSubmit)="onSubmit()">
+        <div class="form-group">
+          <input
+            type="text"
+            class="form-control rounded-pill"
+            formControlName="CM_Name"
+            placeholder="Enter Name"
+          />
+        </div>
+      </form>
+    </div>
+  </div>
+</div> -->
+
+<div class="card">
+  <div class="card-body">
+    <div class="table-responsive shadow">
+      <table
+        mat-table
+        [dataSource]="dataSource"
+        matSort
+        class="table table-bordered table-hover mb-0"
+      >
+        <ng-container matColumnDef="ProductName">
+          <th *matHeaderCellDef class="text-center">
+            Product Name
+          </th>
+          <td *matCellDef="let element" class="text-center">
+            {{ element.Product_id.PRO_Name }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="Batch">
+          <th *matHeaderCellDef class="text-center">
+            Batch
+          </th>
+          <td *matCellDef="let element" class="text-center">
+            <!-- {{ element.Product_id.PRO_Name }} -->
+
+            <select class="form-control rounded-pill">
+              <option value="">Select Batch</option>
+            </select>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="Expiry_Date">
+          <th *matHeaderCellDef class="text-center">
+            Expiry Date
+          </th>
+          <td *matCellDef="let element" class="text-center">
+            <!-- {{ element.Product_id.PRO_Barcode }} -->
+
+            <input
+              type="text"
+              class="form-control rounded-pill"
+              placeholder="Expiry Date"
+            />
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="MRP">
+          <th *matHeaderCellDef class="text-center">
+            MRP
+          </th>
+          <td *matCellDef="let element" class="text-center">
+            <!-- {{ element.Product_Quantity }} -->
+
+            <input
+              type="text"
+              class="form-control rounded-pill"
+              placeholder="MRP"
+            />
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="Purchase_Rate">
+          <th *matHeaderCellDef class="text-center">
+            Purchase Rate
+          </th>
+          <td *matCellDef="let element" class="text-center">
+            <!-- {{ element.Product_Free_Quantity }} -->
+
+            <input
+              type="text"
+              class="form-control rounded-pill"
+              placeholder="Purchase Rate"
+            />
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="Sale_Rate">
+          <th *matHeaderCellDef class="text-center">
+            Sale Rate
+          </th>
+          <td *matCellDef="let element" class="text-center">
+            <!-- {{ element.Product_Free_Quantity }} -->
+
+            <input
+              type="text"
+              class="form-control rounded-pill"
+              placeholder="Sale Rate"
+            />
+          </td>
+        </ng-container>
+
+        <tr
+          mat-header-row
+          *matHeaderRowDef="displayedColumns"
+          class="text-center thead-dark"
+        ></tr>
+        <tr
+          mat-row
+          *matRowDef="let row; columns: displayedColumns"
+          class="text-center"
+        ></tr>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div class="modal-footer">
+  <button type="button" class="btn btn-primary" (click)="closeDialog()">
+    Cancel
+  </button>
+</div>

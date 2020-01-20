@@ -145,6 +145,21 @@ export class MasterServiceService {
       .post<any>(URL, data)
       .pipe(catchError(this.handleError<any>("employeePhotoUpload")));
   }
+
+  fetchEmployeeDetails(_id): Observable<any> {
+    const URL = `${this.API_URL}fetch-employee-details/${_id}`;
+    return this.http
+      .get<any>(URL, httpOptions)
+      .pipe(catchError(this.handleError<any>("fetchEmployeeDetails")));
+  }
+
+  updateEmployee(id, data): Observable<any> {
+    // const URL = `${this.API_URL}commonmasterchild/updatecommonmasterchild`;
+    const URL = `${this.API_URL}update-employee/${id}`;
+    return this.http
+      .patch<any>(URL, data, httpOptions)
+      .pipe(catchError(this.handleError<any>("updateEmployee")));
+  }
   /* Employee Master */
 
   checkcmname(CM_Name): Observable<any> {

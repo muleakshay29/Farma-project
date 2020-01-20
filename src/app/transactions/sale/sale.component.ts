@@ -1,9 +1,15 @@
 import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
 import { TransactionService } from "../../_services/transaction.service";
-import { MatTableDataSource, MatSort, MatPaginator } from "@angular/material";
+import {
+  MatTableDataSource,
+  MatSort,
+  MatPaginator,
+  MatDialog
+} from "@angular/material";
 import { BsModalService, BsModalRef } from "ngx-bootstrap/modal";
 import { DeleteConfirmationComponent } from "../../_helpers/delete-confirmation/delete-confirmation.component";
 import { AlertService } from "../../_services/alert.service";
+import { DialogBoxComponent } from "../../_helpers/dialog-box/dialog-box.component";
 
 @Component({
   selector: "app-sale",
@@ -11,14 +17,7 @@ import { AlertService } from "../../_services/alert.service";
 })
 export class SaleComponent implements OnInit {
   dataSource: MatTableDataSource<any>;
-  displayedColumns: string[] = [
-    "Action",
-    "InvoiceDate",
-    "Scheme",
-    "Product_Name",
-    "Product_Quantity",
-    "Product_Free_Quantity"
-  ];
+  displayedColumns: string[] = ["Action", "InvoiceDate", "Product_Name"];
   bsModalRef: BsModalRef;
 
   @ViewChild(MatSort) sort: MatSort;
@@ -27,10 +26,13 @@ export class SaleComponent implements OnInit {
   constructor(
     private transervice: TransactionService,
     private modalService: BsModalService,
-    private alertService: AlertService
+    private alertService: AlertService,
+    public dialog: MatDialog
   ) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.fetchSalesOrder();
+  }
 
   applyFilter(filterValue: string) {
     this.dataSource.filter = filterValue.trim().toLowerCase();
@@ -38,5 +40,23 @@ export class SaleComponent implements OnInit {
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }
+  }
+
+  fetchSalesOrder() {
+    this.transervice.fetchSalesOrder().subscribe(orders => {
+      this.dataSource = new MatTableDataSource(orders);
+      this.dataSource.sort = this.sort;
+      this.dataSource.paginator = this.paginator;
+    });
+  }
+
+  openDialog(id): void {
+    const dialogRef = this.dialog.open(DialogBoxComponent, {
+      data: { id: id }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(result);
+    });
   }
 }

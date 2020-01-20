@@ -20,3 +20,16 @@
 .ng-dirty.ng-touched.ng-invalid:not(form) {
   border: solid 2px lightcoral;
 }
+
+.progress-spinner {
+  display: flex;
+  flex-direction: column;
+  z-index: 999999999999999999;
+  margin: 0 auto;
+  align-items: center;
+}
+
+.progress-spinner .mat-progress-spinner {
+  position: absolute;
+  z-index: 999999999999999;
+}

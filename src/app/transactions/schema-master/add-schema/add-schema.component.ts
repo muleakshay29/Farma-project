@@ -19,6 +19,7 @@ export class AddSchemaComponent implements OnInit {
   allProduct: [];
   selectedProduct: any;
   selectedProductCode: any;
+  showSpinner: boolean = true;
 
   constructor(
     private fb: FormBuilder,
@@ -64,6 +65,7 @@ export class AddSchemaComponent implements OnInit {
   fetchProduct() {
     this.pservice.fetchProduct().subscribe(allProduct => {
       this.allProduct = allProduct;
+      this.showSpinner = false;
     });
   }
 

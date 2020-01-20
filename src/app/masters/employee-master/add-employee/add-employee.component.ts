@@ -1,11 +1,44 @@
 import { Component, OnInit } from "@angular/core";
-import { Validators, FormGroup, FormBuilder } from "@angular/forms";
+import {
+  Validators,
+  FormGroup,
+  FormBuilder,
+  AbstractControl,
+  ValidatorFn,
+  AbstractControlOptions
+} from "@angular/forms";
 import { MasterServiceService } from "../../../_services/master-service.service";
 import { Validations } from "../../../_helpers/validations";
 import { Router, ActivatedRoute } from "@angular/router";
 import { AlertService } from "../../../_services/alert.service";
 import { empCodeCheckValidator } from "../../../_helpers/unique-records.directive";
 import { AuthenticationService } from "../../../_services/authentication.service";
+
+export interface BooleanFn {
+  (): boolean;
+}
+
+export function conditionalValidator(
+  predicate: BooleanFn,
+  validator: ValidatorFn,
+  errorNamespace?: string
+): ValidatorFn {
+  return formControl => {
+    if (!formControl.parent) {
+      return null;
+    }
+    let error = null;
+    if (predicate()) {
+      error = validator(formControl);
+    }
+    if (errorNamespace && error) {
+      const customError = {};
+      customError[errorNamespace] = error;
+      error = customError;
+    }
+    return error;
+  };
+}
 
 @Component({
   selector: "app-add-employee",
@@ -36,7 +69,12 @@ export class AddEmployeeComponent implements OnInit {
       Emp_code: [
         "",
         [Validators.required],
-        empCodeCheckValidator(this.masterservice)
+
+        conditionalValidator(
+          () => this.Emp_code.value,
+          empCodeCheckValidator(this.masterservice),
+          "illuminatiError"
+        )
       ],
       Emp_name: ["", [Validators.required, Validations.alphaNumericPattern]],
       Emp_address: ["", [Validators.required, Validations.alphaNumericPattern]],
@@ -46,7 +84,6 @@ export class AddEmployeeComponent implements OnInit {
         "",
         [
           Validators.required,
-          Validations.floatnumberPattern,
           Validators.minLength(12),
           Validators.maxLength(12)
         ]
@@ -74,12 +111,15 @@ export class AddEmployeeComponent implements OnInit {
         "",
         [
           Validators.required,
-          Validations.floatnumberPattern,
           Validators.minLength(10),
           Validators.maxLength(10)
         ]
       ],
       Type_of_user: ["", Validators.required]
+    });
+
+    this.empMaster.valueChanges.subscribe(value => {
+      this.empMaster.get("Emp_code").updateValueAndValidity();
     });
 
     this.fetchCommonMaster("5da8128075c9ae635c147dab");
@@ -91,6 +131,7 @@ export class AddEmployeeComponent implements OnInit {
     } else {
       this.addFlag = false;
       this.updateFlag = true;
+      this.fetchEmployeeDetails();
     }
 
     /* Get current year */
@@ -149,9 +190,7 @@ export class AddEmployeeComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log(this.empId);
     if (this.empId == "" || this.empId == null) {
-      console.log("In create");
       const formData = this.empMaster.value;
       formData.Active_flag = 1;
       formData.Created_by = this.loggedInUser._id;
@@ -161,7 +200,7 @@ export class AddEmployeeComponent implements OnInit {
         if (data != null) {
           this.alertService.openSnackBar("Record added successfuly");
           this.empMaster.reset();
-          this.router.navigate(["/employee-master"]);
+          this.router.navigate(["/emp-master"]);
         } else {
           this.alertService.openSnackBar("Error adding record");
         }
@@ -169,6 +208,31 @@ export class AddEmployeeComponent implements OnInit {
     } else {
       console.log("In update");
       console.log(this.empMaster.value);
+
+      const formData = {
+        Emp_name: this.Emp_name.value,
+        Emp_address: this.Emp_address.value,
+        Emp_city: this.Emp_city.value,
+        Emp_state: this.Emp_state.value,
+        Emp_adhar: this.Emp_adhar.value,
+        Emp_pan: this.Emp_pan.value,
+        User_name: this.User_name.value,
+        Password: this.Password.value,
+        Email_id: this.Email_id.value,
+        Mobile_no: this.Mobile_no.value,
+        Type_of_user: this.Type_of_user.value
+      };
+
+      this.masterservice
+        .updateEmployee(this.empId, formData)
+        .subscribe(data => {
+          if (data != null) {
+            this.alertService.openSnackBar("Record updated successfuly");
+            this.router.navigate(["/emp-master"]);
+          } else {
+            this.alertService.openSnackBar("Error updating record");
+          }
+        });
     }
   }
 
@@ -177,6 +241,25 @@ export class AddEmployeeComponent implements OnInit {
       this.userTypes = list;
       this.userTypes = this.userTypes.filter(function(e) {
         return e._id !== "5da8133275c9ae635c147dba";
+      });
+    });
+  }
+
+  fetchEmployeeDetails() {
+    this.masterservice.fetchEmployeeDetails(this.empId).subscribe(details => {
+      this.empMaster.setValue({
+        Emp_code: details.Emp_code,
+        Emp_name: details.Emp_name,
+        Emp_address: details.Emp_address,
+        Emp_city: details.Emp_city,
+        Emp_state: details.Emp_state,
+        Emp_adhar: details.Emp_adhar,
+        Emp_pan: details.Emp_pan,
+        User_name: details.User_name,
+        Password: details.Password,
+        Email_id: details.Email_id,
+        Mobile_no: details.Mobile_no,
+        Type_of_user: details.Type_of_user
       });
     });
   }
@@ -194,6 +277,6 @@ export class AddEmployeeComponent implements OnInit {
   }
 
   onCancel() {
-    this.router.navigate(["/employee-master"]);
+    this.router.navigate(["/emp-master"]);
   }
 }

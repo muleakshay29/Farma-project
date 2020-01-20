@@ -94,6 +94,12 @@ const routes: Routes = [
     data: { roles: [Role.Admin] }
   },
   {
+    path: "emp-master/:id",
+    component: EmployeeMasterComponent,
+    canActivate: [AuthGuard],
+    data: { roles: [Role.Admin] }
+  },
+  {
     path: "add-employee",
     component: AddEmployeeComponent,
     canActivate: [AuthGuard],

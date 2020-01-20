@@ -78,7 +78,7 @@
       <div class="form-group row">
         <div class="col-sm-6 mb-3 mb-sm-0">
           <input
-            type="text"
+            type="number"
             class="form-control rounded-pill"
             formControlName="Emp_adhar"
             placeholder="Adhar Card Number"
@@ -132,7 +132,7 @@
 
         <div class="col-sm-6 mb-3 mb-sm-0">
           <input
-            type="text"
+            type="number"
             class="form-control rounded-pill"
             formControlName="Mobile_no"
             placeholder="Mobile No."
@@ -173,3 +173,20 @@
     </form>
   </div>
 </div>
+
+<ul>
+  <li>Is my form valid? {{ empMaster.valid }}</li>
+  <li>
+    <pre>
+My email field errors:
+{{ empMaster.controls.Emp_code.errors | json }}</pre
+    >
+  </li>
+  <li>
+    <pre>
+My form errors: 
+{{ empMaster.errors | json }}</pre
+    >
+  </li>
+  <li>Form value: {{ empMaster.value | json }}</li>
+</ul>

@@ -20,7 +20,6 @@ import { TransactionService } from "../../_services/transaction.service";
 })
 export class PurchaseComponent implements OnInit {
   public purchase: FormGroup;
-  date = new Date();
   allProduct: [];
   selectedProduct: any;
   public ProdList: FormArray;
@@ -28,6 +27,8 @@ export class PurchaseComponent implements OnInit {
   productSchemeList: any;
   readonly: boolean = false;
   itemScheme = [];
+  allSuppliers: [];
+  d;
 
   constructor(
     private fb: FormBuilder,
@@ -40,20 +41,17 @@ export class PurchaseComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.TodayDate =
-      this.date.getDate() +
-      "-" +
-      this.date.getMonth() +
-      "-" +
-      this.date.getFullYear();
+    this.d = new Date();
 
     this.purchase = this.fb.group({
-      InvoiceDate: [this.TodayDate],
+      InvoiceDate: [this.d],
+      SupplierID: ["", Validators.required],
       ProductList: this.fb.array([this.createProduct()])
     });
 
     this.ProdList = this.purchase.get("ProductList") as FormArray;
     this.fetchProduct();
+    this.fetchSuppliers();
   }
 
   // returns all form groups under contacts
@@ -75,6 +73,10 @@ export class PurchaseComponent implements OnInit {
     return this.purchase.get("InvoiceDate");
   }
 
+  get SupplierID() {
+    return this.purchase.get("SupplierID");
+  }
+
   addProduct() {
     this.ProdList.push(this.createProduct());
   }
@@ -90,7 +92,8 @@ export class PurchaseComponent implements OnInit {
 
     const transData = {
       InvoiceDate: formData.InvoiceDate,
-      PurchaseFlag: 1
+      PurchaseFlag: 1,
+      SupplierID: formData.SupplierID
     };
 
     this.transervice.addPurchase(transData).subscribe(data => {
@@ -128,6 +131,12 @@ export class PurchaseComponent implements OnInit {
   fetchProduct() {
     this.pservice.fetchProduct().subscribe(allProduct => {
       this.allProduct = allProduct;
+    });
+  }
+
+  fetchSuppliers() {
+    this.masterservice.fetchSuppliers().subscribe(allSuppliers => {
+      this.allSuppliers = allSuppliers;
     });
   }
 

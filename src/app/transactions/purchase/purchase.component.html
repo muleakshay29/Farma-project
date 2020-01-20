@@ -9,7 +9,7 @@
     >
       <div class="card">
         <div class="card-body">
-          <div class="form-group row justify-content-md-center">
+          <div class="form-group row ">
             <div class="col-sm-6 mb-3 mb-sm-0">
               <input
                 type="text"
@@ -21,20 +21,33 @@
                   adaptivePosition: true,
                   dateInputFormat: 'DD-MM-YYYY'
                 }"
-                [bsValue]="TodayDate"
               />
               <app-error-message [control]="InvoiceDate"></app-error-message>
             </div>
 
-            <!-- <div class="col-sm-6 mb-3 mb-sm-0">
-              <input
+            <div class="col-sm-6 mb-3 mb-sm-0">
+              <!-- <input
                 type="text"
                 class="form-control rounded-pill"
                 formControlName="InvoiceNo"
                 placeholder="Invoice Number"
-              />
-              <app-error-message [control]="InvoiceNo"></app-error-message>
-            </div> -->
+              /> -->
+
+              <select
+                class="form-control rounded-pill"
+                formControlName="SupplierID"
+              >
+                <option value="">Select Supplier</option>
+                <option
+                  value="{{ supplier._id }}"
+                  *ngFor="let supplier of allSuppliers"
+                >
+                  {{ supplier.SUP_CompanyName }}
+                </option>
+              </select>
+
+              <app-error-message [control]="SupplierID"></app-error-message>
+            </div>
           </div>
 
           <div class="row">

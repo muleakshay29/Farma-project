@@ -27,7 +27,7 @@
         matSort
         class="table table-bordered table-hover mb-0"
       >
-        <ng-container matColumnDef="Product_Name">
+        <ng-container matColumnDef="ProductName">
           <th *matHeaderCellDef class="text-center">
             Product Name
           </th>
@@ -36,30 +36,76 @@
           </td>
         </ng-container>
 
-        <ng-container matColumnDef="Product_Barcode">
+        <ng-container matColumnDef="Batch">
           <th *matHeaderCellDef class="text-center">
-            Product Barcode
+            Batch
           </th>
           <td *matCellDef="let element" class="text-center">
-            {{ element.Product_id.PRO_Barcode }}
+            <!-- {{ element.Product_id.PRO_Name }} -->
+
+            <select class="form-control rounded-pill">
+              <option value="">Select Batch</option>
+            </select>
           </td>
         </ng-container>
 
-        <ng-container matColumnDef="Product_Quantity">
+        <ng-container matColumnDef="Expiry_Date">
           <th *matHeaderCellDef class="text-center">
-            Quantity
+            Expiry Date
           </th>
           <td *matCellDef="let element" class="text-center">
-            {{ element.Product_Quantity }}
+            <!-- {{ element.Product_id.PRO_Barcode }} -->
+
+            <input
+              type="text"
+              class="form-control rounded-pill"
+              placeholder="Expiry Date"
+            />
           </td>
         </ng-container>
 
-        <ng-container matColumnDef="Product_Free_Quantity">
+        <ng-container matColumnDef="MRP">
           <th *matHeaderCellDef class="text-center">
-            Free Quantity
+            MRP
           </th>
           <td *matCellDef="let element" class="text-center">
-            {{ element.Product_Free_Quantity }}
+            <!-- {{ element.Product_Quantity }} -->
+
+            <input
+              type="text"
+              class="form-control rounded-pill"
+              placeholder="MRP"
+            />
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="Purchase_Rate">
+          <th *matHeaderCellDef class="text-center">
+            Purchase Rate
+          </th>
+          <td *matCellDef="let element" class="text-center">
+            <!-- {{ element.Product_Free_Quantity }} -->
+
+            <input
+              type="text"
+              class="form-control rounded-pill"
+              placeholder="Purchase Rate"
+            />
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="Sale_Rate">
+          <th *matHeaderCellDef class="text-center">
+            Sale Rate
+          </th>
+          <td *matCellDef="let element" class="text-center">
+            <!-- {{ element.Product_Free_Quantity }} -->
+
+            <input
+              type="text"
+              class="form-control rounded-pill"
+              placeholder="Sale Rate"
+            />
           </td>
         </ng-container>
 

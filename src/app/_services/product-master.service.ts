@@ -47,6 +47,13 @@ export class ProductMasterService {
       .pipe(catchError(this.handleError<any>("fetchProduct")));
   }
 
+  findProduct(data: any): Observable<any> {
+    const URL = `http://localhost:3000/find-products`;
+    return this.http
+      .post<any>(URL, data)
+      .pipe(catchError(this.handleError<any>("findProduct")));
+  }
+
   fetchProductDetails(pId): Observable<any> {
     const URL = `${this.API_URL}fetch-product-details/${pId}`;
     return this.http

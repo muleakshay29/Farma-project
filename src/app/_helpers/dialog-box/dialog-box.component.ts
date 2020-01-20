@@ -13,10 +13,12 @@ export class DialogBoxComponent {
 
   dataSource: MatTableDataSource<any>;
   displayedColumns: string[] = [
-    "Product_Name",
-    "Product_Barcode",
-    "Product_Quantity",
-    "Product_Free_Quantity"
+    "ProductName",
+    "Batch",
+    "Expiry_Date",
+    "MRP",
+    "Purchase_Rate",
+    "Sale_Rate"
   ];
 
   constructor(

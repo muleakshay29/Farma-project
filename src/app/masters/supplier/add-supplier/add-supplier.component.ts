@@ -3,7 +3,7 @@ import { Validators, FormGroup, FormBuilder } from "@angular/forms";
 import { MasterServiceService } from "../../../_services/master-service.service";
 import { TypeaheadMatch } from "ngx-bootstrap/typeahead/typeahead-match.class";
 import { AlertService } from "../../../_services/alert.service";
-import { Router, ActivatedRoute } from "@angular/router";
+import { Router, ActivatedRoute, Params } from "@angular/router";
 import { Validations } from "../../../_helpers/validations";
 import { DeleteConfirmationComponent } from "../../../_helpers/delete-confirmation/delete-confirmation.component";
 import { checkSupplierCode } from "../../../_helpers/unique-records.directive";
@@ -15,9 +15,9 @@ import { checkSupplierCode } from "../../../_helpers/unique-records.directive";
 export class AddSupplierComponent implements OnInit {
   supplierMaster: FormGroup;
   supplierList = [];
-  addFlag = false;
-  updateFlag = false;
   supId: any;
+  editMode = false;
+  buttonText: string;
 
   constructor(
     private fb: FormBuilder,
@@ -28,23 +28,25 @@ export class AddSupplierComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.supId = this.route.snapshot.paramMap.get("id");
-    if (this.supId == "" || this.supId == null) {
-      this.addFlag = true;
-      this.updateFlag = false;
-      this.fetchSuppliers();
-    } else {
-      this.addFlag = false;
-      this.updateFlag = true;
-      this.fetchSupDetails();
-    }
+    this.createForm();
 
+    this.route.params.subscribe((params: Params) => {
+      this.supId = params["id"] ? params["id"] : "";
+      this.editMode = params["id"] != null;
+
+      this.initForm();
+
+      this.buttonText = this.editMode ? "Update" : "Create";
+
+      this.SUP_code.setAsyncValidators(
+        checkSupplierCode(this.masterservice, this.supId)
+      );
+    });
+  }
+
+  createForm() {
     this.supplierMaster = this.fb.group({
-      SUP_code: [
-        "",
-        [Validators.required, Validations.alphaNumericPattern],
-        checkSupplierCode(this.masterservice)
-      ],
+      SUP_code: ["", [Validators.required, Validations.alphaNumericPattern]],
       SUP_CompanyName: [
         "",
         [Validators.required, Validations.alphaNumericPattern]
@@ -54,7 +56,7 @@ export class AddSupplierComponent implements OnInit {
         "",
         [
           Validators.required,
-          Validations.floatnumberPattern,
+          // Validations.floatnumberPattern,
           Validators.minLength(10),
           Validators.maxLength(10)
         ]
@@ -63,7 +65,7 @@ export class AddSupplierComponent implements OnInit {
         "",
         [
           Validators.required,
-          Validations.floatnumberPattern,
+          // Validations.floatnumberPattern,
           Validators.minLength(10),
           Validators.maxLength(10)
         ]
@@ -80,14 +82,14 @@ export class AddSupplierComponent implements OnInit {
         "",
         [
           Validators.required,
-          Validations.floatnumberPattern,
+          // Validations.floatnumberPattern,
           Validators.minLength(10),
           Validators.maxLength(10)
         ]
       ],
       SUP_Dist: [""],
       SUP_City: [""],
-      SUP_Pin: ["", Validations.floatnumberPattern],
+      SUP_Pin: [""],
       SUP_State: [""]
     });
   }
@@ -139,9 +141,8 @@ export class AddSupplierComponent implements OnInit {
   }
 
   onSubmit() {
-    if (this.supId == "" || this.supId == null) {
+    if (!this.editMode) {
       const formData = this.supplierMaster.value;
-      // console.log(formData);
       this.masterservice.addSupplier(formData).subscribe(e => {
         if (e > 0) {
           this.alertService.openSnackBar("Record added successfuly");
@@ -153,7 +154,6 @@ export class AddSupplierComponent implements OnInit {
       });
     } else {
       const formData = {
-        SUP_id: this.supId,
         SUP_code: this.SUP_code.value,
         SUP_CompanyName: this.SUP_CompanyName.value,
         SUP_Address: this.SUP_Address.value,
@@ -171,43 +171,42 @@ export class AddSupplierComponent implements OnInit {
         SUP_State: this.SUP_State.value
       };
 
-      this.masterservice.updateSupplier(formData).subscribe(data => {
-        if (data > 0) {
-          this.alertService.openSnackBar("Record updated successfuly");
-          this.router.navigate(["/supplier-master"]);
-        } else {
-          this.alertService.openSnackBar("Error updating record");
-        }
-      });
+      this.masterservice
+        .updateSupplier(this.supId, formData)
+        .subscribe(data => {
+          if (data != null) {
+            this.alertService.openSnackBar("Record updated successfuly");
+            this.router.navigate(["/supplier-master"]);
+          } else {
+            this.alertService.openSnackBar("Error updating record");
+          }
+        });
     }
   }
 
-  fetchSuppliers() {
-    this.masterservice
-      .fetchSuppliers()
-      .subscribe(res => (this.supplierList = res));
-  }
-
-  fetchSupDetails() {
-    this.masterservice.fetchSupplierDetails(this.supId).subscribe(details => {
-      this.supplierMaster.setValue({
-        SUP_code: details.SUP_code,
-        SUP_CompanyName: details.SUP_CompanyName,
-        SUP_Address: details.SUP_Address,
-        SUP_ContactNumber1: details.SUP_ContactNumber1,
-        SUP_ContactNumber2: details.SUP_ContactNumber2,
-        SUP_OwnerName: details.SUP_OwnerName,
-        SUP_GSTNumber: details.SUP_GSTNumber,
-        SUP_DrNo: details.SUP_DrNo,
-        SUP_PanNo: details.SUP_PanNo,
-        SUP_BizMailId: details.SUP_BizMailId,
-        SUP_WhatsappNumber: details.SUP_WhatsappNumber,
-        SUP_State: details.SUP_State,
-        SUP_Dist: details.SUP_Dist,
-        SUP_City: details.SUP_City,
-        SUP_Pin: details.SUP_Pin
+  private initForm() {
+    if (this.editMode) {
+      this.masterservice.fetchSupplierDetails(this.supId).subscribe(details => {
+        console.log(details);
+        this.supplierMaster.setValue({
+          SUP_code: details.SUP_code,
+          SUP_CompanyName: details.SUP_CompanyName,
+          SUP_Address: details.SUP_Address,
+          SUP_ContactNumber1: details.SUP_ContactNumber1,
+          SUP_ContactNumber2: details.SUP_ContactNumber2,
+          SUP_OwnerName: details.SUP_OwnerName,
+          SUP_GSTNumber: details.SUP_GSTNumber,
+          SUP_DrNo: details.SUP_DrNo,
+          SUP_PanNo: details.SUP_PanNo,
+          SUP_BizMailId: details.SUP_BizMailId,
+          SUP_WhatsappNumber: details.SUP_WhatsappNumber,
+          SUP_State: details.SUP_State,
+          SUP_Dist: details.SUP_Dist,
+          SUP_City: details.SUP_City,
+          SUP_Pin: details.SUP_Pin
+        });
       });
-    });
+    }
   }
 
   onCancel() {

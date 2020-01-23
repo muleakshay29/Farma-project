@@ -2,7 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { Validators, FormGroup, FormBuilder } from "@angular/forms";
 import { MasterServiceService } from "../../../_services/master-service.service";
 import { Validations } from "../../../_helpers/validations";
-import { Router, ActivatedRoute } from "@angular/router";
+import { Router, ActivatedRoute, Params } from "@angular/router";
 import { AlertService } from "../../../_services/alert.service";
 import { cmcnameCheckValidator } from "../../../_helpers/unique-records.directive";
 
@@ -13,9 +13,9 @@ import { cmcnameCheckValidator } from "../../../_helpers/unique-records.directiv
 export class AddMasterChildComponent implements OnInit {
   commonMasterChild: FormGroup;
   cmcID: any;
-  addFlag = false;
-  updateFlag = false;
   commonMasterList = [];
+  editMode = false;
+  buttonText: string;
 
   constructor(
     private fb: FormBuilder,
@@ -26,26 +26,28 @@ export class AddMasterChildComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.createForm();
+    this.fetchCommonMaster();
+
+    this.route.params.subscribe((params: Params) => {
+      this.cmcID = params["id"] ? params["id"] : "";
+      this.editMode = params["id"] != null;
+
+      this.initForm();
+
+      this.buttonText = this.editMode ? "Update" : "Create";
+
+      this.CMC_Name.setAsyncValidators(
+        cmcnameCheckValidator(this.masterservice, this.cmcID)
+      );
+    });
+  }
+
+  createForm() {
     this.commonMasterChild = this.fb.group({
       CM_id: ["", Validators.required],
-      CMC_Name: [
-        "",
-        [Validators.required, Validations.alphaNumericPattern],
-        cmcnameCheckValidator(this.masterservice)
-      ]
+      CMC_Name: ["", [Validators.required, Validations.alphaNumericPattern]]
     });
-
-    this.cmcID = this.route.snapshot.paramMap.get("id");
-    if (this.cmcID == "" || this.cmcID == null) {
-      this.addFlag = true;
-      this.updateFlag = false;
-      this.fetchCommonMaster();
-    } else {
-      this.addFlag = false;
-      this.updateFlag = true;
-      this.fetchCommonMaster();
-      this.fetchCommonMasterChildDetails();
-    }
   }
 
   get CM_id() {
@@ -57,7 +59,7 @@ export class AddMasterChildComponent implements OnInit {
   }
 
   onSubmit() {
-    if (this.cmcID == "" || this.cmcID == null) {
+    if (!this.editMode) {
       const formData = this.commonMasterChild.value;
       this.masterservice.addCommonMasterChild(formData).subscribe(data => {
         if (data != null) {
@@ -71,8 +73,6 @@ export class AddMasterChildComponent implements OnInit {
       });
     } else {
       const formData = {
-        // CMC_Id: this.cmcID,
-        // CM_id: this.CM_id.value,
         CMC_Name: this.CMC_Name.value
       };
 
@@ -89,15 +89,17 @@ export class AddMasterChildComponent implements OnInit {
     }
   }
 
-  fetchCommonMasterChildDetails() {
-    this.masterservice
-      .fetchCommonMasterChildDetails(this.cmcID)
-      .subscribe(details => {
-        this.commonMasterChild.setValue({
-          CM_id: details.CM_id,
-          CMC_Name: details.CMC_Name
+  private initForm() {
+    if (this.editMode) {
+      this.masterservice
+        .fetchCommonMasterChildDetails(this.cmcID)
+        .subscribe(details => {
+          this.commonMasterChild.setValue({
+            CM_id: details.CM_id,
+            CMC_Name: details.CMC_Name
+          });
         });
-      });
+    }
   }
 
   fetchCommonMaster() {

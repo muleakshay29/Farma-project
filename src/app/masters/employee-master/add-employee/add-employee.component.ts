@@ -9,36 +9,10 @@ import {
 } from "@angular/forms";
 import { MasterServiceService } from "../../../_services/master-service.service";
 import { Validations } from "../../../_helpers/validations";
-import { Router, ActivatedRoute } from "@angular/router";
+import { Router, ActivatedRoute, Params } from "@angular/router";
 import { AlertService } from "../../../_services/alert.service";
 import { empCodeCheckValidator } from "../../../_helpers/unique-records.directive";
 import { AuthenticationService } from "../../../_services/authentication.service";
-
-export interface BooleanFn {
-  (): boolean;
-}
-
-export function conditionalValidator(
-  predicate: BooleanFn,
-  validator: ValidatorFn,
-  errorNamespace?: string
-): ValidatorFn {
-  return formControl => {
-    if (!formControl.parent) {
-      return null;
-    }
-    let error = null;
-    if (predicate()) {
-      error = validator(formControl);
-    }
-    if (errorNamespace && error) {
-      const customError = {};
-      customError[errorNamespace] = error;
-      error = customError;
-    }
-    return error;
-  };
-}
 
 @Component({
   selector: "app-add-employee",
@@ -49,11 +23,12 @@ export class AddEmployeeComponent implements OnInit {
   userTypes = [];
   currentDate: Date;
   empId: any;
-  addFlag = false;
-  updateFlag = false;
   yearList = [];
   currYear: string;
   loggedInUser: any;
+
+  editMode = false;
+  buttonText: string;
 
   constructor(
     private fb: FormBuilder,
@@ -65,17 +40,32 @@ export class AddEmployeeComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.empMaster = this.fb.group({
-      Emp_code: [
-        "",
-        [Validators.required],
+    this.createForm();
+    this.fetchCommonMaster("5da8128075c9ae635c147dab");
 
-        conditionalValidator(
-          () => this.Emp_code.value,
-          empCodeCheckValidator(this.masterservice),
-          "illuminatiError"
-        )
-      ],
+    this.route.params.subscribe((params: Params) => {
+      this.empId = params["id"] ? params["id"] : "";
+      this.editMode = params["id"] != null;
+
+      this.initForm();
+
+      this.buttonText = this.editMode ? "Update" : "Create";
+
+      this.Emp_code.setAsyncValidators(
+        empCodeCheckValidator(this.masterservice, this.empId)
+      );
+    });
+
+    /* Get current year */
+    this.fetchYear("5da8128f75c9ae635c147dad");
+    this.currentDate = new Date();
+    this.loggedInUser = this.auth.currentUserValue.user;
+    /* Get current year */
+  }
+
+  createForm() {
+    this.empMaster = this.fb.group({
+      Emp_code: ["", [Validators.required]],
       Emp_name: ["", [Validators.required, Validations.alphaNumericPattern]],
       Emp_address: ["", [Validators.required, Validations.alphaNumericPattern]],
       Emp_city: ["", [Validators.required, Validations.alphaNumericPattern]],
@@ -117,28 +107,6 @@ export class AddEmployeeComponent implements OnInit {
       ],
       Type_of_user: ["", Validators.required]
     });
-
-    this.empMaster.valueChanges.subscribe(value => {
-      this.empMaster.get("Emp_code").updateValueAndValidity();
-    });
-
-    this.fetchCommonMaster("5da8128075c9ae635c147dab");
-
-    this.empId = this.route.snapshot.paramMap.get("id");
-    if (this.empId == "" || this.empId == null) {
-      this.addFlag = true;
-      this.updateFlag = false;
-    } else {
-      this.addFlag = false;
-      this.updateFlag = true;
-      this.fetchEmployeeDetails();
-    }
-
-    /* Get current year */
-    this.fetchYear("5da8128f75c9ae635c147dad");
-    this.currentDate = new Date();
-    this.loggedInUser = this.auth.currentUserValue.user;
-    /* Get current year */
   }
 
   get Emp_code() {
@@ -190,7 +158,7 @@ export class AddEmployeeComponent implements OnInit {
   }
 
   onSubmit() {
-    if (this.empId == "" || this.empId == null) {
+    if (!this.editMode) {
       const formData = this.empMaster.value;
       formData.Active_flag = 1;
       formData.Created_by = this.loggedInUser._id;
@@ -245,23 +213,25 @@ export class AddEmployeeComponent implements OnInit {
     });
   }
 
-  fetchEmployeeDetails() {
-    this.masterservice.fetchEmployeeDetails(this.empId).subscribe(details => {
-      this.empMaster.setValue({
-        Emp_code: details.Emp_code,
-        Emp_name: details.Emp_name,
-        Emp_address: details.Emp_address,
-        Emp_city: details.Emp_city,
-        Emp_state: details.Emp_state,
-        Emp_adhar: details.Emp_adhar,
-        Emp_pan: details.Emp_pan,
-        User_name: details.User_name,
-        Password: details.Password,
-        Email_id: details.Email_id,
-        Mobile_no: details.Mobile_no,
-        Type_of_user: details.Type_of_user
+  private initForm() {
+    if (this.editMode) {
+      this.masterservice.fetchEmployeeDetails(this.empId).subscribe(details => {
+        this.empMaster.setValue({
+          Emp_code: details.Emp_code,
+          Emp_name: details.Emp_name,
+          Emp_address: details.Emp_address,
+          Emp_city: details.Emp_city,
+          Emp_state: details.Emp_state,
+          Emp_adhar: details.Emp_adhar,
+          Emp_pan: details.Emp_pan,
+          User_name: details.User_name,
+          Password: details.Password,
+          Email_id: details.Email_id,
+          Mobile_no: details.Mobile_no,
+          Type_of_user: details.Type_of_user
+        });
       });
-    });
+    }
   }
 
   fetchYear(CM_Id) {

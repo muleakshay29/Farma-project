@@ -162,8 +162,8 @@ export class MasterServiceService {
   }
   /* Employee Master */
 
-  checkcmname(CM_Name): Observable<any> {
-    const data = { CM_Name: CM_Name };
+  checkcmname(CM_Name: string, _id: string): Observable<any> {
+    const data = { CM_Name: CM_Name, cmId: _id };
     const URL = `${this.API_URL}check-cmname`;
     return this.http
       .post<any>(URL, data, httpOptions)
@@ -177,16 +177,16 @@ export class MasterServiceService {
       .pipe(catchError(this.handleError<any>("checkcmname")));
   } */
 
-  checkcmcname(CMC_Name): Observable<any> {
-    const data = { CMC_Name };
+  checkcmcname(CMC_Name: string, _id: string): Observable<any> {
+    const data = { CMC_Name: CMC_Name, cmcId: _id };
     const URL = `${this.API_URL}check-cmcname`;
     return this.http
       .post<any>(URL, data, httpOptions)
       .pipe(catchError(this.handleError<any>("checkcmcname")));
   }
 
-  checkempcode(Emp_code): Observable<any> {
-    const data = { Emp_code };
+  checkempcode(Emp_code: string, _id: string): Observable<any> {
+    const data = { Emp_code: Emp_code, empId: _id };
     const URL = `${this.API_URL}check-employeecode`;
     return this.http
       .post<any>(URL, data, httpOptions)
@@ -211,31 +211,32 @@ export class MasterServiceService {
       .pipe(catchError(this.handleError<any>("fetchSuppliers")));
   }
 
-  deleteSupplier(cmcId): Observable<any> {
-    const URL = `${this.API_URL}suppliermaster/deletesupplier/${cmcId}`;
+  deleteSupplier(_id): Observable<any> {
+    const URL = `${this.API_URL}supplier-master/${_id}`;
     return this.http
       .delete<any>(URL, httpOptions)
       .pipe(catchError(this.handleError<any>("deleteSupplier")));
   }
 
-  fetchSupplierDetails(cmcId): Observable<any> {
-    const URL = `${this.API_URL}suppliermaster/fetchsupdetails/${cmcId}`;
+  fetchSupplierDetails(_id): Observable<any> {
+    const URL = `${this.API_URL}supplier-details/${_id}`;
     return this.http
       .get<any>(URL, httpOptions)
       .pipe(catchError(this.handleError<any>("fetchSupplierDetails")));
   }
 
-  updateSupplier(data): Observable<any> {
-    const URL = `${this.API_URL}suppliermaster/updatesupplier`;
+  updateSupplier(_id, data): Observable<any> {
+    const URL = `${this.API_URL}update-supplier/${_id}`;
     return this.http
-      .put<any>(URL, data, httpOptions)
+      .patch<any>(URL, data, httpOptions)
       .pipe(catchError(this.handleError<any>("updateSupplier")));
   }
 
-  checkSupplierCode(SUP_code): Observable<any> {
-    const URL = `${this.API_URL}suppliermaster/checksuppliercode/${SUP_code}`;
+  checkSupplierCode(SUP_code: string, _id: string): Observable<any> {
+    const data = { SUP_code: SUP_code, supId: _id };
+    const URL = `${this.API_URL}check-supplier-code`;
     return this.http
-      .get<any>(URL, httpOptions)
+      .post<any>(URL, data, httpOptions)
       .pipe(catchError(this.handleError<any>("checkSupplierCode")));
   }
 

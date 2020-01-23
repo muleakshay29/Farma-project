@@ -23,20 +23,7 @@
       <div class="card">
         <div class="card-body">
           <div class="row">
-            <div class="col-sm-6 mb-3 mb-sm-0" *ngIf="addFlag">
-              <div class="form-group">
-                <label><strong>Supplier Code</strong></label>
-                <input
-                  type="text"
-                  class="form-control rounded-pill"
-                  placeholder="Supplier Code"
-                  formControlName="SUP_code"
-                />
-                <app-error-message [control]="SUP_code"></app-error-message>
-              </div>
-            </div>
-
-            <div class="col-sm-6 mb-3 mb-sm-0" *ngIf="updateFlag">
+            <div class="col-sm-6 mb-3 mb-sm-0">
               <div class="form-group">
                 <label><strong>Supplier Code</strong></label>
                 <input
@@ -68,7 +55,7 @@
               <div class="form-group">
                 <label><strong>Phone No. 1</strong></label>
                 <input
-                  type="text"
+                  type="number"
                   class="form-control rounded-pill"
                   placeholder="Phone No. 1"
                   formControlName="SUP_ContactNumber1"
@@ -83,7 +70,7 @@
               <div class="form-group">
                 <label><strong>Phone No. 2</strong></label>
                 <input
-                  type="text"
+                  type="number"
                   class="form-control rounded-pill"
                   placeholder="Phone No. 2"
                   formControlName="SUP_ContactNumber2"
@@ -154,7 +141,7 @@
               <div class="form-group">
                 <label><strong>Supplier Whatsapp Number</strong></label>
                 <input
-                  type="text"
+                  type="number"
                   class="form-control rounded-pill"
                   placeholder="Supplier Whatsapp Number"
                   formControlName="SUP_WhatsappNumber"
@@ -235,7 +222,7 @@
               <div class="form-group">
                 <label><strong>Supplier Pin</strong></label>
                 <input
-                  type="text"
+                  type="number"
                   class="form-control rounded-pill"
                   placeholder="Supplier Pin"
                   formControlName="SUP_Pin"
@@ -245,7 +232,7 @@
             </div>
           </div>
           <div class="form-group text-center">
-            <button
+            <!-- <button
               type="submit"
               value="submit"
               class="btn btn-primary btn-user rounded-pill"
@@ -263,7 +250,14 @@
               *ngIf="updateFlag"
             >
               Update
-            </button>
+            </button> -->
+
+            <input
+              type="submit"
+              [value]="buttonText"
+              class="btn btn-primary btn-user rounded-pill"
+              [disabled]="supplierMaster.invalid"
+            />
 
             <button
               type="button"

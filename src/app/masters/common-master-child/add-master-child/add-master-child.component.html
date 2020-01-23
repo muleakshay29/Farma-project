@@ -28,7 +28,7 @@
       </div>
 
       <div class="form-group text-center">
-        <button
+        <!-- <button
           type="submit"
           value="submit"
           class="btn btn-primary btn-user rounded-pill"
@@ -46,7 +46,14 @@
           *ngIf="updateFlag"
         >
           Update
-        </button>
+        </button> -->
+
+        <input
+          type="submit"
+          [value]="buttonText"
+          class="btn btn-primary btn-user rounded-pill"
+          [disabled]="commonMasterChild.invalid"
+        />
 
         <button
           type="button"

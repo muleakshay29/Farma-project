@@ -40,6 +40,13 @@ export class ProductMasterService {
       .pipe(catchError(this.handleError<any>("productPhotoUpload")));
   }
 
+  getProductImage(imageName): Observable<any> {
+    const URL = `${this.API_URL}product-image/${imageName}`;
+    return this.http
+      .get<any>(URL, httpOptions)
+      .pipe(catchError(this.handleError<any>("getProductImage")));
+  }
+
   fetchProduct(): Observable<any> {
     const URL = `${this.API_URL}fetch-products`;
     return this.http
@@ -61,10 +68,10 @@ export class ProductMasterService {
       .pipe(catchError(this.handleError<any>("fetchProductDetails")));
   }
 
-  updateProduct(data): Observable<any> {
-    const URL = `${this.API_URL}update-product`;
+  updateProduct(_id, data): Observable<any> {
+    const URL = `${this.API_URL}update-product/${_id}`;
     return this.http
-      .put<any>(URL, data, httpOptions)
+      .patch<any>(URL, data, httpOptions)
       .pipe(catchError(this.handleError<any>("updateProduct")));
   }
 
@@ -75,8 +82,8 @@ export class ProductMasterService {
       .pipe(catchError(this.handleError<any>("deleteProduct")));
   }
 
-  checkProcode(PRO_code): Observable<any> {
-    const data = { PRO_code };
+  checkProcode(PRO_code: string, _id: string): Observable<any> {
+    const data = { PRO_code: PRO_code, proId: _id };
     const URL = `${this.API_URL}check-product-code`;
     return this.http
       .post<any>(URL, data, httpOptions)

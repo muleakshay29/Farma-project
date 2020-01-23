@@ -3,7 +3,7 @@ import { Validators, FormGroup, FormBuilder } from "@angular/forms";
 import { MasterServiceService } from "../../../_services/master-service.service";
 import { ProductMasterService } from "../../../_services/product-master.service";
 import { Validations } from "../../../_helpers/validations";
-import { Router, ActivatedRoute } from "@angular/router";
+import { Router, ActivatedRoute, Params } from "@angular/router";
 import { AlertService } from "../../../_services/alert.service";
 import { checkProcode } from "../../../_helpers/unique-records.directive";
 
@@ -16,12 +16,12 @@ export class AddProductComponent implements OnInit {
 
   productMaster: FormGroup;
   typeOfProduct = [];
-  addFlag = false;
-  updateFlag = false;
   pID: any;
   imgURL = "../../../assets/img/images.png";
   selectedImage: File;
   uploadedImg: any;
+  editMode = false;
+  buttonText: string;
 
   constructor(
     private fb: FormBuilder,
@@ -33,8 +33,24 @@ export class AddProductComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.createForm();
+    this.fetchCommonMaster("5da8128775c9ae635c147dac");
+
+    this.route.params.subscribe((params: Params) => {
+      this.pID = params["id"] ? params["id"] : "";
+      this.editMode = params["id"] != null;
+
+      this.initForm();
+
+      this.buttonText = this.editMode ? "Update" : "Create";
+
+      this.PRO_code.setAsyncValidators(checkProcode(this.pservice, this.pID));
+    });
+  }
+
+  createForm() {
     this.productMaster = this.fb.group({
-      PRO_code: ["", [Validators.required], checkProcode(this.pservice)],
+      PRO_code: ["", [Validators.required]],
       PRO_Name: ["", [Validators.required, Validations.alphaNumericPattern]],
       PRO_Barcode: ["", [Validators.required, Validations.alphaNumericPattern]],
       PRO_Manufraturer: ["", Validators.required],
@@ -50,18 +66,6 @@ export class AddProductComponent implements OnInit {
       PRO_Minimum_stock: ["", Validators.required],
       PRO_Type: ["", Validators.required]
     });
-
-    this.pID = this.route.snapshot.paramMap.get("id");
-    if (this.pID == "" || this.pID == null) {
-      this.addFlag = true;
-      this.updateFlag = false;
-      this.fetchCommonMaster("5da8128775c9ae635c147dac");
-    } else {
-      this.addFlag = false;
-      this.updateFlag = true;
-      this.fetchCommonMaster("5da8128775c9ae635c147dac");
-      this.fetchProductDetails();
-    }
   }
 
   get PRO_code() {
@@ -139,8 +143,9 @@ export class AddProductComponent implements OnInit {
     let input = new FormData();
     input.append("PRO_Image", this.selectedImage, this.selectedImage.name);
     this.pservice.productPhotoUpload(input).subscribe(data => {
-      if (data.status == 1) {
-        this.uploadedImg = data.filename;
+      if (data != null) {
+        this.uploadedImg = `https://ak-mead-test-heroku.herokuapp.com/product-image/${data.file.filename}`;
+        console.log(this.uploadedImg);
         this.alertService.openSnackBar("Image Uploaded successfuly");
       } else {
         this.alertService.openSnackBar(data.message);
@@ -149,7 +154,7 @@ export class AddProductComponent implements OnInit {
   }
 
   onSubmit() {
-    if (this.pID == "" || this.pID == null) {
+    if (!this.editMode) {
       const formData = this.productMaster.value;
       formData.PRO_Image = this.uploadedImg;
       this.pservice.addProduct(formData).subscribe(data => {
@@ -165,7 +170,6 @@ export class AddProductComponent implements OnInit {
       });
     } else {
       const formData = {
-        PRO_Id: this.pID,
         PRO_code: this.PRO_code.value,
         PRO_Name: this.PRO_Name.value,
         PRO_Barcode: this.PRO_Barcode.value,
@@ -173,7 +177,6 @@ export class AddProductComponent implements OnInit {
         PRO_SGST: this.PRO_SGST.value,
         PRO_CGST: this.PRO_CGST.value,
         PRO_IGST: this.PRO_IGST.value,
-        PRO_Price: this.PRO_Price.value,
         PRO_CESS: this.PRO_CESS.value,
         PRO_HSN: this.PRO_HSN.value,
         PRO_ScheduledUnder: this.PRO_ScheduledUnder.value,
@@ -184,8 +187,8 @@ export class AddProductComponent implements OnInit {
         PRO_Image: this.uploadedImg
       };
 
-      this.pservice.updateProduct(formData).subscribe(data => {
-        if (data > 0) {
+      this.pservice.updateProduct(this.pID, formData).subscribe(data => {
+        if (data != null) {
           this.alertService.openSnackBar("Record updated successfuly");
           this.router.navigate(["/product-master"]);
         } else {
@@ -201,32 +204,34 @@ export class AddProductComponent implements OnInit {
     });
   }
 
-  fetchProductDetails() {
-    this.pservice.fetchProductDetails(this.pID).subscribe(details => {
-      this.productMaster.setValue({
-        PRO_code: details.PRO_code,
-        PRO_Name: details.PRO_Name,
-        PRO_Barcode: details.PRO_Barcode,
-        PRO_Manufraturer: details.PRO_Manufraturer,
-        PRO_SGST: details.PRO_SGST,
-        PRO_CGST: details.PRO_CGST,
-        PRO_IGST: details.PRO_IGST,
-        PRO_Price: details.PRO_Price,
-        PRO_CESS: details.PRO_CESS,
-        PRO_HSN: details.PRO_HSN,
-        PRO_ScheduledUnder: details.PRO_ScheduledUnder,
-        PRO_Content: details.PRO_Content,
-        PRO_ReorderLevel: details.PRO_ReorderLevel,
-        PRO_Minimum_stock: details.PRO_Minimum_stock,
-        PRO_Type: details.PRO_Type
-      });
+  private initForm() {
+    if (this.editMode) {
+      this.pservice.fetchProductDetails(this.pID).subscribe(details => {
+        this.productMaster.setValue({
+          PRO_code: details.PRO_code,
+          PRO_Name: details.PRO_Name,
+          PRO_Barcode: details.PRO_Barcode,
+          PRO_Manufraturer: details.PRO_Manufraturer,
+          PRO_SGST: details.PRO_SGST,
+          PRO_CGST: details.PRO_CGST,
+          PRO_IGST: details.PRO_IGST,
+          PRO_Price: details.PRO_Price,
+          PRO_CESS: details.PRO_CESS,
+          PRO_HSN: details.PRO_HSN,
+          PRO_ScheduledUnder: details.PRO_ScheduledUnder,
+          PRO_Content: details.PRO_Content,
+          PRO_ReorderLevel: details.PRO_ReorderLevel,
+          PRO_Minimum_stock: details.PRO_Minimum_stock,
+          PRO_Type: details.PRO_Type
+        });
 
-      if (details.PRO_Image == null) {
-        this.imgURL = "../../../assets/img/images.png";
-      } else {
-        this.imgURL = details.PRO_Image;
-      }
-    });
+        if (details.PRO_Image == null) {
+          this.imgURL = "../../../assets/img/images.png";
+        } else {
+          this.imgURL = details.PRO_Image;
+        }
+      });
+    }
   }
 
   onCancel() {

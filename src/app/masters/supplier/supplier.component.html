@@ -2,53 +2,89 @@
 
 <div class="card">
   <div class="card-header text-right">
-    <button type="button" routerLink="/add-supplier-master" class="btn btn-success">
+    <button
+      type="button"
+      routerLink="/add-supplier-master"
+      class="btn btn-success"
+    >
       <i class="fas fa-plus-circle"></i> &nbsp; Add New
     </button>
   </div>
 
   <div class="card-body">
     <div class="form-group">
-      <input type="search" (keyup)="applyFilter($event.target.value)" class="form-control rounded-pill"
-        placeholder="Search">
+      <input
+        type="search"
+        (keyup)="applyFilter($event.target.value)"
+        class="form-control rounded-pill"
+        placeholder="Search"
+      />
     </div>
 
     <div class="table-responsive shadow">
-
-      <table mat-table [dataSource]="dataSource" matSort class="table table-bordered table-hover mb-0">
+      <table
+        mat-table
+        [dataSource]="dataSource"
+        matSort
+        class="table table-bordered table-hover mb-0"
+      >
         <ng-container matColumnDef="Action">
-          <th *matHeaderCellDef class="text-center"> Action </th>
+          <th *matHeaderCellDef class="text-center">Action</th>
           <td class="text-center" *matCellDef="let element">
-            <!-- <a href="javascript:void(0)" (click)="deleteProduct(element.SUP_id)" matTooltip="Delete" matTooltipPosition="above"> -->
-              <a href="javascript:void(0)" (click)="openModalWithComponent(element.SUP_CompanyName, element.SUP_id)" matTooltip="Delete" matTooltipPosition="above">
+            <a
+              href="javascript:void(0)"
+              (click)="
+                openModalWithComponent(element.SUP_CompanyName, element._id)
+              "
+              matTooltip="Delete"
+              matTooltipPosition="above"
+            >
               <i class="fas fa-times"></i>
             </a>
             &nbsp; | &nbsp;
-            <a routerLink="/add-supplier-master/{{element.SUP_id}}" matTooltip="Edit" matTooltipPosition="above">
+            <a
+              routerLink="/add-supplier-master/{{ element._id }}"
+              matTooltip="Edit"
+              matTooltipPosition="above"
+            >
               <i class="fas fa-pencil-alt"></i>
             </a>
           </td>
         </ng-container>
 
         <ng-container matColumnDef="SUP_code">
-          <th *matHeaderCellDef class="text-center" mat-sort-header> Supplier Code </th>
-          <td *matCellDef="let element" class="text-center"> {{element.SUP_code}} </td>
+          <th *matHeaderCellDef class="text-center" mat-sort-header>
+            Supplier Code
+          </th>
+          <td *matCellDef="let element" class="text-center">
+            {{ element.SUP_code }}
+          </td>
         </ng-container>
 
         <ng-container matColumnDef="SUP_CompanyName">
-          <th *matHeaderCellDef class="text-center" mat-sort-header> Supplier Name </th>
-          <td *matCellDef="let element" class="text-center"> {{element.SUP_CompanyName}} </td>
+          <th *matHeaderCellDef class="text-center" mat-sort-header>
+            Supplier Name
+          </th>
+          <td *matCellDef="let element" class="text-center">
+            {{ element.SUP_CompanyName }}
+          </td>
         </ng-container>
 
-        <tr mat-header-row *matHeaderRowDef="displayedColumns" class="text-center thead-dark"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="text-center"></tr>
+        <tr
+          mat-header-row
+          *matHeaderRowDef="displayedColumns"
+          class="text-center thead-dark"
+        ></tr>
+        <tr
+          mat-row
+          *matRowDef="let row; columns: displayedColumns"
+          class="text-center"
+        ></tr>
       </table>
-
     </div>
   </div>
 
   <div class="card-footer p-0">
     <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
   </div>
-
 </div>

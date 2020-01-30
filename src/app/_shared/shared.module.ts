@@ -27,6 +27,8 @@ import {
   BsDatepickerModule
 } from "ngx-bootstrap";
 
+import { NgxDatatableModule } from "@swimlane/ngx-datatable";
+
 @NgModule({
   declarations: [ErrorMessageComponent],
   imports: [
@@ -49,7 +51,8 @@ import {
     MatAutocompleteModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    NgxDatatableModule
   ],
   exports: [
     CommonModule,
@@ -72,7 +75,8 @@ import {
     MatNativeDateModule,
     MatProgressSpinnerModule,
     MatAutocompleteModule,
-    ErrorMessageComponent
+    ErrorMessageComponent,
+    NgxDatatableModule
   ]
 })
 export class SharedModule {}

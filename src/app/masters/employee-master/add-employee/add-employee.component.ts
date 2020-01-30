@@ -1,12 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import {
-  Validators,
-  FormGroup,
-  FormBuilder,
-  AbstractControl,
-  ValidatorFn,
-  AbstractControlOptions
-} from "@angular/forms";
+import { Validators, FormGroup, FormBuilder } from "@angular/forms";
 import { MasterServiceService } from "../../../_services/master-service.service";
 import { Validations } from "../../../_helpers/validations";
 import { Router, ActivatedRoute, Params } from "@angular/router";
@@ -166,17 +159,31 @@ export class AddEmployeeComponent implements OnInit {
       formData.Year_id = this.currYear;
       this.masterservice.addEmployeeMaster(formData).subscribe(data => {
         if (data != null) {
-          this.alertService.openSnackBar("Record added successfuly");
-          this.empMaster.reset();
-          this.router.navigate(["/emp-master"]);
+          const insertData = {
+            R_BusinessName: this.Emp_name.value,
+            R_UserName: this.User_name.value,
+            R_EmailId: this.Email_id.value,
+            R_Password: this.Password.value,
+            R_TypeOfUse: "5da812d575c9ae635c147db1",
+            R_BizType: "5da8131175c9ae635c147db6",
+            R_UserType: "5da8134075c9ae635c147dbc"
+          };
+
+          this.auth.register(insertData).subscribe(result => {
+            if (result != null) {
+              this.alertService.openSnackBar("Record added successfuly");
+              this.empMaster.reset();
+              this.router.navigate(["/emp-master"]);
+            } else {
+              this.deleteEmployee(data._id);
+              this.alertService.openSnackBar("Error adding record");
+            }
+          });
         } else {
           this.alertService.openSnackBar("Error adding record");
         }
       });
     } else {
-      console.log("In update");
-      console.log(this.empMaster.value);
-
       const formData = {
         Emp_name: this.Emp_name.value,
         Emp_address: this.Emp_address.value,
@@ -232,6 +239,10 @@ export class AddEmployeeComponent implements OnInit {
         });
       });
     }
+  }
+
+  deleteEmployee(_id) {
+    this.masterservice.deleteEmployee(_id).subscribe();
   }
 
   fetchYear(CM_Id) {

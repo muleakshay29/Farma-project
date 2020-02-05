@@ -19,11 +19,7 @@ const httpOptions = {
   providedIn: "root"
 })
 export class ProductMasterService {
-  // API_URL = `http://localhost/FarmaAPI/public/index.php/product-master/`;   //localhost
-  // API_URL = `http://farma.sareeline.com/FarmaAPI/public/index.php/product-master/`; //server
-
-  API_URL = `https://ak-mead-test-heroku.herokuapp.com/`; //node server
-  //API_URL = `http://localhost:3000/`; //node localhost
+  API_URL = `https://ak-mead-test-heroku.herokuapp.com/`;
 
   constructor(private http: HttpClient) {}
 
@@ -56,17 +52,14 @@ export class ProductMasterService {
   }
 
   getProductCount(): Observable<any> {
-    // const URL = `${this.API_URL}products-count`;
-    const URL = `http://localhost:3000/products-count`;
+    const URL = `${this.API_URL}products-count`;
     return this.http
       .get<any>(URL, httpOptions)
       .pipe(catchError(this.handleError<any>("getProductCount")));
   }
 
   fetchProduct2(pageIndex: number = 1, pageSize: number): Observable<any> {
-    // const URL = `${this.API_URL}fetch-products`;
-    const URL = `http://localhost:3000/fetch-products`;
-
+    const URL = `${this.API_URL}fetch-products`;
     return this.http
       .get<any>(URL, {
         params: new HttpParams()
@@ -77,7 +70,7 @@ export class ProductMasterService {
   }
 
   findProduct(data: any): Observable<any> {
-    const URL = `http://localhost:3000/find-products`;
+    const URL = `${this.API_URL}find-products`;
     return this.http
       .post<any>(URL, data)
       .pipe(catchError(this.handleError<any>("findProduct")));

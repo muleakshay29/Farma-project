@@ -20,7 +20,7 @@ import { TransactionService } from "../../_services/transaction.service";
 })
 export class PurchaseComponent implements OnInit {
   public purchase: FormGroup;
-  allProduct: [];
+  allProduct: any[];
   selectedProduct: any;
   public ProdList: FormArray;
   public TodayDate: any;
@@ -50,7 +50,7 @@ export class PurchaseComponent implements OnInit {
     });
 
     this.ProdList = this.purchase.get("ProductList") as FormArray;
-    this.fetchProduct();
+    // this.fetchProduct();
     this.fetchSuppliers();
   }
 
@@ -129,7 +129,7 @@ export class PurchaseComponent implements OnInit {
   }
 
   fetchProduct() {
-    this.pservice.fetchProduct().subscribe(allProduct => {
+    this.transervice.fetchProduct().subscribe(allProduct => {
       this.allProduct = allProduct;
     });
   }
@@ -140,9 +140,27 @@ export class PurchaseComponent implements OnInit {
     });
   }
 
-  onSelect(event: TypeaheadMatch, index) {
+  findProduct(event, index) {
+    const searchTxt = event.target.value;
+
+    if (searchTxt.length >= 3) {
+      this.pservice.findProduct({ PRO_Name: searchTxt }).subscribe(result => {
+        this.allProduct = result;
+      });
+    }
+  }
+
+  /* onSelect(event: TypeaheadMatch, index) {
+    console.log(event.item);
     this.selectedProduct = event.item;
     this.fetchProductSchemes(this.selectedProduct._id, index);
+  } */
+
+  onSelect(value, index) {
+    this.getProdFormGroup(index).controls["Product_Name"].patchValue(
+      value.PRO_Name
+    );
+    this.fetchProductSchemes(value._id, index);
   }
 
   getProdFormGroup(index): FormGroup {

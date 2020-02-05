@@ -84,7 +84,7 @@
                       >
                         <ng-container [formGroupName]="i">
                           <td>
-                            <input
+                            <!-- <input
                               type="text"
                               class="form-control rounded-pill"
                               formControlName="Product_Name"
@@ -94,7 +94,51 @@
                               [typeaheadOptionsInScrollableView]="5"
                               adaptivePosition="true"
                               (typeaheadOnSelect)="onSelect($event, i)"
+                            /> -->
+
+                            <input
+                              type="text"
+                              class="form-control rounded-pill"
+                              formControlName="Product_Name"
+                              placeholder="Product Name"
+                              [matAutocomplete]="auto"
+                              (keypress)="findProduct($event, i)"
                             />
+                            <mat-autocomplete
+                              #auto="matAutocomplete"
+                              (optionSelected)="
+                                onSelect($event.option.value, i)
+                              "
+                            >
+                              <mat-option
+                                *ngFor="let prod of allProduct"
+                                [value]="prod"
+                              >
+                                {{ prod.PRO_Name }}
+                              </mat-option>
+                            </mat-autocomplete>
+
+                            <!-- <mat-form-field class="example-full-width">
+                              <input
+                                matInput
+                                placeholder="Product"
+                                aria-label="Product"
+                                [matAutocomplete]="auto"
+                                formControlName="Product_Name"
+                                (keypress)="findProduct($event, i)"
+                              />
+                              <mat-autocomplete
+                                #auto="matAutocomplete"
+                                (optionSelected)="onSelect($event, i)"
+                              >
+                                <mat-option
+                                  *ngFor="let prod of allProduct"
+                                  [value]="prod.PRO_Name"
+                                >
+                                  {{ prod.PRO_Name }}
+                                </mat-option>
+                              </mat-autocomplete>
+                            </mat-form-field> -->
 
                             <input type="hidden" formControlName="Product_id" />
                           </td>

@@ -8,17 +8,23 @@
       (ngSubmit)="onSubmit()"
     >
       <div class="form-group row">
-        <div class="col-sm-6 mb-3 mb-sm-0">
+        <div class="col-sm-6 mb-3 mb-sm-0" *ngIf="this.editMode">
+          <label for="EmployeeCode"><strong>Employee Code</strong></label>
           <input
             type="text"
             class="form-control rounded-pill"
-            formControlName="Emp_code"
             placeholder="Enter Employee Code"
+            formControlName="Emp_code"
           />
-          <app-error-message [control]="Emp_code"></app-error-message>
         </div>
 
-        <div class="col-sm-6 mb-3 mb-sm-0">
+        <div
+          [ngClass]="{
+            'col-sm-6 mb-3 mb-sm-0': this.editMode,
+            'col-sm-12 mb-3 mb-sm-0': !this.editMode
+          }"
+        >
+          <label for="EmployeeName"><strong>Employee Name</strong></label>
           <input
             type="text"
             class="form-control rounded-pill"
@@ -31,6 +37,7 @@
 
       <div class="form-group row">
         <div class="col-sm-6 mb-3 mb-sm-0">
+          <label for="City"><strong>City</strong></label>
           <input
             type="text"
             class="form-control rounded-pill"
@@ -41,6 +48,7 @@
         </div>
 
         <div class="col-sm-6 mb-3 mb-sm-0">
+          <label for="State"><strong>State</strong></label>
           <input
             type="text"
             class="form-control rounded-pill"
@@ -53,6 +61,7 @@
 
       <div class="form-group row">
         <div class="col-sm-6 mb-3 mb-sm-0">
+          <label for="Address"><strong>Address</strong></label>
           <textarea
             class="form-control rounded-pill"
             formControlName="Emp_address"
@@ -62,6 +71,7 @@
         </div>
 
         <div class="col-sm-6 mb-3 mb-sm-0">
+          <label for="Typeofuser"><strong>Type of User</strong></label>
           <select
             class="form-control rounded-pill"
             formControlName="Type_of_user"
@@ -77,6 +87,7 @@
 
       <div class="form-group row">
         <div class="col-sm-6 mb-3 mb-sm-0">
+          <label for="AdharNo"><strong>Adhar Card Number</strong></label>
           <input
             type="number"
             class="form-control rounded-pill"
@@ -87,6 +98,7 @@
         </div>
 
         <div class="col-sm-6 mb-3 mb-sm-0">
+          <label for="PanNo"><strong>Pan Number</strong></label>
           <input
             type="text"
             class="form-control rounded-pill"
@@ -99,6 +111,7 @@
 
       <div class="form-group row">
         <div class="col-sm-6 mb-3 mb-sm-0">
+          <label for="Username"><strong>Username</strong></label>
           <input
             type="text"
             class="form-control rounded-pill"
@@ -109,6 +122,7 @@
         </div>
 
         <div class="col-sm-6 mb-3 mb-sm-0">
+          <label for="Password"><strong>Password</strong></label>
           <input
             type="password"
             class="form-control rounded-pill"
@@ -121,6 +135,7 @@
 
       <div class="form-group row">
         <div class="col-sm-6 mb-3 mb-sm-0">
+          <label for="EmailID"><strong>Email ID</strong></label>
           <input
             type="text"
             class="form-control rounded-pill"
@@ -131,6 +146,7 @@
         </div>
 
         <div class="col-sm-6 mb-3 mb-sm-0">
+          <label for="MobileNo"><strong>Mobile No.</strong></label>
           <input
             type="number"
             class="form-control rounded-pill"

@@ -23,7 +23,7 @@
       <div class="card">
         <div class="card-body">
           <div class="row">
-            <div class="col-sm-6 mb-3 mb-sm-0">
+            <div class="col-sm-6 mb-3 mb-sm-0" *ngIf="this.editMode">
               <div class="form-group">
                 <label><strong>Supplier Code</strong></label>
                 <input
@@ -36,7 +36,12 @@
               </div>
             </div>
 
-            <div class="col-sm-6 mb-3 mb-sm-0">
+            <div
+              [ngClass]="{
+                'col-sm-6 mb-3 mb-sm-0': this.editMode,
+                'col-sm-12 mb-3 mb-sm-0': !this.editMode
+              }"
+            >
               <div class="form-group">
                 <label><strong>Supplier Name</strong></label>
                 <input

@@ -38,15 +38,15 @@ export class AddSupplierComponent implements OnInit {
 
       this.buttonText = this.editMode ? "Update" : "Create";
 
-      this.SUP_code.setAsyncValidators(
+      /* this.SUP_code.setAsyncValidators(
         checkSupplierCode(this.masterservice, this.supId)
-      );
+      ); */
     });
   }
 
   createForm() {
     this.supplierMaster = this.fb.group({
-      SUP_code: ["", [Validators.required, Validations.alphaNumericPattern]],
+      SUP_code: [{ value: "", disabled: true }],
       SUP_CompanyName: [
         "",
         [Validators.required, Validations.alphaNumericPattern]
@@ -143,6 +143,7 @@ export class AddSupplierComponent implements OnInit {
   onSubmit() {
     if (!this.editMode) {
       const formData = this.supplierMaster.value;
+      delete formData.SUP_code;
       this.masterservice.addSupplier(formData).subscribe(e => {
         if (e > 0) {
           this.alertService.openSnackBar("Record added successfuly");
@@ -154,7 +155,7 @@ export class AddSupplierComponent implements OnInit {
       });
     } else {
       const formData = {
-        SUP_code: this.SUP_code.value,
+        // SUP_code: this.SUP_code.value,
         SUP_CompanyName: this.SUP_CompanyName.value,
         SUP_Address: this.SUP_Address.value,
         SUP_ContactNumber1: this.SUP_ContactNumber1.value,
@@ -187,9 +188,8 @@ export class AddSupplierComponent implements OnInit {
   private initForm() {
     if (this.editMode) {
       this.masterservice.fetchSupplierDetails(this.supId).subscribe(details => {
-        console.log(details);
         this.supplierMaster.setValue({
-          SUP_code: details.SUP_code,
+          SUP_code: details._id,
           SUP_CompanyName: details.SUP_CompanyName,
           SUP_Address: details.SUP_Address,
           SUP_ContactNumber1: details.SUP_ContactNumber1,

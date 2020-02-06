@@ -68,7 +68,7 @@ export class BizProductMasterComponent implements OnInit {
     return this.bizProductMaster.get("PRO_code");
   }
 
-  findProduct(event, index) {
+  findProduct(event) {
     const searchTxt = event.target.value;
     if (searchTxt.length >= 3) {
       this.pservice.findProduct({ PRO_Name: searchTxt }).subscribe(result => {

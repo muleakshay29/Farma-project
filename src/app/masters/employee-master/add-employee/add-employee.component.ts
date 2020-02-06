@@ -44,9 +44,9 @@ export class AddEmployeeComponent implements OnInit {
 
       this.buttonText = this.editMode ? "Update" : "Create";
 
-      this.Emp_code.setAsyncValidators(
+      /* this.Emp_code.setAsyncValidators(
         empCodeCheckValidator(this.masterservice, this.empId)
-      );
+      ); */
     });
 
     /* Get current year */
@@ -58,7 +58,7 @@ export class AddEmployeeComponent implements OnInit {
 
   createForm() {
     this.empMaster = this.fb.group({
-      Emp_code: ["", [Validators.required]],
+      Emp_code: [{ value: "", disabled: true }],
       Emp_name: ["", [Validators.required, Validations.alphaNumericPattern]],
       Emp_address: ["", [Validators.required, Validations.alphaNumericPattern]],
       Emp_city: ["", [Validators.required, Validations.alphaNumericPattern]],
@@ -153,10 +153,12 @@ export class AddEmployeeComponent implements OnInit {
   onSubmit() {
     if (!this.editMode) {
       const formData = this.empMaster.value;
+      delete formData.Emp_code;
       formData.Active_flag = 1;
       formData.Created_by = this.loggedInUser._id;
       formData.Created_date = this.currentDate;
       formData.Year_id = this.currYear;
+
       this.masterservice.addEmployeeMaster(formData).subscribe(data => {
         if (data != null) {
           const insertData = {
@@ -224,7 +226,7 @@ export class AddEmployeeComponent implements OnInit {
     if (this.editMode) {
       this.masterservice.fetchEmployeeDetails(this.empId).subscribe(details => {
         this.empMaster.setValue({
-          Emp_code: details.Emp_code,
+          Emp_code: details._id,
           Emp_name: details.Emp_name,
           Emp_address: details.Emp_address,
           Emp_city: details.Emp_city,

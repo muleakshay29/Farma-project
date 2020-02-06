@@ -19,7 +19,7 @@ export class AddSchemaComponent implements OnInit {
   allProduct: [];
   selectedProduct: any;
   selectedProductCode: any;
-  showSpinner: boolean = true;
+  showSpinner: boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -32,7 +32,7 @@ export class AddSchemaComponent implements OnInit {
 
   ngOnInit() {
     this.schemeMaster = this.fb.group({
-      PRO_Name: ["", [Validators.required, Validations.alphaNumericPattern]],
+      PRO_Name: ["", Validators.required],
       Quantity: ["", [Validators.required]],
       Free_Quantity: ["", [Validators.required]]
     });
@@ -47,7 +47,7 @@ export class AddSchemaComponent implements OnInit {
       this.fetchSchemeDetails();
     }
 
-    this.fetchProduct();
+    // this.fetchProduct();
   }
 
   get PRO_Name() {
@@ -62,17 +62,35 @@ export class AddSchemaComponent implements OnInit {
     return this.schemeMaster.get("Free_Quantity");
   }
 
+  findProduct(event) {
+    const searchTxt = event.target.value;
+
+    if (searchTxt.length >= 3) {
+      this.showSpinner = true;
+
+      this.pservice.findProduct({ PRO_Name: searchTxt }).subscribe(result => {
+        this.showSpinner = false;
+        this.allProduct = result;
+      });
+    }
+  }
+
   fetchProduct() {
     this.pservice.fetchProduct().subscribe(allProduct => {
       this.allProduct = allProduct;
-      this.showSpinner = false;
+      // this.showSpinner = false;
     });
   }
 
-  onSelect(event: TypeaheadMatch): void {
+  onSelect(value, index) {
+    this.PRO_Name.patchValue(value.PRO_Name);
+    this.selectedProductCode = value._id;
+  }
+
+  /* onSelect(event: TypeaheadMatch): void {
     this.selectedProduct = event.item;
     this.selectedProductCode = this.selectedProduct._id;
-  }
+  } */
 
   fetchSchemeDetails() {
     this.transservice.fetchSchemeDetails(this.schemeID).subscribe(details => {

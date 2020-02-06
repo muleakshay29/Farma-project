@@ -13,11 +13,18 @@
 
   <div class="card-body">
     <div class="form-group">
-      <input
+      <!-- <input
         type="search"
         (keyup)="applyFilter($event.target.value)"
         class="form-control rounded-pill"
         placeholder="Search"
+      /> -->
+
+      <input
+        type="search"
+        class="form-control rounded-pill"
+        placeholder="Search Product"
+        (keyup)="findProduct($event)"
       />
     </div>
 

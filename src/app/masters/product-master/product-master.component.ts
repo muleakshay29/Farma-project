@@ -31,9 +31,6 @@ export class ProductMasterComponent implements OnInit {
   ];
   bsModalRef: BsModalRef;
 
-  @ViewChild(MatSort) sort: MatSort;
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-
   contentArray = new Array();
   returnedArray: any[];
   dataLength: number;
@@ -56,25 +53,19 @@ export class ProductMasterComponent implements OnInit {
     this.fetchProduct(event.page - 1, event.itemsPerPage);
   }
 
-  /* applyFilter(filterValue: string) {
-    this.dataSource.filter = filterValue.trim().toLowerCase();
+  findProduct(event) {
+    const searchTxt = event.target.value;
 
-    console.log(this.dataSource);
-    // this.contentArray = filterValue.trim().toLowerCase();
-    // this.returnedArray = this.dataSource.filter;
-
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
-    }
-  } */
-
-  applyFilter(filterValue: string) {
-    const search = filterValue.trim().toLowerCase();
-
-    if (!filterValue) {
+    if (searchTxt == "" || searchTxt.length == 0) {
       this.fetchProduct();
-    } else {
-      this.findProduct(search);
+      this.getProductCount();
+    }
+
+    if (searchTxt.length >= 3) {
+      this.pservice.findProduct({ PRO_Name: searchTxt }).subscribe(result => {
+        this.returnedArray = result;
+        this.dataLength = result.length;
+      });
     }
   }
 
@@ -82,22 +73,19 @@ export class ProductMasterComponent implements OnInit {
     // this.pservice.fetchProduct().subscribe(productlist => {
     this.pservice.fetchProduct2(pageIndex, pageSize).subscribe(productlist => {
       this.dataSource = new MatTableDataSource(productlist);
-      this.dataSource.sort = this.sort;
-      this.dataSource.paginator = this.paginator;
-
       this.contentArray = this.dataSource.data;
       this.returnedArray = this.dataSource.data.slice(0, 10);
     });
   }
 
-  findProduct(PRO_Name) {
+  /* findProduct(PRO_Name) {
     const searchData = { PRO_Name };
     this.pservice.findProduct(searchData).subscribe(data => {
       this.contentArray = data;
       this.returnedArray = data.slice(0, 10);
       this.dataLength = data.length;
     });
-  }
+  } */
 
   getProductCount() {
     this.pservice.getProductCount().subscribe(data => {
@@ -109,7 +97,7 @@ export class ProductMasterComponent implements OnInit {
     this.pservice.deleteProduct(PRO_Id).subscribe(data => {
       if (data > 0) {
         this.alertService.openSnackBar("Record deleted successfuly");
-        // this.fetchProduct();
+        this.fetchProduct();
       } else {
         this.alertService.openSnackBar("Error deleting record");
       }

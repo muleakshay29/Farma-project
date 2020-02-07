@@ -15,6 +15,7 @@ export class AddCommonMasterComponent implements OnInit {
   cmID: any;
   editMode = false;
   buttonText: string;
+  showSpinner: boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -52,6 +53,7 @@ export class AddCommonMasterComponent implements OnInit {
   }
 
   onSubmit() {
+    this.showSpinner = true;
     if (!this.editMode) {
       const formData = this.commonMaster.value;
       this.masterservice.addCommonMaster(formData).subscribe(data => {
@@ -59,10 +61,12 @@ export class AddCommonMasterComponent implements OnInit {
           this.alertService.openSnackBar("Record added successfuly");
           this.commonMaster.reset();
           this.router.navigate(["/common-master"]);
+          this.showSpinner = false;
         } else {
           this.alertService.openSnackBar(
             "Error adding record. Please try again."
           );
+          this.showSpinner = false;
         }
       });
     } else {
@@ -76,8 +80,10 @@ export class AddCommonMasterComponent implements OnInit {
           if (data != null) {
             this.alertService.openSnackBar("Record updated successfuly");
             this.router.navigate(["/common-master"]);
+            this.showSpinner = false;
           } else {
             this.alertService.openSnackBar("Error updating record");
+            this.showSpinner = false;
           }
         });
     }
@@ -85,12 +91,14 @@ export class AddCommonMasterComponent implements OnInit {
 
   private initForm() {
     if (this.editMode) {
+      this.showSpinner = true;
       this.masterservice
         .fetchCommonMasterDetails(this.cmID)
         .subscribe(details => {
           this.commonMaster.setValue({
             CM_Name: details.CM_Name
           });
+          this.showSpinner = false;
         });
     }
   }

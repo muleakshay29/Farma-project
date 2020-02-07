@@ -22,6 +22,7 @@ export class AddProductComponent implements OnInit {
   uploadedImg: any;
   editMode = false;
   buttonText: string;
+  showSpinner: boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -130,30 +131,35 @@ export class AddProductComponent implements OnInit {
 
   onFileChange(event) {
     if (event.target.files.length > 0) {
+      this.showSpinner = true;
       this.selectedImage = <File>event.target.files[0];
       var reader = new FileReader();
       reader.readAsDataURL(event.target.files[0]);
       reader.onload = (imgsrc: any) => {
         this.imgURL = imgsrc.target.result;
+        this.showSpinner = false;
       };
     }
   }
 
   onProductPhotoUpload() {
+    this.showSpinner = true;
     let input = new FormData();
     input.append("PRO_Image", this.selectedImage, this.selectedImage.name);
     this.pservice.productPhotoUpload(input).subscribe(data => {
       if (data != null) {
         this.uploadedImg = `https://ak-mead-test-heroku.herokuapp.com/product-image/${data.file.filename}`;
-        console.log(this.uploadedImg);
         this.alertService.openSnackBar("Image Uploaded successfuly");
+        this.showSpinner = false;
       } else {
         this.alertService.openSnackBar(data.message);
+        this.showSpinner = false;
       }
     });
   }
 
   onSubmit() {
+    this.showSpinner = true;
     if (!this.editMode) {
       const formData = this.productMaster.value;
       formData.PRO_Image = this.uploadedImg;
@@ -164,8 +170,10 @@ export class AddProductComponent implements OnInit {
           this.imgURL = "../../../assets/img/images.png";
           this.uploadedImg = null;
           this.router.navigate(["/product-master"]);
+          this.showSpinner = false;
         } else {
           this.alertService.openSnackBar("Error adding record");
+          this.showSpinner = false;
         }
       });
     } else {
@@ -191,21 +199,26 @@ export class AddProductComponent implements OnInit {
         if (data != null) {
           this.alertService.openSnackBar("Record updated successfuly");
           this.router.navigate(["/product-master"]);
+          this.showSpinner = false;
         } else {
           this.alertService.openSnackBar("Error updating record");
+          this.showSpinner = false;
         }
       });
     }
   }
 
   fetchCommonMaster(CM_Id) {
+    this.showSpinner = true;
     this.masterservice.fetchCommonChildFromCM(CM_Id).subscribe(list => {
       this.typeOfProduct = list;
+      this.showSpinner = false;
     });
   }
 
   private initForm() {
     if (this.editMode) {
+      this.showSpinner = true;
       this.pservice.fetchProductDetails(this.pID).subscribe(details => {
         this.productMaster.setValue({
           PRO_code: details.PRO_code,
@@ -230,6 +243,7 @@ export class AddProductComponent implements OnInit {
         } else {
           this.imgURL = details.PRO_Image;
         }
+        this.showSpinner = false;
       });
     }
   }

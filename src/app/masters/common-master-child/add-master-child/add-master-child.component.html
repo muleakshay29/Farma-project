@@ -1,5 +1,9 @@
 <h3 class="h3 mb-4 text-gray-800 border-bottom pb-2">Add Master Child</h3>
 
+<div class="progress-spinner" *ngIf="showSpinner">
+  <mat-spinner *ngIf="showSpinner"></mat-spinner>
+</div>
+
 <div class="card shadow mb-4">
   <div class="card-body">
     <form
@@ -28,26 +32,6 @@
       </div>
 
       <div class="form-group text-center">
-        <!-- <button
-          type="submit"
-          value="submit"
-          class="btn btn-primary btn-user rounded-pill"
-          [disabled]="!commonMasterChild.valid"
-          *ngIf="addFlag"
-        >
-          Submit
-        </button>
-
-        <button
-          type="submit"
-          value="submit"
-          class="btn btn-primary btn-user rounded-pill mx-1"
-          [disabled]="!commonMasterChild.valid"
-          *ngIf="updateFlag"
-        >
-          Update
-        </button> -->
-
         <input
           type="submit"
           [value]="buttonText"

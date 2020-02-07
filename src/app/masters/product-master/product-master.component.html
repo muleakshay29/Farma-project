@@ -1,5 +1,9 @@
 <h3 class="h3 mb-4 text-gray-800 border-bottom pb-2">Product Master</h3>
 
+<div class="progress-spinner" *ngIf="showSpinner">
+  <mat-spinner *ngIf="showSpinner"></mat-spinner>
+</div>
+
 <div class="card">
   <div class="card-header text-right">
     <button
@@ -13,13 +17,6 @@
 
   <div class="card-body">
     <div class="form-group">
-      <!-- <input
-        type="search"
-        (keyup)="applyFilter($event.target.value)"
-        class="form-control rounded-pill"
-        placeholder="Search"
-      /> -->
-
       <input
         type="search"
         class="form-control rounded-pill"
@@ -66,104 +63,41 @@
           </tr>
         </tbody>
       </table>
-
-      <!-- <table
-        mat-table
-        [dataSource]="dataSource"
-        matSort
-        class="table table-bordered table-hover mb-0"
-      >
-        <ng-container matColumnDef="Action">
-          <th *matHeaderCellDef class="text-center">Action</th>
-          <td class="text-center" *matCellDef="let element">
-            <a
-              href="javascript:void(0)"
-              (click)="openModalWithComponent(element.PRO_Name, element._id)"
-              matTooltip="Delete"
-              matTooltipPosition="above"
-            >
-              <i class="fas fa-times"></i>
-            </a>
-            &nbsp; | &nbsp;
-            <a
-              routerLink="/add-product-master/{{ element._id }}"
-              matTooltip="Edit"
-              matTooltipPosition="above"
-            >
-              <i class="fas fa-pencil-alt"></i>
-            </a>
-          </td>
-        </ng-container>
-
-        <ng-container matColumnDef="PRO_code">
-          <th *matHeaderCellDef class="text-center" mat-sort-header>
-            Product Code
-          </th>
-          <td *matCellDef="let element" class="text-center">
-            {{ element.PRO_code }}
-          </td>
-        </ng-container>
-
-        <ng-container matColumnDef="PRO_Name">
-          <th *matHeaderCellDef class="text-center" mat-sort-header>
-            Product Name
-          </th>
-          <td *matCellDef="let element" class="text-center">
-            {{ element.PRO_Name }}
-          </td>
-        </ng-container>
-
-        <ng-container matColumnDef="PRO_Manufraturer">
-          <th *matHeaderCellDef class="text-center" mat-sort-header>
-            Product Manufraturer
-          </th>
-          <td *matCellDef="let element" class="text-center">
-            {{ element.PRO_Manufraturer }}
-          </td>
-        </ng-container>
-
-        <tr
-          mat-header-row
-          *matHeaderRowDef="displayedColumns"
-          class="text-center thead-dark"
-        ></tr>
-        <tr
-          mat-row
-          *matRowDef="let row; columns: displayedColumns"
-          class="text-center"
-        ></tr>
-      </table> -->
     </div>
   </div>
 
-  <div class="card-footer p-0 d-flex justify-content-center">
-    <!-- <mat-paginator
-      [length]="dataLength"
-      [pageIndex]="pageIndex"
-      [pageSize]="pageSize"
-      [pageSizeOptions]="[10, 25, 100]"
-      (page)="pageEvent = getServerData($event)"
-    ></mat-paginator> -->
+  <div class="card-footer">
+    <div class="row">
+      <div class="col d-flex justify-content-center">
+        <pagination
+          [totalItems]="dataLength"
+          (pageChanged)="pageChanged($event)"
+          [maxSize]="5"
+          [boundaryLinks]="true"
+          [itemsPerPage]="itemsPerPage"
+          previousText="&lsaquo;"
+          nextText="&rsaquo;"
+          firstText="&laquo;"
+          lastText="&raquo;"
+        ></pagination>
+      </div>
 
-    <pagination
-      [totalItems]="dataLength"
-      (pageChanged)="pageChanged($event)"
-      [maxSize]="5"
-    ></pagination>
+      <div class="col d-flex justify-content-center">
+        <div class="form-group row">
+          <label class="col-sm-7 col-form-label p-0"
+            ><small>Items per page: </small></label
+          >
+          <select
+            class="form-control form-control-sm col-sm-5"
+            (change)="setItemPerPage($event)"
+          >
+            <option value="10">10</option>
+            <option value="25">25</option>
+            <option value="50">50</option>
+            <option value="100">100</option>
+          </select>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
-
-<!-- <div class="row">
-  <div class="col-xs-12 col-12">
-    <div class="content-wrapper">
-      <p class="content-item" *ngFor="let content of returnedArray">
-        {{ content.PRO_Name }}
-      </p>
-    </div>
-    <pagination
-      [totalItems]="dataLength"
-      (pageChanged)="pageChanged($event)"
-      [maxSize]="5"
-    ></pagination>
-  </div>
-</div> -->

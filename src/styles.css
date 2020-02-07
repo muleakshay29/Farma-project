@@ -33,3 +33,7 @@
   position: absolute;
   z-index: 999999999999999;
 }
+
+ul.pagination {
+  margin-bottom: 0;
+}

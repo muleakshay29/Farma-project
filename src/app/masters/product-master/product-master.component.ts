@@ -1,10 +1,4 @@
-import {
-  Component,
-  OnInit,
-  ViewChild,
-  ElementRef,
-  AfterViewInit
-} from "@angular/core";
+import { Component, OnInit, Input } from "@angular/core";
 import { ProductMasterService } from "../../_services/product-master.service";
 import {
   MatTableDataSource,
@@ -22,18 +16,11 @@ import { PageChangedEvent } from "ngx-bootstrap/pagination";
   templateUrl: "./product-master.component.html"
 })
 export class ProductMasterComponent implements OnInit {
-  dataSource: MatTableDataSource<any>;
-  displayedColumns: string[] = [
-    "Action",
-    "PRO_code",
-    "PRO_Name",
-    "PRO_Manufraturer"
-  ];
   bsModalRef: BsModalRef;
-
-  contentArray = new Array();
   returnedArray: any[];
   dataLength: number;
+  itemsPerPage: number = 10;
+  showSpinner: boolean = false;
 
   constructor(
     private pservice: ProductMasterService,
@@ -47,50 +34,45 @@ export class ProductMasterComponent implements OnInit {
   }
 
   pageChanged(event: PageChangedEvent): void {
-    const startItem = (event.page - 1) * event.itemsPerPage;
-    const endItem = event.page * event.itemsPerPage;
-    this.returnedArray = this.dataSource.data.slice(startItem, endItem);
-    this.fetchProduct(event.page - 1, event.itemsPerPage);
+    this.fetchProduct(event.page - 1, this.itemsPerPage);
+  }
+
+  setItemPerPage(event) {
+    this.itemsPerPage = event.target.value;
+    this.fetchProduct(event.page - 1, this.itemsPerPage);
+  }
+
+  fetchProduct(pageIndex = 0, pageSize = this.itemsPerPage) {
+    this.showSpinner = true;
+    this.pservice.fetchProduct2(pageIndex, pageSize).subscribe(productlist => {
+      this.returnedArray = productlist.slice(0, this.itemsPerPage);
+      this.showSpinner = false;
+    });
+  }
+
+  getProductCount() {
+    this.pservice.getProductCount().subscribe(data => {
+      this.dataLength = data.count;
+    });
   }
 
   findProduct(event) {
+    this.showSpinner = true;
     const searchTxt = event.target.value;
 
     if (searchTxt == "" || searchTxt.length == 0) {
       this.fetchProduct();
       this.getProductCount();
+      this.showSpinner = false;
     }
 
     if (searchTxt.length >= 3) {
       this.pservice.findProduct({ PRO_Name: searchTxt }).subscribe(result => {
         this.returnedArray = result;
         this.dataLength = result.length;
+        this.showSpinner = false;
       });
     }
-  }
-
-  fetchProduct(pageIndex = 0, pageSize = 10) {
-    // this.pservice.fetchProduct().subscribe(productlist => {
-    this.pservice.fetchProduct2(pageIndex, pageSize).subscribe(productlist => {
-      this.dataSource = new MatTableDataSource(productlist);
-      this.contentArray = this.dataSource.data;
-      this.returnedArray = this.dataSource.data.slice(0, 10);
-    });
-  }
-
-  /* findProduct(PRO_Name) {
-    const searchData = { PRO_Name };
-    this.pservice.findProduct(searchData).subscribe(data => {
-      this.contentArray = data;
-      this.returnedArray = data.slice(0, 10);
-      this.dataLength = data.length;
-    });
-  } */
-
-  getProductCount() {
-    this.pservice.getProductCount().subscribe(data => {
-      this.dataLength = data.count;
-    });
   }
 
   deleteProduct(PRO_Id) {
@@ -100,6 +82,7 @@ export class ProductMasterComponent implements OnInit {
         this.fetchProduct();
       } else {
         this.alertService.openSnackBar("Error deleting record");
+        this.showSpinner = false;
       }
     });
   }
@@ -115,6 +98,7 @@ export class ProductMasterComponent implements OnInit {
     this.bsModalRef.content.onClose.subscribe((result: boolean) => {
       if (result == true) {
         this.deleteProduct(PRO_Id);
+        this.showSpinner = true;
       }
     });
   }

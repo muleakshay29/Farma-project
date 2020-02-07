@@ -4,19 +4,18 @@ import { MatTableDataSource, MatSort, MatPaginator } from "@angular/material";
 import { BsModalService, BsModalRef } from "ngx-bootstrap/modal";
 import { DeleteConfirmationComponent } from "../../_helpers/delete-confirmation/delete-confirmation.component";
 import { AlertService } from "../../_services/alert.service";
+import { PageChangedEvent } from "ngx-bootstrap/pagination";
 
 @Component({
   selector: "app-common-master",
   templateUrl: "./common-master.component.html"
 })
 export class CommonMasterComponent implements OnInit {
-  commonMasterList: any[];
-  dataSource: MatTableDataSource<any>;
-  displayedColumns: string[] = ["Action", "CM_Name"];
   bsModalRef: BsModalRef;
-
-  @ViewChild(MatSort) sort: MatSort;
-  @ViewChild(MatPaginator) paginator: MatPaginator;
+  returnedArray: any[];
+  dataLength: number;
+  itemsPerPage: number = 10;
+  showSpinner: boolean = false;
 
   constructor(
     private masterservice: MasterServiceService,
@@ -26,22 +25,53 @@ export class CommonMasterComponent implements OnInit {
 
   ngOnInit() {
     this.fetchCommonMaster();
+    this.getItemCount();
   }
 
-  applyFilter(filterValue: string) {
-    this.dataSource.filter = filterValue.trim().toLowerCase();
-
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
-    }
+  pageChanged(event: PageChangedEvent): void {
+    this.fetchCommonMaster(event.page - 1, this.itemsPerPage);
   }
 
-  fetchCommonMaster() {
-    this.masterservice.fetchCommonMaster().subscribe(commonMasterList => {
-      this.dataSource = new MatTableDataSource(commonMasterList);
-      this.dataSource.sort = this.sort;
-      this.dataSource.paginator = this.paginator;
+  setItemPerPage(event) {
+    this.itemsPerPage = event.target.value;
+    this.fetchCommonMaster(event.page - 1, this.itemsPerPage);
+  }
+
+  fetchCommonMaster(pageIndex = 0, pageSize = this.itemsPerPage) {
+    this.showSpinner = true;
+    this.masterservice
+      .fetchCommonMaster(pageIndex, pageSize)
+      .subscribe(commonMasterList => {
+        this.returnedArray = commonMasterList.slice(0, this.itemsPerPage);
+        this.showSpinner = false;
+      });
+  }
+
+  getItemCount() {
+    this.masterservice.getItemCount("cm-item-count").subscribe(data => {
+      this.dataLength = data.count;
     });
+  }
+
+  findCommonMaster(event) {
+    this.showSpinner = true;
+    const searchTxt = event.target.value;
+
+    if (searchTxt == "" || searchTxt.length == 0) {
+      this.fetchCommonMaster();
+      this.getItemCount();
+      this.showSpinner = false;
+    }
+
+    if (searchTxt.length >= 3) {
+      this.masterservice
+        .findCommonMaster({ CM_Name: searchTxt })
+        .subscribe(result => {
+          this.returnedArray = result;
+          this.dataLength = result.length;
+          this.showSpinner = false;
+        });
+    }
   }
 
   deleteCommonMaster(_id) {
@@ -51,6 +81,7 @@ export class CommonMasterComponent implements OnInit {
         this.alertService.openSnackBar("Record deleted successfuly");
       } else {
         this.alertService.openSnackBar("Error deleting record");
+        this.showSpinner = false;
       }
     });
   }
@@ -66,6 +97,7 @@ export class CommonMasterComponent implements OnInit {
     this.bsModalRef.content.onClose.subscribe((result: boolean) => {
       if (result == true) {
         this.deleteCommonMaster(_id);
+        this.showSpinner = true;
       }
     });
   }

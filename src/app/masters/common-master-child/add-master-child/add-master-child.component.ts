@@ -16,6 +16,7 @@ export class AddMasterChildComponent implements OnInit {
   commonMasterList = [];
   editMode = false;
   buttonText: string;
+  showSpinner: boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -59,6 +60,7 @@ export class AddMasterChildComponent implements OnInit {
   }
 
   onSubmit() {
+    this.showSpinner = true;
     if (!this.editMode) {
       const formData = this.commonMasterChild.value;
       this.masterservice.addCommonMasterChild(formData).subscribe(data => {
@@ -67,8 +69,10 @@ export class AddMasterChildComponent implements OnInit {
           this.commonMasterChild.reset();
           this.fetchCommonMaster();
           this.router.navigate(["/common-master-child"]);
+          this.showSpinner = false;
         } else {
           this.alertService.openSnackBar("Error adding record");
+          this.showSpinner = false;
         }
       });
     } else {
@@ -82,8 +86,10 @@ export class AddMasterChildComponent implements OnInit {
           if (data != null) {
             this.alertService.openSnackBar("Record updated successfuly");
             this.router.navigate(["/common-master-child"]);
+            this.showSpinner = false;
           } else {
             this.alertService.openSnackBar("Error updating record");
+            this.showSpinner = false;
           }
         });
     }
@@ -91,6 +97,7 @@ export class AddMasterChildComponent implements OnInit {
 
   private initForm() {
     if (this.editMode) {
+      this.showSpinner = true;
       this.masterservice
         .fetchCommonMasterChildDetails(this.cmcID)
         .subscribe(details => {
@@ -98,13 +105,16 @@ export class AddMasterChildComponent implements OnInit {
             CM_id: details.CM_id,
             CMC_Name: details.CMC_Name
           });
+          this.showSpinner = false;
         });
     }
   }
 
   fetchCommonMaster() {
-    this.masterservice.fetchCommonMaster().subscribe(commonMasterList => {
+    this.showSpinner = true;
+    this.masterservice.fetchCommonMaster(0, 0).subscribe(commonMasterList => {
       this.commonMasterList = commonMasterList;
+      this.showSpinner = false;
     });
   }
 

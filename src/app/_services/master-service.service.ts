@@ -2,7 +2,8 @@ import { Injectable } from "@angular/core";
 import {
   HttpClient,
   HttpHeaders,
-  HttpErrorResponse
+  HttpErrorResponse,
+  HttpParams
 } from "@angular/common/http";
 import { Observable, of } from "rxjs";
 import { map, catchError, tap } from "rxjs/operators";
@@ -34,12 +35,29 @@ export class MasterServiceService {
       .pipe(catchError(this.handleError<any>("addCommonMaster")));
   }
 
-  fetchCommonMaster(): Observable<any> {
-    // const URL = `${this.API_URL}commonmaster/fetchcommonmaster`;
-    const URL = `${this.API_URL}fetch-commonmaster`;
+  getItemCount(customURL): Observable<any> {
+    const URL = `${this.API_URL}${customURL}`;
     return this.http
       .get<any>(URL, httpOptions)
+      .pipe(catchError(this.handleError<any>("getItemCount")));
+  }
+
+  fetchCommonMaster(pageIndex: number = 1, pageSize: number): Observable<any> {
+    const URL = `${this.API_URL}fetch-commonmaster`;
+    return this.http
+      .get<any>(URL, {
+        params: new HttpParams()
+          .set("pageIndex", pageIndex.toString())
+          .set("pageSize", pageSize.toString())
+      })
       .pipe(catchError(this.handleError<any>("fetchCommonMaster")));
+  }
+
+  findCommonMaster(data: any): Observable<any> {
+    const URL = `${this.API_URL}find-cmname`;
+    return this.http
+      .post<any>(URL, data)
+      .pipe(catchError(this.handleError<any>("findCommonMaster")));
   }
 
   deleteCommonMaster(cmId): Observable<any> {
@@ -75,12 +93,25 @@ export class MasterServiceService {
       .pipe(catchError(this.handleError<any>("addCommonMasterChild")));
   }
 
-  fetchCommonMasterChild(): Observable<any> {
-    // const URL = `${this.API_URL}commonmasterchild/fetchcommonmasterchild`;
+  fetchCommonMasterChild(
+    pageIndex: number = 1,
+    pageSize: number
+  ): Observable<any> {
     const URL = `${this.API_URL}fetch-commonmaster-child`;
     return this.http
-      .get<any>(URL, httpOptions)
+      .get<any>(URL, {
+        params: new HttpParams()
+          .set("pageIndex", pageIndex.toString())
+          .set("pageSize", pageSize.toString())
+      })
       .pipe(catchError(this.handleError<any>("fetchCommonMasterChild")));
+  }
+
+  findCommonMasterChild(data: any): Observable<any> {
+    const URL = `${this.API_URL}find-cmcname`;
+    return this.http
+      .post<any>(URL, data)
+      .pipe(catchError(this.handleError<any>("findCommonMasterChild")));
   }
 
   deleteCommonMasterChild(cmcId): Observable<any> {

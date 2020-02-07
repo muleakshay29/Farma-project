@@ -82,7 +82,7 @@ export class AddSchemaComponent implements OnInit {
     });
   }
 
-  onSelect(value, index) {
+  onSelect(value) {
     this.PRO_Name.patchValue(value.PRO_Name);
     this.selectedProductCode = value._id;
   }

@@ -29,6 +29,7 @@ export class PurchaseComponent implements OnInit {
   itemScheme = [];
   allSuppliers: [];
   d;
+  showSpinner: boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -50,7 +51,6 @@ export class PurchaseComponent implements OnInit {
     });
 
     this.ProdList = this.purchase.get("ProductList") as FormArray;
-    // this.fetchProduct();
     this.fetchSuppliers();
   }
 
@@ -87,6 +87,7 @@ export class PurchaseComponent implements OnInit {
   }
 
   onSubmit() {
+    this.showSpinner = true;
     const formData = this.purchase.value;
     const schemeProductList = formData.ProductList;
 
@@ -122,21 +123,19 @@ export class PurchaseComponent implements OnInit {
         }
         this.purchase.reset();
         this.router.navigate(["/purchase"]);
+        this.showSpinner = false;
       } else {
         this.alertService.openSnackBar("Error ordering purchase");
+        this.showSpinner = false;
       }
     });
   }
 
-  fetchProduct() {
-    this.transervice.fetchProduct().subscribe(allProduct => {
-      this.allProduct = allProduct;
-    });
-  }
-
   fetchSuppliers() {
-    this.masterservice.fetchSuppliers().subscribe(allSuppliers => {
+    this.showSpinner = true;
+    this.masterservice.fetchAllSuppliers().subscribe(allSuppliers => {
       this.allSuppliers = allSuppliers;
+      this.showSpinner = false;
     });
   }
 
@@ -144,17 +143,13 @@ export class PurchaseComponent implements OnInit {
     const searchTxt = event.target.value;
 
     if (searchTxt.length >= 3) {
+      this.showSpinner = true;
       this.pservice.findProduct({ PRO_Name: searchTxt }).subscribe(result => {
         this.allProduct = result;
+        this.showSpinner = false;
       });
     }
   }
-
-  /* onSelect(event: TypeaheadMatch, index) {
-    console.log(event.item);
-    this.selectedProduct = event.item;
-    this.fetchProductSchemes(this.selectedProduct._id, index);
-  } */
 
   onSelect(value, index) {
     this.getProdFormGroup(index).controls["Product_Name"].patchValue(
@@ -169,8 +164,10 @@ export class PurchaseComponent implements OnInit {
   }
 
   fetchProductSchemes(productID, index) {
+    this.showSpinner = true;
     this.transervice.fetchProductSchemes(productID).subscribe(proSchemes => {
       this.productSchemeList = proSchemes;
+      this.showSpinner = false;
     });
   }
 

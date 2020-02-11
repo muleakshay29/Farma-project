@@ -58,11 +58,22 @@ export class TransactionService {
       .pipe(catchError(this.handleError<any>("updateScheme")));
   }
 
-  fetchScheme(): Observable<any> {
+  fetchScheme(pageIndex: number = 1, pageSize: number): Observable<any> {
     const URL = `${this.API_URL}fetch-scheme`;
     return this.http
-      .get<any>(URL, httpOptions)
+      .get<any>(URL, {
+        params: new HttpParams()
+          .set("pageIndex", pageIndex.toString())
+          .set("pageSize", pageSize.toString())
+      })
       .pipe(catchError(this.handleError<any>("fetchScheme")));
+  }
+
+  findScheme(data: any): Observable<any> {
+    const URL = `${this.API_URL}find-scheme`;
+    return this.http
+      .post<any>(URL, data)
+      .pipe(catchError(this.handleError<any>("findScheme")));
   }
 
   deleteScheme(schemeID): Observable<any> {

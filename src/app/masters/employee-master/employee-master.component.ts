@@ -4,29 +4,23 @@ import { MatTableDataSource, MatSort, MatPaginator } from "@angular/material";
 import { BsModalService, BsModalRef } from "ngx-bootstrap/modal";
 import { DeleteConfirmationComponent } from "../../_helpers/delete-confirmation/delete-confirmation.component";
 import { AlertService } from "../../_services/alert.service";
+import { PageChangedEvent } from "ngx-bootstrap";
 
 @Component({
   selector: "app-employee-master",
   templateUrl: "./employee-master.component.html"
 })
 export class EmployeeMasterComponent implements OnInit {
-  dataSource: MatTableDataSource<any>;
-  displayedColumns: string[] = [
-    "Action",
-    "Emp_name",
-    "Email_id",
-    "Mobile_no",
-    "Type_of_user"
-  ];
   bsModalRef: BsModalRef;
-
-  @ViewChild(MatSort) sort: MatSort;
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-  // empMaster: FormGroup;
   userTypes = [];
   imgURL = "../../../assets/img/images.png";
   selectedImage: File;
   uploadedImg: any;
+
+  returnedArray: any[];
+  dataLength: number;
+  itemsPerPage: number = 10;
+  showSpinner: boolean = false;
 
   constructor(
     private masterservice: MasterServiceService,
@@ -36,22 +30,51 @@ export class EmployeeMasterComponent implements OnInit {
 
   ngOnInit() {
     this.fetchEmployee();
+    this.getItemCount();
   }
 
-  applyFilter(filterValue: string) {
-    this.dataSource.filter = filterValue.trim().toLowerCase();
-
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
-    }
+  pageChanged(event: PageChangedEvent): void {
+    this.fetchEmployee(event.page - 1, this.itemsPerPage);
   }
 
-  fetchEmployee() {
-    this.masterservice.fetchEmployee().subscribe(list => {
-      this.dataSource = new MatTableDataSource(list);
-      this.dataSource.sort = this.sort;
-      this.dataSource.paginator = this.paginator;
+  setItemPerPage(event) {
+    this.itemsPerPage = event.target.value;
+    this.fetchEmployee(event.page - 1, this.itemsPerPage);
+  }
+
+  fetchEmployee(pageIndex = 0, pageSize = this.itemsPerPage) {
+    this.showSpinner = true;
+    this.masterservice.fetchEmployee(pageIndex, pageSize).subscribe(list => {
+      this.returnedArray = list.slice(0, this.itemsPerPage);
+      this.showSpinner = false;
     });
+  }
+
+  getItemCount() {
+    this.masterservice.getItemCount("employee-count").subscribe(data => {
+      this.dataLength = data.count;
+    });
+  }
+
+  findEmployee(event) {
+    this.showSpinner = true;
+    const searchTxt = event.target.value;
+
+    if (searchTxt == "" || searchTxt.length == 0) {
+      this.fetchEmployee();
+      this.getItemCount();
+      this.showSpinner = false;
+    }
+
+    if (searchTxt.length >= 3) {
+      this.masterservice
+        .findEmployee({ Emp_name: searchTxt })
+        .subscribe(result => {
+          this.returnedArray = result;
+          this.dataLength = result.length;
+          this.showSpinner = false;
+        });
+    }
   }
 
   deleteEmployee(_id) {
@@ -61,6 +84,7 @@ export class EmployeeMasterComponent implements OnInit {
         this.fetchEmployee();
       } else {
         this.alertService.openSnackBar("Error deleting record");
+        this.showSpinner = false;
       }
     });
   }
@@ -76,35 +100,7 @@ export class EmployeeMasterComponent implements OnInit {
     this.bsModalRef.content.onClose.subscribe((result: boolean) => {
       if (result == true) {
         this.deleteEmployee(_id);
-      }
-    });
-  }
-
-  onFileChange(event) {
-    if (event.target.files.length > 0) {
-      this.selectedImage = <File>event.target.files[0];
-      var reader = new FileReader();
-      reader.readAsDataURL(event.target.files[0]);
-      reader.onload = (imgsrc: any) => {
-        this.imgURL = imgsrc.target.result;
-      };
-    }
-  }
-
-  onProductPhotoUpload() {
-    let input = new FormData();
-    input.append(
-      "Emp_profile_img",
-      this.selectedImage,
-      this.selectedImage.name
-    );
-    this.masterservice.employeePhotoUpload(input).subscribe(data => {
-      console.log(data);
-      if (data.status == 1) {
-        this.uploadedImg = data.filename;
-        this.alertService.openSnackBar("Image Uploaded successfuly");
-      } else {
-        this.alertService.openSnackBar(data.message);
+        this.showSpinner = true;
       }
     });
   }

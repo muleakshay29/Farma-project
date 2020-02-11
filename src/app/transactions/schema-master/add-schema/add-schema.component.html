@@ -12,18 +12,6 @@
       (ngSubmit)="onSubmit()"
     >
       <div class="form-group row">
-        <!-- <input
-          type="text"
-          class="form-control rounded-pill"
-          formControlName="PRO_Name"
-          placeholder="Product Name"
-          [typeahead]="allProduct"
-          typeaheadOptionField="PRO_Name"
-          [typeaheadOptionsInScrollableView]="5"
-          adaptivePosition="true"
-          (typeaheadOnSelect)="onSelect($event)"
-        /> -->
-
         <input
           type="text"
           class="form-control rounded-pill"
@@ -40,22 +28,6 @@
             {{ prod.PRO_Name }}
           </mat-option>
         </mat-autocomplete>
-
-        <!-- <input
-          type="text"
-          class="form-control rounded-pill"
-          formControlName="PRO_Name"
-          placeholder="Product Name"
-          [typeahead]="allProduct"
-          typeaheadOptionField="PRO_Name"
-          [typeaheadOptionsInScrollableView]="5"
-          adaptivePosition="true"
-          (typeaheadOnSelect)="onSelect($event)"
-          [typeaheadMinLength]="4"
-          [typeaheadHideResultsOnBlur]="typeaheadHideResultsOnBlur"
-          [typeaheadAsync]="true"
-          (typeaheadLoading)="changeTypeaheadLoading($event)"
-        /> -->
 
         <app-error-message [control]="PRO_Name"></app-error-message>
       </div>

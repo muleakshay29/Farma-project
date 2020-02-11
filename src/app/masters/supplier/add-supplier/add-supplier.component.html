@@ -1,5 +1,9 @@
 <h3 class="h3 mb-4 text-gray-800 border-bottom pb-2">Supplier Master</h3>
 
+<div class="progress-spinner" *ngIf="showSpinner">
+  <mat-spinner *ngIf="showSpinner"></mat-spinner>
+</div>
+
 <div class="card shadow mb-4">
   <div class="card-body">
     <form

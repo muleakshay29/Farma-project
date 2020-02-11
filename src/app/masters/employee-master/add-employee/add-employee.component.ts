@@ -22,6 +22,7 @@ export class AddEmployeeComponent implements OnInit {
 
   editMode = false;
   buttonText: string;
+  showSpinner: boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -41,19 +42,12 @@ export class AddEmployeeComponent implements OnInit {
       this.editMode = params["id"] != null;
 
       this.initForm();
-
       this.buttonText = this.editMode ? "Update" : "Create";
-
-      /* this.Emp_code.setAsyncValidators(
-        empCodeCheckValidator(this.masterservice, this.empId)
-      ); */
     });
 
-    /* Get current year */
     this.fetchYear("5da8128f75c9ae635c147dad");
     this.currentDate = new Date();
     this.loggedInUser = this.auth.currentUserValue.user;
-    /* Get current year */
   }
 
   createForm() {
@@ -151,6 +145,7 @@ export class AddEmployeeComponent implements OnInit {
   }
 
   onSubmit() {
+    this.showSpinner = true;
     if (!this.editMode) {
       const formData = this.empMaster.value;
       delete formData.Emp_code;
@@ -176,13 +171,16 @@ export class AddEmployeeComponent implements OnInit {
               this.alertService.openSnackBar("Record added successfuly");
               this.empMaster.reset();
               this.router.navigate(["/emp-master"]);
+              this.showSpinner = false;
             } else {
               this.deleteEmployee(data._id);
               this.alertService.openSnackBar("Error adding record");
+              this.showSpinner = false;
             }
           });
         } else {
           this.alertService.openSnackBar("Error adding record");
+          this.showSpinner = false;
         }
       });
     } else {
@@ -206,24 +204,29 @@ export class AddEmployeeComponent implements OnInit {
           if (data != null) {
             this.alertService.openSnackBar("Record updated successfuly");
             this.router.navigate(["/emp-master"]);
+            this.showSpinner = false;
           } else {
             this.alertService.openSnackBar("Error updating record");
+            this.showSpinner = false;
           }
         });
     }
   }
 
   fetchCommonMaster(CM_Id) {
+    this.showSpinner = true;
     this.masterservice.fetchCommonChildFromCM(CM_Id).subscribe(list => {
       this.userTypes = list;
       this.userTypes = this.userTypes.filter(function(e) {
         return e._id !== "5da8133275c9ae635c147dba";
       });
+      this.showSpinner = false;
     });
   }
 
   private initForm() {
     if (this.editMode) {
+      this.showSpinner = true;
       this.masterservice.fetchEmployeeDetails(this.empId).subscribe(details => {
         this.empMaster.setValue({
           Emp_code: details._id,
@@ -239,6 +242,7 @@ export class AddEmployeeComponent implements OnInit {
           Mobile_no: details.Mobile_no,
           Type_of_user: details.Type_of_user
         });
+        this.showSpinner = false;
       });
     }
   }
@@ -248,14 +252,15 @@ export class AddEmployeeComponent implements OnInit {
   }
 
   fetchYear(CM_Id) {
+    this.showSpinner = true;
     this.masterservice.fetchCommonChildFromCM(CM_Id).subscribe(list => {
       this.yearList = list;
-
       const year = this.currentDate.getFullYear();
       const tempYear: any = this.yearList
         .filter(ele => ele.CMC_Name === year.toString())
         .map(ele => ele._id);
       this.currYear = tempYear[0];
+      this.showSpinner = false;
     });
   }
 

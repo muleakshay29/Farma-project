@@ -32,6 +32,7 @@ import { TransactionsModule } from "./transactions/transactions.module";
 import { UniqueRecordsDirective } from "./_helpers/unique-records.directive";
 import { JwtInterceptor } from "./_helpers/jwt.interceptor";
 import { DialogBoxComponent } from "./_helpers/dialog-box/dialog-box.component";
+import { PaginationComponent } from './_helpers/pagination/pagination.component';
 /** ***************************Feature Modules***************************  **/
 
 @NgModule({
@@ -42,7 +43,8 @@ import { DialogBoxComponent } from "./_helpers/dialog-box/dialog-box.component";
     NavigationsComponent,
     DeleteConfirmationComponent,
     UniqueRecordsDirective,
-    DialogBoxComponent
+    DialogBoxComponent,
+    PaginationComponent
   ],
   imports: [
     BrowserModule,

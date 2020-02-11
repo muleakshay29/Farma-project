@@ -1,12 +1,9 @@
 import { Component, OnInit } from "@angular/core";
 import { Validators, FormGroup, FormBuilder } from "@angular/forms";
 import { MasterServiceService } from "../../../_services/master-service.service";
-import { TypeaheadMatch } from "ngx-bootstrap/typeahead/typeahead-match.class";
 import { AlertService } from "../../../_services/alert.service";
 import { Router, ActivatedRoute, Params } from "@angular/router";
 import { Validations } from "../../../_helpers/validations";
-import { DeleteConfirmationComponent } from "../../../_helpers/delete-confirmation/delete-confirmation.component";
-import { checkSupplierCode } from "../../../_helpers/unique-records.directive";
 
 @Component({
   selector: "app-add-supplier",
@@ -18,6 +15,7 @@ export class AddSupplierComponent implements OnInit {
   supId: any;
   editMode = false;
   buttonText: string;
+  showSpinner: boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -33,14 +31,8 @@ export class AddSupplierComponent implements OnInit {
     this.route.params.subscribe((params: Params) => {
       this.supId = params["id"] ? params["id"] : "";
       this.editMode = params["id"] != null;
-
       this.initForm();
-
       this.buttonText = this.editMode ? "Update" : "Create";
-
-      /* this.SUP_code.setAsyncValidators(
-        checkSupplierCode(this.masterservice, this.supId)
-      ); */
     });
   }
 
@@ -141,6 +133,7 @@ export class AddSupplierComponent implements OnInit {
   }
 
   onSubmit() {
+    this.showSpinner = true;
     if (!this.editMode) {
       const formData = this.supplierMaster.value;
       delete formData.SUP_code;
@@ -149,8 +142,10 @@ export class AddSupplierComponent implements OnInit {
           this.alertService.openSnackBar("Record added successfuly");
           this.supplierMaster.reset();
           this.router.navigate(["/supplier-master"]);
+          this.showSpinner = false;
         } else {
           this.alertService.openSnackBar("Error adding record");
+          this.showSpinner = false;
         }
       });
     } else {
@@ -178,8 +173,10 @@ export class AddSupplierComponent implements OnInit {
           if (data != null) {
             this.alertService.openSnackBar("Record updated successfuly");
             this.router.navigate(["/supplier-master"]);
+            this.showSpinner = false;
           } else {
             this.alertService.openSnackBar("Error updating record");
+            this.showSpinner = false;
           }
         });
     }
@@ -187,6 +184,7 @@ export class AddSupplierComponent implements OnInit {
 
   private initForm() {
     if (this.editMode) {
+      this.showSpinner = true;
       this.masterservice.fetchSupplierDetails(this.supId).subscribe(details => {
         this.supplierMaster.setValue({
           SUP_code: details._id,
@@ -205,6 +203,7 @@ export class AddSupplierComponent implements OnInit {
           SUP_City: details.SUP_City,
           SUP_Pin: details.SUP_Pin
         });
+        this.showSpinner = false;
       });
     }
   }

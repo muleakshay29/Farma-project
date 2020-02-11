@@ -1,6 +1,104 @@
 <h3 class="h3 mb-4 text-gray-800 border-bottom pb-2">Scheme</h3>
 
+<div class="progress-spinner" *ngIf="showSpinner">
+  <mat-spinner *ngIf="showSpinner"></mat-spinner>
+</div>
+
 <div class="card">
+  <div class="card-header text-right">
+    <button type="button" routerLink="/add-scheme" class="btn btn-success">
+      <i class="fas fa-plus-circle"></i> &nbsp; Add New
+    </button>
+  </div>
+
+  <div class="card-body">
+    <div class="form-group">
+      <input
+        type="search"
+        class="form-control rounded-pill"
+        placeholder="Search Product"
+        (keyup)="findScheme($event)"
+      />
+    </div>
+
+    <div class="table-responsive shadow">
+      <table class="table table-bordered table-hover mb-0">
+        <thead class="thead-dark">
+          <th class="text-center">Action</th>
+          <th class="text-center">Product Name</th>
+          <th class="text-center">Quantity</th>
+          <th class="text-center">Free Quantity</th>
+        </thead>
+
+        <tbody>
+          <tr *ngFor="let content of returnedArray">
+            <td class="text-center">
+              <a
+                href="javascript:void(0)"
+                (click)="
+                  openModalWithComponent(content.PRO_ID.PRO_Name, content._id)
+                "
+                matTooltip="Delete"
+                matTooltipPosition="above"
+              >
+                <i class="fas fa-times"></i>
+              </a>
+              &nbsp; | &nbsp;
+              <a
+                routerLink="/add-scheme/{{ content._id }}"
+                matTooltip="Edit"
+                matTooltipPosition="above"
+              >
+                <i class="fas fa-pencil-alt"></i>
+              </a>
+            </td>
+
+            <td class="text-center">{{ content.PRO_ID.PRO_Name }}</td>
+            <td class="text-center">{{ content.Quantity }}</td>
+            <td class="text-center">{{ content.Free_Quantity }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card-footer">
+    <div class="row">
+      <div class="col d-flex justify-content-center">
+        <pagination
+          [totalItems]="dataLength"
+          (pageChanged)="pageChanged($event)"
+          [maxSize]="5"
+          [boundaryLinks]="true"
+          [itemsPerPage]="itemsPerPage"
+          previousText="&lsaquo;"
+          nextText="&rsaquo;"
+          firstText="&laquo;"
+          lastText="&raquo;"
+        ></pagination>
+      </div>
+
+      <div class="col d-flex justify-content-center">
+        <div class="form-group row">
+          <label class="col-sm-7 col-form-label p-0"
+            ><small>Items per page: </small></label
+          >
+          <select
+            class="form-control form-control-sm col-sm-5"
+            (change)="setItemPerPage($event)"
+          >
+            <option value="10">10</option>
+            <option value="25">25</option>
+            <option value="50">50</option>
+            <option value="100">100</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- <div class="card">
   <div class="card-header text-right">
     <button type="button" routerLink="/add-scheme" class="btn btn-success">
       <i class="fas fa-plus-circle"></i> &nbsp; Add New
@@ -93,3 +191,4 @@
     <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
   </div>
 </div>
+ -->

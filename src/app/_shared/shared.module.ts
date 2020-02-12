@@ -18,6 +18,7 @@ import {
 } from "@angular/material";
 
 import { ErrorMessageComponent } from "../_helpers/error-message/error-message.component";
+import { PaginationComponent } from "../_helpers/pagination/pagination.component";
 import {
   AlertModule,
   PopoverModule,
@@ -30,7 +31,7 @@ import {
 import { NgxDatatableModule } from "@swimlane/ngx-datatable";
 
 @NgModule({
-  declarations: [ErrorMessageComponent],
+  declarations: [ErrorMessageComponent, PaginationComponent],
   imports: [
     CommonModule,
     FormsModule,
@@ -76,6 +77,7 @@ import { NgxDatatableModule } from "@swimlane/ngx-datatable";
     MatProgressSpinnerModule,
     MatAutocompleteModule,
     ErrorMessageComponent,
+    PaginationComponent,
     NgxDatatableModule
   ]
 })

@@ -1,52 +1,51 @@
-import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { TransactionService } from "../../_services/transaction.service";
-import {
-  MatTableDataSource,
-  MatSort,
-  MatPaginator,
-  MatDialog
-} from "@angular/material";
-import { BsModalService, BsModalRef } from "ngx-bootstrap/modal";
-import { DeleteConfirmationComponent } from "../../_helpers/delete-confirmation/delete-confirmation.component";
-import { AlertService } from "../../_services/alert.service";
+import { MatDialog } from "@angular/material";
+import { BsModalRef } from "ngx-bootstrap/modal";
 import { DialogBoxComponent } from "../../_helpers/dialog-box/dialog-box.component";
+import { MasterServiceService } from "../../_services/master-service.service";
+import { PageChangedEvent } from "ngx-bootstrap";
 
 @Component({
   selector: "app-sale",
   templateUrl: "./sale.component.html"
 })
 export class SaleComponent implements OnInit {
-  dataSource: MatTableDataSource<any>;
-  displayedColumns: string[] = ["Action", "InvoiceDate", "Product_Name"];
   bsModalRef: BsModalRef;
-
-  @ViewChild(MatSort) sort: MatSort;
-  @ViewChild(MatPaginator) paginator: MatPaginator;
+  returnedArray: any[];
+  dataLength: number;
+  itemsPerPage: number = 10;
+  showSpinner: boolean = false;
 
   constructor(
     private transervice: TransactionService,
-    private modalService: BsModalService,
-    private alertService: AlertService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private masterservice: MasterServiceService
   ) {}
 
   ngOnInit() {
     this.fetchSalesOrder();
   }
 
-  applyFilter(filterValue: string) {
-    this.dataSource.filter = filterValue.trim().toLowerCase();
-
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
-    }
+  pageChanged(event: PageChangedEvent): void {
+    this.fetchSalesOrder(event.page - 1, this.itemsPerPage);
   }
 
-  fetchSalesOrder() {
-    this.transervice.fetchSalesOrder().subscribe(orders => {
-      this.dataSource = new MatTableDataSource(orders);
-      this.dataSource.sort = this.sort;
-      this.dataSource.paginator = this.paginator;
+  setItemPerPage(event) {
+    this.itemsPerPage = event.target.value;
+    this.fetchSalesOrder(event.page - 1, this.itemsPerPage);
+  }
+
+  fetchSalesOrder(pageIndex = 0, pageSize = this.itemsPerPage) {
+    this.transervice.fetchSalesOrder(pageIndex, pageSize).subscribe(orders => {
+      this.returnedArray = orders.slice(0, this.itemsPerPage);
+      this.showSpinner = false;
+    });
+  }
+
+  getItemCount() {
+    this.masterservice.getItemCount("sales-order-count").subscribe(data => {
+      this.dataLength = data.count;
     });
   }
 

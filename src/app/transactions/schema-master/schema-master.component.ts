@@ -5,6 +5,7 @@ import { DeleteConfirmationComponent } from "../../_helpers/delete-confirmation/
 import { AlertService } from "../../_services/alert.service";
 import { PageChangedEvent } from "ngx-bootstrap";
 import { MasterServiceService } from "../../_services/master-service.service";
+import { ProductMasterService } from "../../_services/product-master.service";
 
 @Component({
   selector: "app-schema-master",
@@ -21,7 +22,8 @@ export class SchemaMasterComponent implements OnInit {
     private transervice: TransactionService,
     private modalService: BsModalService,
     private alertService: AlertService,
-    private masterservice: MasterServiceService
+    private masterservice: MasterServiceService,
+    private prod: ProductMasterService
   ) {}
 
   ngOnInit() {
@@ -52,7 +54,7 @@ export class SchemaMasterComponent implements OnInit {
     });
   }
 
-  findScheme(event) {
+  /* findScheme(event) {
     this.showSpinner = true;
     const searchTxt = event.target.value;
 
@@ -63,13 +65,19 @@ export class SchemaMasterComponent implements OnInit {
     }
 
     if (searchTxt.length >= 3) {
-      this.transervice.findScheme({ PRO_Name: searchTxt }).subscribe(result => {
+      this.prod.findProduct({ PRO_Name: searchTxt }).subscribe(result => {
         this.returnedArray = result;
         this.dataLength = result.length;
         this.showSpinner = false;
       });
     }
   }
+
+  findProduct(_id) {
+    this.transervice.findScheme(_id).subscribe(data => {
+      console.log(data);
+    });
+  } */
 
   deleteScheme(_id) {
     this.transervice.deleteScheme(_id).subscribe(data => {

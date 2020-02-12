@@ -117,7 +117,7 @@ export class PurchaseComponent implements OnInit {
             });
         });
 
-        this.alertService.openSnackBar("Purchase is successfuly");
+        this.alertService.openSnackBar("Order Placed Successfuly");
         while (this.ProdList.length) {
           this.ProdList.removeAt(0);
         }
@@ -125,7 +125,7 @@ export class PurchaseComponent implements OnInit {
         this.router.navigate(["/purchase"]);
         this.showSpinner = false;
       } else {
-        this.alertService.openSnackBar("Error ordering purchase");
+        this.alertService.openSnackBar("Error Ordering");
         this.showSpinner = false;
       }
     });

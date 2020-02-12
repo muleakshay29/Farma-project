@@ -1,12 +1,12 @@
 import { Component, OnInit, Input, Output, EventEmitter } from "@angular/core";
 
 @Component({
-  selector: "app-pagination",
+  selector: "appPagination",
   templateUrl: "./pagination.component.html"
 })
 export class PaginationComponent implements OnInit {
-  @Input() dataLength;
-  @Input() itemsPerPage;
+  @Input("dataLength") dataLength: number;
+  @Input("itemsPerPage") itemsPerPage: number;
 
   @Output() pageChanged = new EventEmitter();
   @Output() setItemPerPage = new EventEmitter();

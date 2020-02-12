@@ -12,14 +12,14 @@
   </div>
 
   <div class="card-body">
-    <div class="form-group">
+    <!-- <div class="form-group">
       <input
         type="search"
         class="form-control rounded-pill"
         placeholder="Search Product"
         (keyup)="findScheme($event)"
       />
-    </div>
+    </div> -->
 
     <div class="table-responsive shadow">
       <table class="table table-bordered table-hover mb-0">
@@ -63,132 +63,11 @@
   </div>
 
   <div class="card-footer">
-    <div class="row">
-      <div class="col d-flex justify-content-center">
-        <pagination
-          [totalItems]="dataLength"
-          (pageChanged)="pageChanged($event)"
-          [maxSize]="5"
-          [boundaryLinks]="true"
-          [itemsPerPage]="itemsPerPage"
-          previousText="&lsaquo;"
-          nextText="&rsaquo;"
-          firstText="&laquo;"
-          lastText="&raquo;"
-        ></pagination>
-      </div>
-
-      <div class="col d-flex justify-content-center">
-        <div class="form-group row">
-          <label class="col-sm-7 col-form-label p-0"
-            ><small>Items per page: </small></label
-          >
-          <select
-            class="form-control form-control-sm col-sm-5"
-            (change)="setItemPerPage($event)"
-          >
-            <option value="10">10</option>
-            <option value="25">25</option>
-            <option value="50">50</option>
-            <option value="100">100</option>
-          </select>
-        </div>
-      </div>
-    </div>
+    <appPagination
+      [dataLength]="dataLength"
+      [itemsPerPage]="itemsPerPage"
+      (pageChanged)="pageChanged($event)"
+      (change)="setItemPerPage($event)"
+    ></appPagination>
   </div>
 </div>
-
-<!-- <div class="card">
-  <div class="card-header text-right">
-    <button type="button" routerLink="/add-scheme" class="btn btn-success">
-      <i class="fas fa-plus-circle"></i> &nbsp; Add New
-    </button>
-  </div>
-
-  <div class="card-body">
-    <div class="form-group">
-      <input
-        type="search"
-        (keyup)="applyFilter($event.target.value)"
-        class="form-control rounded-pill"
-        placeholder="Search"
-      />
-    </div>
-
-    <div class="table-responsive shadow">
-      <table
-        mat-table
-        [dataSource]="dataSource"
-        matSort
-        class="table table-bordered table-hover mb-0"
-      >
-        <ng-container matColumnDef="Action">
-          <th *matHeaderCellDef class="text-center">Action</th>
-          <td class="text-center" *matCellDef="let element">
-            <a
-              href="javascript:void(0)"
-              (click)="
-                openModalWithComponent(element.PRO_ID.PRO_Name, element._id)
-              "
-              matTooltip="Delete"
-              matTooltipPosition="above"
-            >
-              <i class="fas fa-times"></i>
-            </a>
-            &nbsp; | &nbsp;
-            <a
-              routerLink="/add-scheme/{{ element._id }}"
-              matTooltip="Edit"
-              matTooltipPosition="above"
-            >
-              <i class="fas fa-pencil-alt"></i>
-            </a>
-          </td>
-        </ng-container>
-
-        <ng-container matColumnDef="PRO_Name">
-          <th *matHeaderCellDef class="text-center" mat-sort-header>
-            Product Name
-          </th>
-          <td *matCellDef="let element" class="text-center">
-            {{ element.PRO_ID.PRO_Name }}
-          </td>
-        </ng-container>
-
-        <ng-container matColumnDef="Quantity">
-          <th *matHeaderCellDef class="text-center" mat-sort-header>
-            Quantity
-          </th>
-          <td *matCellDef="let element" class="text-center">
-            {{ element.Quantity }}
-          </td>
-        </ng-container>
-
-        <ng-container matColumnDef="Free_Quantity">
-          <th *matHeaderCellDef class="text-center" mat-sort-header>
-            Free Quantity
-          </th>
-          <td *matCellDef="let element" class="text-center">
-            {{ element.Free_Quantity }}
-          </td>
-        </ng-container>
-
-        <tr
-          mat-header-row
-          *matHeaderRowDef="displayedColumns"
-          class="text-center thead-dark"
-        ></tr>
-        <tr
-          mat-row
-          *matRowDef="let row; columns: displayedColumns"
-          class="text-center"
-        ></tr>
-      </table>
-    </div>
-  </div>
-
-  <div class="card-footer p-0">
-    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
-  </div>
-</div>
- -->

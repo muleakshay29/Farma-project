@@ -49,9 +49,9 @@ export class SaleComponent implements OnInit {
     });
   }
 
-  openDialog(id): void {
+  openDialog(id, PRO_ID): void {
     const dialogRef = this.dialog.open(DialogBoxComponent, {
-      data: { id: id }
+      data: { id: id, PRO_ID: PRO_ID }
     });
 
     dialogRef.afterClosed().subscribe(result => {

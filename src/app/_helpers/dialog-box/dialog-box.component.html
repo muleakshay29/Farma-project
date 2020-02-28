@@ -41,10 +41,16 @@
             Batch
           </th>
           <td *matCellDef="let element" class="text-center">
-            <!-- {{ element.Product_id.PRO_Name }} -->
-
-            <select class="form-control rounded-pill">
+            <select
+              class="form-control rounded-pill"
+              (change)="getExpiry($event)"
+            >
               <option value="">Select Batch</option>
+              <option
+                value="{{ batch.PRO_Batch }}"
+                *ngFor="let batch of productBatch"
+                >{{ batch.PRO_Batch }}</option
+              >
             </select>
           </td>
         </ng-container>
@@ -54,12 +60,11 @@
             Expiry Date
           </th>
           <td *matCellDef="let element" class="text-center">
-            <!-- {{ element.Product_id.PRO_Barcode }} -->
-
             <input
               type="text"
               class="form-control rounded-pill"
               placeholder="Expiry Date"
+              [value]="productExpiryDate"
             />
           </td>
         </ng-container>

@@ -14,15 +14,22 @@ const httpOptions = {
   providedIn: "root"
 })
 export class StocksService {
-  API_URL = `http://farma.sareeline.com/FarmaAPI/public/index.php/stocks/`;
+  API_URL = `https://ak-mead-test-heroku.herokuapp.com/`;
 
   constructor(private http: HttpClient) {}
 
   addCommonStockTrans(data: any): Observable<any> {
-    const URL = `${this.API_URL}addstocktrans`;
+    const URL = `${this.API_URL}add-stock-trans`;
     return this.http
       .post<any>(URL, data, httpOptions)
       .pipe(catchError(this.handleError<any>("addCommonStockTrans")));
+  }
+
+  fetchProductBatch(PRO_ID): Observable<any> {
+    const URL = `${this.API_URL}fetch-product-batch/${PRO_ID}`;
+    return this.http
+      .get<any>(URL, httpOptions)
+      .pipe(catchError(this.handleError<any>("fetchProductBatch")));
   }
 
   fetchInvoiceNo(): Observable<any> {

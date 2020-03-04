@@ -48,6 +48,17 @@ export class TransactionService {
       .pipe(catchError(this.handleError<any>("fetchSalesOrder")));
   }
 
+  fetchPurchaseOrder(pageIndex: number = 1, pageSize: number): Observable<any> {
+    const URL = `${this.API_URL}fetch-purchase-order`;
+    return this.http
+      .get<any>(URL, {
+        params: new HttpParams()
+          .set("pageIndex", pageIndex.toString())
+          .set("pageSize", pageSize.toString())
+      })
+      .pipe(catchError(this.handleError<any>("fetchPurchaseOrder")));
+  }
+
   addScheme(data: any): Observable<any> {
     const URL = `${this.API_URL}add-scheme`;
     return this.http
@@ -106,6 +117,13 @@ export class TransactionService {
     return this.http
       .post<any>(URL, salesData, httpOptions)
       .pipe(catchError(this.handleError<any>("fetchSalesDetails")));
+  }
+
+  purchaseOrderDetails(data): Observable<any> {
+    const URL = `${this.API_URL}purchase-order-details`;
+    return this.http
+      .post<any>(URL, data, httpOptions)
+      .pipe(catchError(this.handleError<any>("purchaseOrderDetails")));
   }
 
   fetchProduct(): Observable<any> {

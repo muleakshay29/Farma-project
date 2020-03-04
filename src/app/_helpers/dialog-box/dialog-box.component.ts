@@ -23,7 +23,8 @@ export class DialogBoxComponent {
   ];
 
   productBatch = [];
-  productExpiryDate: Date;
+  productExpiryDate: Date = null;
+  purchaseOrderDetails = [];
 
   constructor(
     private trans: TransactionService,
@@ -33,8 +34,14 @@ export class DialogBoxComponent {
   ) {
     this.local_data = { ...data };
     this.action = this.local_data.action;
-    this.fetchSalesDetails(this.local_data);
-    this.fetchProductBatch(this.local_data.PRO_ID);
+    console.log(this.local_data);
+
+    if (this.local_data.salesPurchaseFlag == 2) {
+      this.fetchSalesDetails(this.local_data);
+      this.fetchProductBatch(this.local_data.PRO_ID);
+    } else {
+      this.fetchPurchaseDetails(this.local_data.id);
+    }
   }
 
   doAction() {
@@ -57,17 +64,25 @@ export class DialogBoxComponent {
     });
   }
 
+  fetchPurchaseDetails(PurchaseTransId) {
+    const data = {
+      PurchaseTransId
+    };
+    this.trans.purchaseOrderDetails(data).subscribe(result => {
+      console.log(result);
+      this.purchaseOrderDetails = result;
+    });
+  }
+
   getExpiry(event) {
     const bID = event.target.value;
 
-    var index = this.productBatch.findIndex(item => {
+    this.productBatch.findIndex(item => {
       if (item.PRO_Batch === bID) {
         this.productExpiryDate = null;
         this.productExpiryDate = item.PRO_Expiry;
-        return item.PRO_Expiry;
+        return true;
       }
     });
-
-    console.log(this.productExpiryDate);
   }
 }

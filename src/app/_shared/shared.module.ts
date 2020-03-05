@@ -4,18 +4,16 @@ import { CommonModule } from "@angular/common";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { HttpClientModule } from "@angular/common/http";
 
-import {
-  MatPaginatorModule,
-  MatSnackBarModule,
-  MatSortModule,
-  MatTableModule,
-  MatFormFieldModule,
-  MatInputModule,
-  MatAutocompleteModule,
-  MatDatepickerModule,
-  MatNativeDateModule,
-  MatProgressSpinnerModule
-} from "@angular/material";
+import { MatNativeDateModule } from "@angular/material/core";
+import { MatPaginatorModule } from "@angular/material/paginator";
+import { MatSnackBarModule } from "@angular/material/snack-bar";
+import { MatSortModule } from "@angular/material/sort";
+import { MatTableModule } from "@angular/material/table";
+import { MatFormFieldModule } from "@angular/material/form-field";
+import { MatInputModule } from "@angular/material/input";
+import { MatAutocompleteModule } from "@angular/material/autocomplete";
+import { MatDatepickerModule } from "@angular/material/datepicker";
+import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 
 import { ErrorMessageComponent } from "../_helpers/error-message/error-message.component";
 import { PaginationComponent } from "../_helpers/pagination/pagination.component";

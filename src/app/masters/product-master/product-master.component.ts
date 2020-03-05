@@ -1,11 +1,5 @@
 import { Component, OnInit, Input } from "@angular/core";
 import { ProductMasterService } from "../../_services/product-master.service";
-import {
-  MatTableDataSource,
-  MatSort,
-  MatPaginator,
-  PageEvent
-} from "@angular/material";
 import { BsModalService, BsModalRef } from "ngx-bootstrap/modal";
 import { DeleteConfirmationComponent } from "../../_helpers/delete-confirmation/delete-confirmation.component";
 import { AlertService } from "../../_services/alert.service";

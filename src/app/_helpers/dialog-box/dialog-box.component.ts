@@ -1,8 +1,8 @@
 import { Component, Inject, Optional } from "@angular/core";
-import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material";
+import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
 import { TransactionService } from "../../_services/transaction.service";
 import { StocksService } from "../../_services/stocks.service";
-import { MatTableDataSource } from "@angular/material";
+import { MatTableDataSource } from "@angular/material/table";
 
 @Component({
   selector: "app-dialog-box",

@@ -1,6 +1,5 @@
 import { Component, OnInit, ViewChild } from "@angular/core";
 import { MasterServiceService } from "../../_services/master-service.service";
-import { MatTableDataSource, MatSort, MatPaginator } from "@angular/material";
 import { BsModalService, BsModalRef } from "ngx-bootstrap/modal";
 import { DeleteConfirmationComponent } from "../../_helpers/delete-confirmation/delete-confirmation.component";
 import { AlertService } from "../../_services/alert.service";

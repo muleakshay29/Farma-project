@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { TransactionService } from "../../_services/transaction.service";
-import { MatDialog } from "@angular/material";
+import { MatDialog } from "@angular/material/dialog";
 import { BsModalRef } from "ngx-bootstrap/modal";
 import { DialogBoxComponent } from "../../_helpers/dialog-box/dialog-box.component";
 import { MasterServiceService } from "../../_services/master-service.service";

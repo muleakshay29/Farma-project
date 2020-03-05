@@ -13,15 +13,15 @@ const routes: Routes = [
 
   {
     path: "authentication",
-    loadChildren: "./authentication/authentication.module#AuthenticationModule"
+    loadChildren: () => import('./authentication/authentication.module').then(m => m.AuthenticationModule)
   },
   {
     path: "masters",
-    loadChildren: "./masters/masters.module#MastersModule"
+    loadChildren: () => import('./masters/masters.module').then(m => m.MastersModule)
   },
   {
     path: "stocks",
-    loadChildren: "./stocks/stocks.module#StocksModule"
+    loadChildren: () => import('./stocks/stocks.module').then(m => m.StocksModule)
   }
 ];
 

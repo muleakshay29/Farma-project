@@ -8,7 +8,7 @@
       (ngSubmit)="onSubmit()"
     >
       <div class="form-group">
-        <input
+        <!-- <input
           formControlName="Product"
           [typeahead]="productList"
           typeaheadOptionField="PRO_Name"
@@ -17,7 +17,25 @@
           class="form-control rounded-pill"
           placeholder="Search Product"
           adaptivePosition="true"
+        /> -->
+
+        <input
+          type="text"
+          class="form-control rounded-pill"
+          formControlName="Product"
+          placeholder="Search Product"
+          [matAutocomplete]="auto"
+          (keypress)="findProduct($event)"
         />
+        <mat-autocomplete
+          #auto="matAutocomplete"
+          (optionSelected)="onSelect($event.option.value)"
+        >
+          <mat-option *ngFor="let prod of productList" [value]="prod">
+            {{ prod.PRO_Name }}
+          </mat-option>
+        </mat-autocomplete>
+
         <app-error-message [control]="Product"></app-error-message>
       </div>
 

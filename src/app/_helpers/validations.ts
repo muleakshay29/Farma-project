@@ -54,7 +54,7 @@ export class Validations {
     if (control.value === null) {
       return { floatNumbers: true };
     } else {
-      if (control.value.match("^(?=.)([+-]?([0-9]*)(.([0-9]+))?)$")) {
+      if (control.value.match(/^-?[\d.]+(?:e-?\d+)?$/)) {
         return null;
       } else {
         return { floatNumbers: true };

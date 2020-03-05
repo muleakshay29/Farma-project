@@ -20,7 +20,7 @@
       </div>
 
       <div class="form-group">
-        <input
+        <!-- <input
           type="text"
           class="form-control rounded-pill"
           formControlName="Product"
@@ -30,26 +30,60 @@
           adaptivePosition="true"
           (typeaheadOnSelect)="onSelect($event)"
           [typeaheadOptionsInScrollableView]="5"
-        />
-        <app-error-message [control]="Product"></app-error-message>
-      </div>
+        /> -->
 
-      <div class="form-group">
         <input
-          type="hidden"
-          formControlName="PRO_code"
+          type="text"
           class="form-control rounded-pill"
+          formControlName="Product"
+          placeholder="Product Name"
+          [matAutocomplete]="auto"
+          (keypress)="findProduct($event)"
         />
+        <mat-autocomplete
+          #auto="matAutocomplete"
+          (optionSelected)="onSelect($event.option.value)"
+        >
+          <mat-option *ngFor="let prod of allProduct" [value]="prod">
+            {{ prod.PRO_Name }}
+          </mat-option>
+        </mat-autocomplete>
+
+        <app-error-message [control]="Product"></app-error-message>
       </div>
 
       <div class="form-group">
         <input
           type="text"
           class="form-control rounded-pill"
-          formControlName="PRO_batch"
+          formControlName="PRO_Batch"
           placeholder="Batch"
         />
-        <app-error-message [control]="PRO_batch"></app-error-message>
+        <app-error-message [control]="PRO_Batch"></app-error-message>
+      </div>
+
+      <div class="form-group">
+        <input
+          type="text"
+          class="form-control rounded-pill"
+          formControlName="PRO_Expiry"
+          placeholder="Product Expiry Date"
+          bsDatepicker
+          [bsConfig]="{
+            adaptivePosition: true,
+            dateInputFormat: 'DD-MM-YYYY'
+          }"
+        />
+        <app-error-message [control]="PRO_Expiry"></app-error-message>
+      </div>
+
+      <div class="form-group">
+        <select class="form-control rounded-pill" formControlName="Stock_Type">
+          <option value="">Select Stock Type</option>
+          <option value="{{ stype._id }}" *ngFor="let stype of stockTypes">{{
+            stype.CMC_Name
+          }}</option>
+        </select>
       </div>
 
       <div class="form-group">

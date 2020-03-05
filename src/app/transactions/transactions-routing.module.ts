@@ -3,6 +3,7 @@ import { Routes, RouterModule } from "@angular/router";
 
 import { AccountMasterComponent } from "./account-master/account-master.component";
 import { PurchaseComponent } from "./purchase/purchase.component";
+import { AddOrderComponent } from "./purchase/add-order/add-order.component";
 import { SchemaMasterComponent } from "./schema-master/schema-master.component";
 import { AddSchemaComponent } from "./schema-master/add-schema/add-schema.component";
 import { SaleComponent } from "./sale/sale.component";
@@ -17,7 +18,13 @@ const routes: Routes = [
     data: { roles: [Role.Admin] }
   },
   {
-    path: "purchase",
+    path: "add-order",
+    component: AddOrderComponent,
+    canActivate: [AuthGuard],
+    data: { roles: [Role.Admin] }
+  },
+  {
+    path: "order",
     component: PurchaseComponent,
     canActivate: [AuthGuard],
     data: { roles: [Role.Admin] }

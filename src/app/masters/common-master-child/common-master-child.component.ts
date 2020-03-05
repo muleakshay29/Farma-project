@@ -4,18 +4,18 @@ import { MatTableDataSource, MatSort, MatPaginator } from "@angular/material";
 import { BsModalService, BsModalRef } from "ngx-bootstrap/modal";
 import { DeleteConfirmationComponent } from "../../_helpers/delete-confirmation/delete-confirmation.component";
 import { AlertService } from "../../_services/alert.service";
+import { PageChangedEvent } from "ngx-bootstrap/pagination";
 
 @Component({
   selector: "app-common-master-child",
   templateUrl: "./common-master-child.component.html"
 })
 export class CommonMasterChildComponent implements OnInit {
-  dataSource: MatTableDataSource<any>;
-  displayedColumns: string[] = ["Action", "CM_Name", "CMC_Name"];
   bsModalRef: BsModalRef;
-
-  @ViewChild(MatSort) sort: MatSort;
-  @ViewChild(MatPaginator) paginator: MatPaginator;
+  returnedArray: any[];
+  dataLength: number;
+  itemsPerPage: number = 10;
+  showSpinner: boolean = false;
 
   constructor(
     private masterservice: MasterServiceService,
@@ -25,24 +25,53 @@ export class CommonMasterChildComponent implements OnInit {
 
   ngOnInit() {
     this.fetchCommonMasterChild();
+    this.getItemCount();
   }
 
-  applyFilter(filterValue: string) {
-    this.dataSource.filter = filterValue.trim().toLowerCase();
-
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
-    }
+  pageChanged(event: PageChangedEvent): void {
+    this.fetchCommonMasterChild(event.page - 1, this.itemsPerPage);
   }
 
-  fetchCommonMasterChild() {
+  setItemPerPage(event) {
+    this.itemsPerPage = event.target.value;
+    this.fetchCommonMasterChild(event.page - 1, this.itemsPerPage);
+  }
+
+  fetchCommonMasterChild(pageIndex = 0, pageSize = this.itemsPerPage) {
+    this.showSpinner = true;
     this.masterservice
-      .fetchCommonMasterChild()
+      .fetchCommonMasterChild(pageIndex, pageSize)
       .subscribe(commonMasterCHildList => {
-        this.dataSource = new MatTableDataSource(commonMasterCHildList);
-        this.dataSource.sort = this.sort;
-        this.dataSource.paginator = this.paginator;
+        this.returnedArray = commonMasterCHildList.slice(0, this.itemsPerPage);
+        this.showSpinner = false;
       });
+  }
+
+  getItemCount() {
+    this.masterservice.getItemCount("cmc-item-count").subscribe(data => {
+      this.dataLength = data.count;
+    });
+  }
+
+  findCommonMasterChild(event) {
+    const searchTxt = event.target.value;
+    this.showSpinner = true;
+
+    if (searchTxt == "" || searchTxt.length == 0) {
+      this.fetchCommonMasterChild();
+      this.getItemCount();
+      this.showSpinner = false;
+    }
+
+    if (searchTxt.length >= 3) {
+      this.masterservice
+        .findCommonMasterChild({ CMC_Name: searchTxt })
+        .subscribe(result => {
+          this.returnedArray = result;
+          this.dataLength = result.length;
+          this.showSpinner = false;
+        });
+    }
   }
 
   deleteCommonMasterChild(CMC_Id) {
@@ -52,6 +81,7 @@ export class CommonMasterChildComponent implements OnInit {
         this.fetchCommonMasterChild();
       } else {
         this.alertService.openSnackBar("Error deleting record");
+        this.showSpinner = false;
       }
     });
   }
@@ -67,6 +97,7 @@ export class CommonMasterChildComponent implements OnInit {
     this.bsModalRef.content.onClose.subscribe((result: boolean) => {
       if (result == true) {
         this.deleteCommonMasterChild(CMC_Id);
+        this.showSpinner = true;
       }
     });
   }

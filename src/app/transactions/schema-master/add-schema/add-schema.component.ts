@@ -2,10 +2,8 @@ import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
 import { Validators, FormGroup, FormBuilder } from "@angular/forms";
 import { TransactionService } from "../../../_services/transaction.service";
 import { ProductMasterService } from "../../../_services/product-master.service";
-import { Validations } from "../../../_helpers/validations";
 import { Router, ActivatedRoute } from "@angular/router";
 import { AlertService } from "../../../_services/alert.service";
-import { TypeaheadMatch } from "ngx-bootstrap/typeahead/typeahead-match.class";
 
 @Component({
   selector: "app-add-schema",
@@ -19,7 +17,7 @@ export class AddSchemaComponent implements OnInit {
   allProduct: [];
   selectedProduct: any;
   selectedProductCode: any;
-  showSpinner: boolean = true;
+  showSpinner: boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -32,7 +30,7 @@ export class AddSchemaComponent implements OnInit {
 
   ngOnInit() {
     this.schemeMaster = this.fb.group({
-      PRO_Name: ["", [Validators.required, Validations.alphaNumericPattern]],
+      PRO_Name: ["", Validators.required],
       Quantity: ["", [Validators.required]],
       Free_Quantity: ["", [Validators.required]]
     });
@@ -46,8 +44,6 @@ export class AddSchemaComponent implements OnInit {
       this.updateFlag = true;
       this.fetchSchemeDetails();
     }
-
-    this.fetchProduct();
   }
 
   get PRO_Name() {
@@ -62,19 +58,34 @@ export class AddSchemaComponent implements OnInit {
     return this.schemeMaster.get("Free_Quantity");
   }
 
+  findProduct(event) {
+    const searchTxt = event.target.value;
+
+    if (searchTxt.length >= 3) {
+      this.showSpinner = true;
+
+      this.pservice.findProduct({ PRO_Name: searchTxt }).subscribe(result => {
+        this.showSpinner = false;
+        this.allProduct = result;
+      });
+    }
+  }
+
   fetchProduct() {
+    this.showSpinner = true;
     this.pservice.fetchProduct().subscribe(allProduct => {
       this.allProduct = allProduct;
       this.showSpinner = false;
     });
   }
 
-  onSelect(event: TypeaheadMatch): void {
-    this.selectedProduct = event.item;
-    this.selectedProductCode = this.selectedProduct._id;
+  onSelect(value) {
+    this.PRO_Name.patchValue(value.PRO_Name);
+    this.selectedProductCode = value._id;
   }
 
   fetchSchemeDetails() {
+    this.showSpinner = true;
     this.transservice.fetchSchemeDetails(this.schemeID).subscribe(details => {
       this.schemeMaster.setValue({
         PRO_Name: details.PRO_ID.PRO_Name,
@@ -83,10 +94,12 @@ export class AddSchemaComponent implements OnInit {
       });
 
       this.selectedProductCode = details.PRO_ID._id;
+      this.showSpinner = false;
     });
   }
 
   onSubmit() {
+    this.showSpinner = true;
     if (this.schemeID == "" || this.schemeID == null) {
       const formData = this.schemeMaster.value;
       formData.PRO_ID = this.selectedProductCode;
@@ -96,8 +109,10 @@ export class AddSchemaComponent implements OnInit {
           this.alertService.openSnackBar("Record added successfuly");
           this.schemeMaster.reset();
           this.router.navigate(["/scheme"]);
+          this.showSpinner = false;
         } else {
           this.alertService.openSnackBar("Error adding record");
+          this.showSpinner = false;
         }
       });
     } else {
@@ -113,8 +128,10 @@ export class AddSchemaComponent implements OnInit {
           if (data !== null) {
             this.alertService.openSnackBar("Record updated successfuly");
             this.router.navigate(["/scheme"]);
+            this.showSpinner = false;
           } else {
             this.alertService.openSnackBar("Error updating record");
+            this.showSpinner = false;
           }
         });
     }

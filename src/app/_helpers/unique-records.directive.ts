@@ -12,68 +12,75 @@ import { MasterServiceService } from "../_services/master-service.service";
 import { ProductMasterService } from "../_services/product-master.service";
 
 export function cmnameCheckValidator(
-  masterservice: MasterServiceService
+  masterservice: MasterServiceService,
+  _id: string
 ): AsyncValidatorFn {
   return (
     c: AbstractControl
   ): Promise<ValidationErrors | null> | Observable<ValidationErrors | null> => {
-    return masterservice.checkcmname(c.value).pipe(
-      map(data => {
-        return Object.keys(data).length > 0 ? { alreadyExist: true } : null;
+    return masterservice.checkcmname(c.value, _id).pipe(
+      map(res => {
+        return res.alreadyExist ? { alreadyExist: true } : null;
       })
     );
   };
 }
 
 export function cmcnameCheckValidator(
-  masterservice: MasterServiceService
+  masterservice: MasterServiceService,
+  _id: string
 ): AsyncValidatorFn {
   return (
     c: AbstractControl
   ): Promise<ValidationErrors | null> | Observable<ValidationErrors | null> => {
-    return masterservice.checkcmcname(c.value).pipe(
-      map(data => {
-        return Object.keys(data).length > 0 ? { alreadyExist: true } : null;
+    return masterservice.checkcmcname(c.value, _id).pipe(
+      map(res => {
+        return res.alreadyExist ? { alreadyExist: true } : null;
       })
     );
   };
 }
 
 export function empCodeCheckValidator(
-  masterservice: MasterServiceService
+  masterservice: MasterServiceService,
+  _id: string
 ): AsyncValidatorFn {
   return (
     c: AbstractControl
   ): Promise<ValidationErrors | null> | Observable<ValidationErrors | null> => {
-    return masterservice.checkempcode(c.value).pipe(
-      map(data => {
-        return Object.keys(data).length > 0 ? { alreadyExist: true } : null;
+    return masterservice.checkempcode(c.value, _id).pipe(
+      map(res => {
+        return res.alreadyExist ? { alreadyExist: true } : null;
       })
     );
   };
 }
 
-export function checkProcode(pservice: ProductMasterService): AsyncValidatorFn {
+export function checkProcode(
+  pservice: ProductMasterService,
+  _id: string
+): AsyncValidatorFn {
   return (
     c: AbstractControl
   ): Promise<ValidationErrors | null> | Observable<ValidationErrors | null> => {
-    return pservice.checkProcode(c.value).pipe(
-      map(data => {
-        return Object.keys(data).length > 0 ? { alreadyExist: true } : null;
+    return pservice.checkProcode(c.value, _id).pipe(
+      map(res => {
+        return res.alreadyExist ? { alreadyExist: true } : null;
       })
     );
   };
 }
 
 export function checkSupplierCode(
-  masterservice: MasterServiceService
+  masterservice: MasterServiceService,
+  _id: string
 ): AsyncValidatorFn {
   return (
     c: AbstractControl
   ): Promise<ValidationErrors | null> | Observable<ValidationErrors | null> => {
-    return masterservice.checkSupplierCode(c.value).pipe(
-      map(data => {
-        return Object.keys(data).length > 0 ? { alreadyExist: true } : null;
+    return masterservice.checkSupplierCode(c.value, _id).pipe(
+      map(res => {
+        return res.alreadyExist ? { alreadyExist: true } : null;
       })
     );
   };

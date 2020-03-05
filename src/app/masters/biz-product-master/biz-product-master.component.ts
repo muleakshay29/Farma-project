@@ -46,7 +46,7 @@ export class BizProductMasterComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.fetchProduct();
+    // this.fetchProduct();
     this.fetchCommonMaster("5da8128775c9ae635c147dac");
 
     this.bizProductMaster = this.fb.group({
@@ -68,14 +68,19 @@ export class BizProductMasterComponent implements OnInit {
     return this.bizProductMaster.get("PRO_code");
   }
 
-  fetchProduct() {
-    this.pservice.fetchProduct().subscribe(productlist => {
-      this.productList = productlist;
-    });
+  findProduct(event) {
+    const searchTxt = event.target.value;
+    if (searchTxt.length >= 3) {
+      this.pservice.findProduct({ PRO_Name: searchTxt }).subscribe(result => {
+        this.productList = result;
+      });
+    }
   }
 
-  onSelect(event: TypeaheadMatch): void {
-    this.selectedProduct = event.item;
+  onSelect(value) {
+    this.Product.patchValue(value.PRO_Name);
+
+    this.selectedProduct = value;
     this.PRO_Name = this.selectedProduct.PRO_Name;
     this.PRO_Barcode = this.selectedProduct.PRO_Barcode;
     this.PRO_Manufraturer = this.selectedProduct.PRO_Manufraturer;
@@ -96,6 +101,34 @@ export class BizProductMasterComponent implements OnInit {
     });
   }
 
+  fetchProduct() {
+    this.pservice.fetchProduct().subscribe(productlist => {
+      this.productList = productlist;
+    });
+  }
+
+  /* onSelect(event: TypeaheadMatch): void {
+    this.selectedProduct = event.item;
+    this.PRO_Name = this.selectedProduct.PRO_Name;
+    this.PRO_Barcode = this.selectedProduct.PRO_Barcode;
+    this.PRO_Manufraturer = this.selectedProduct.PRO_Manufraturer;
+    this.PRO_SGST = this.selectedProduct.PRO_SGST;
+    this.PRO_CGST = this.selectedProduct.PRO_CGST;
+    this.PRO_IGST = this.selectedProduct.PRO_IGST;
+    this.PRO_CESS = this.selectedProduct.PRO_CESS;
+    this.PRO_HSN = this.selectedProduct.PRO_HSN;
+    this.PRO_ScheduledUnder = this.selectedProduct.PRO_ScheduledUnder;
+    this.PRO_Content = this.selectedProduct.PRO_Content;
+    this.PRO_ReorderLevel = this.selectedProduct.PRO_ReorderLevel;
+    this.PRO_Minimum_stock = this.selectedProduct.PRO_Minimum_stock;
+    this.PRO_Type = this.selectedProduct.PRO_Type;
+    this.imgURL = this.selectedProduct.PRO_Image;
+
+    this.bizProductMaster.patchValue({
+      PRO_code: this.selectedProduct.PRO_code
+    });
+  } */
+
   fetchCommonMaster(CM_Id) {
     this.masterservice.fetchCommonChildFromCM(CM_Id).subscribe(list => {
       this.typeOfProduct = list;
@@ -105,10 +138,6 @@ export class BizProductMasterComponent implements OnInit {
   onSubmit() {
     const formData = this.bizProductMaster.value;
     formData.Date = this.today;
-    // delete formData.Product;
-    console.log(formData);
-    console.log(this.selectedProduct);
-
     this.pservice.addBizProduct(this.selectedProduct).subscribe(data => {
       if (data != null) {
         this.alertService.openSnackBar("Product added successfuly");

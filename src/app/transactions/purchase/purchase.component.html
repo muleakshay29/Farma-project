@@ -1,250 +1,56 @@
-<h3 class="h3 mb-4 text-gray-800 border-bottom pb-2">Purchase Invoice</h3>
+<h3 class="h3 mb-4 text-gray-800 border-bottom pb-2">Order</h3>
 
-<div class="card shadow mb-4">
+<div class="progress-spinner" *ngIf="showSpinner">
+  <mat-spinner *ngIf="showSpinner"></mat-spinner>
+</div>
+
+<div class="card">
+  <div class="card-header text-right">
+    <button type="button" routerLink="/add-order" class="btn btn-success">
+      <i class="fas fa-plus-circle"></i> &nbsp; New Order
+    </button>
+  </div>
+
   <div class="card-body">
-    <form
-      [formGroup]="purchase"
-      #formDirective="ngForm"
-      (ngSubmit)="onSubmit()"
-    >
-      <div class="card">
-        <div class="card-body">
-          <div class="form-group row ">
-            <div class="col-sm-6 mb-3 mb-sm-0">
-              <input
-                type="text"
-                class="form-control rounded-pill"
-                formControlName="InvoiceDate"
-                placeholder="Invoice Date"
-                bsDatepicker
-                [bsConfig]="{
-                  adaptivePosition: true,
-                  dateInputFormat: 'DD-MM-YYYY'
-                }"
-              />
-              <app-error-message [control]="InvoiceDate"></app-error-message>
-            </div>
+    <div class="table-responsive shadow">
+      <table class="table table-bordered table-hover mb-0">
+        <thead class="thead-dark">
+          <th class="text-center">Action</th>
+          <th class="text-center">Invoice Date</th>
+          <th class="text-center">Supplier</th>
+        </thead>
 
-            <div class="col-sm-6 mb-3 mb-sm-0">
-              <!-- <input
-                type="text"
-                class="form-control rounded-pill"
-                formControlName="InvoiceNo"
-                placeholder="Invoice Number"
-              /> -->
-
-              <select
-                class="form-control rounded-pill"
-                formControlName="SupplierID"
+        <tbody>
+          <tr *ngFor="let content of returnedArray">
+            <td class="text-center">
+              <a
+                href="javascript:void(0)"
+                matTooltip="Order Details"
+                matTooltipPosition="above"
+                (click)="openDialog(content._id, content.SupplierID._id)"
               >
-                <option value="">Select Supplier</option>
-                <option
-                  value="{{ supplier._id }}"
-                  *ngFor="let supplier of allSuppliers"
-                >
-                  {{ supplier.SUP_CompanyName }}
-                </option>
-              </select>
+                <i class="fas fa-receipt"></i>
+              </a>
+            </td>
 
-              <app-error-message [control]="SupplierID"></app-error-message>
-            </div>
-          </div>
+            <td class="text-center">
+              {{ content.InvoiceDate | date: "dd, MMM yyyy" }}
+            </td>
+            <td class="text-center">
+              {{ content.SupplierID.SUP_CompanyName | uppercase }}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
 
-          <div class="row">
-            <div class="card col-sm-12 mb-3 mb-sm-0">
-              <div class="card-header text-right">
-                <button
-                  type="button"
-                  (click)="addProduct()"
-                  class="btn btn-success"
-                >
-                  <i class="fas fa-plus-circle"></i> &nbsp; Add New
-                </button>
-              </div>
-
-              <div class="card-body">
-                <div class="table-responsive shadow">
-                  <table class="table table-bordered table-hover mb-0">
-                    <thead>
-                      <tr>
-                        <th>Product Name</th>
-                        <th>Scheme</th>
-                        <th>Quantity</th>
-                        <th>Free Quantity</th>
-                        <th>Action</th>
-                      </tr>
-                    </thead>
-
-                    <tbody formArrayName="ProductList">
-                      <tr
-                        *ngFor="
-                          let item of prodFormGroup.controls;
-                          let i = index
-                        "
-                      >
-                        <ng-container [formGroupName]="i">
-                          <td>
-                            <input
-                              type="text"
-                              class="form-control rounded-pill"
-                              formControlName="Product_Name"
-                              placeholder="Item Name"
-                              [typeahead]="allProduct"
-                              typeaheadOptionField="PRO_Name"
-                              [typeaheadOptionsInScrollableView]="5"
-                              adaptivePosition="true"
-                              (typeaheadOnSelect)="onSelect($event, i)"
-                            />
-
-                            <input type="hidden" formControlName="Product_id" />
-                          </td>
-                          <td>
-                            <select
-                              class="form-control rounded-pill"
-                              formControlName="Product_Scheme"
-                              (change)="onSchemeSelect($event, i)"
-                            >
-                              <option value="">Select Scheme</option>
-                              <option
-                                value="{{ scheme._id }}"
-                                *ngFor="let scheme of productSchemeList"
-                              >
-                                Scheme : {{ scheme.Quantity }} -
-                                {{ scheme.Free_Quantity }}
-                              </option>
-                            </select>
-                          </td>
-                          <td>
-                            <input
-                              type="number"
-                              class="form-control rounded-pill"
-                              formControlName="Product_Quantity"
-                              placeholder="Quantity"
-                            />
-                          </td>
-                          <td>
-                            <input
-                              type="number"
-                              class="form-control rounded-pill"
-                              formControlName="Product_Free_Quantity"
-                              placeholder="Free Quantity"
-                            />
-                          </td>
-                          <td>
-                            <button
-                              type="button"
-                              class="btn btn-primary btn-user rounded-pill"
-                              (click)="removeContact()"
-                            >
-                              Remove
-                            </button>
-                          </td></ng-container
-                        >
-                      </tr>
-                    </tbody>
-
-                    <!-- <tr>
-                      <td></td>
-                      <td>
-                        SubTotal
-                      </td>
-                      <td>
-                        <input
-                          type="text"
-                          class="form-control rounded-pill"
-                          formControlName="SubTotal"
-                          (focus)="getsubtotal()"
-                        />
-                      </td>
-                    </tr>
-
-                    <tr>
-                      <td></td>
-                      <td>
-                        CGST
-                      </td>
-                      <td>
-                        <input
-                          type="text"
-                          class="form-control rounded-pill"
-                          value=""
-                          formControlName="CGST"
-                        />
-                      </td>
-                    </tr>
-
-                    <tr>
-                      <td></td>
-                      <td>
-                        SGST
-                      </td>
-                      <td>
-                        <input
-                          type="text"
-                          class="form-control rounded-pill"
-                          value=""
-                          formControlName="SGST"
-                        />
-                      </td>
-                    </tr>
-
-                    <tr>
-                      <td></td>
-                      <td>
-                        IGST
-                      </td>
-                      <td>
-                        <input
-                          type="text"
-                          class="form-control rounded-pill"
-                          value=""
-                          formControlName="IGST"
-                        />
-                      </td>
-                    </tr>
-
-                    <tr>
-                      <td></td>
-                      <td>
-                        Total
-                      </td>
-                      <td>
-                        <input
-                          type="text"
-                          class="form-control rounded-pill"
-                          value=""
-                          formControlName="Total"
-                          (focus)="gettotal()"
-                        />
-                      </td>
-                    </tr> -->
-                  </table>
-                </div>
-              </div>
-            </div>
-          </div>
-          <br />
-
-          <div class="form-group text-center">
-            <button
-              type="submit"
-              value="submit"
-              class="btn btn-primary btn-user rounded-pill"
-              [disabled]="!purchase.valid"
-            >
-              Submit
-            </button>
-
-            <button
-              type="button"
-              class="btn btn-warning btn-user rounded-pill mx-1"
-              (click)="onCancel()"
-            >
-              Clear
-            </button>
-          </div>
-        </div>
-      </div>
-    </form>
+  <div class="card-footer">
+    <appPagination
+      [dataLength]="dataLength"
+      [itemsPerPage]="itemsPerPage"
+      (pageChanged)="pageChanged($event)"
+      (change)="setItemPerPage($event)"
+    ></appPagination>
   </div>
 </div>

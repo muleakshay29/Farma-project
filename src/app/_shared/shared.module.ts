@@ -18,6 +18,7 @@ import {
 } from "@angular/material";
 
 import { ErrorMessageComponent } from "../_helpers/error-message/error-message.component";
+import { PaginationComponent } from "../_helpers/pagination/pagination.component";
 import {
   AlertModule,
   PopoverModule,
@@ -27,8 +28,10 @@ import {
   BsDatepickerModule
 } from "ngx-bootstrap";
 
+import { NgxDatatableModule } from "@swimlane/ngx-datatable";
+
 @NgModule({
-  declarations: [ErrorMessageComponent],
+  declarations: [ErrorMessageComponent, PaginationComponent],
   imports: [
     CommonModule,
     FormsModule,
@@ -49,7 +52,8 @@ import {
     MatAutocompleteModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    NgxDatatableModule
   ],
   exports: [
     CommonModule,
@@ -72,7 +76,9 @@ import {
     MatNativeDateModule,
     MatProgressSpinnerModule,
     MatAutocompleteModule,
-    ErrorMessageComponent
+    ErrorMessageComponent,
+    PaginationComponent,
+    NgxDatatableModule
   ]
 })
 export class SharedModule {}

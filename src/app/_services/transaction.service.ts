@@ -2,7 +2,8 @@ import { Injectable } from "@angular/core";
 import {
   HttpClient,
   HttpHeaders,
-  HttpErrorResponse
+  HttpErrorResponse,
+  HttpParams
 } from "@angular/common/http";
 import { Observable, of } from "rxjs";
 import { map, catchError, tap } from "rxjs/operators";
@@ -36,11 +37,26 @@ export class TransactionService {
       .pipe(catchError(this.handleError<any>("addTransactionChild")));
   }
 
-  fetchSalesOrder(): Observable<any> {
+  fetchSalesOrder(pageIndex: number = 1, pageSize: number): Observable<any> {
     const URL = `${this.API_URL}fetch-sales-order`;
     return this.http
-      .get<any>(URL, httpOptions)
+      .get<any>(URL, {
+        params: new HttpParams()
+          .set("pageIndex", pageIndex.toString())
+          .set("pageSize", pageSize.toString())
+      })
       .pipe(catchError(this.handleError<any>("fetchSalesOrder")));
+  }
+
+  fetchPurchaseOrder(pageIndex: number = 1, pageSize: number): Observable<any> {
+    const URL = `${this.API_URL}fetch-purchase-order`;
+    return this.http
+      .get<any>(URL, {
+        params: new HttpParams()
+          .set("pageIndex", pageIndex.toString())
+          .set("pageSize", pageSize.toString())
+      })
+      .pipe(catchError(this.handleError<any>("fetchPurchaseOrder")));
   }
 
   addScheme(data: any): Observable<any> {
@@ -57,11 +73,22 @@ export class TransactionService {
       .pipe(catchError(this.handleError<any>("updateScheme")));
   }
 
-  fetchScheme(): Observable<any> {
+  fetchScheme(pageIndex: number = 1, pageSize: number): Observable<any> {
     const URL = `${this.API_URL}fetch-scheme`;
     return this.http
-      .get<any>(URL, httpOptions)
+      .get<any>(URL, {
+        params: new HttpParams()
+          .set("pageIndex", pageIndex.toString())
+          .set("pageSize", pageSize.toString())
+      })
       .pipe(catchError(this.handleError<any>("fetchScheme")));
+  }
+
+  findScheme(data: any): Observable<any> {
+    const URL = `${this.API_URL}find-scheme`;
+    return this.http
+      .post<any>(URL, data)
+      .pipe(catchError(this.handleError<any>("findScheme")));
   }
 
   deleteScheme(schemeID): Observable<any> {
@@ -90,6 +117,32 @@ export class TransactionService {
     return this.http
       .post<any>(URL, salesData, httpOptions)
       .pipe(catchError(this.handleError<any>("fetchSalesDetails")));
+  }
+
+  purchaseOrderDetails(data): Observable<any> {
+    const URL = `${this.API_URL}purchase-order-details`;
+    return this.http
+      .post<any>(URL, data, httpOptions)
+      .pipe(catchError(this.handleError<any>("purchaseOrderDetails")));
+  }
+
+  fetchProduct(): Observable<any> {
+    const URL = `${this.API_URL}fetch-products-dropdown`;
+    return this.http
+      .get<any>(URL, httpOptions)
+      .pipe(catchError(this.handleError<any>("fetchProduct")));
+  }
+
+  fetchProduct1(pageIndex: number = 0, pageSize: number = 10): Observable<any> {
+    const URL = `http://localhost:3000/fetch-products`;
+
+    return this.http
+      .get<any>(URL, {
+        params: new HttpParams()
+          .set("pageIndex", pageIndex.toString())
+          .set("pageSize", pageSize.toString())
+      })
+      .pipe(catchError(this.handleError<any>("fetchProduct")));
   }
 
   private handleError<T>(operation = "operation", result?: T) {

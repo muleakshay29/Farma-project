@@ -17,28 +17,17 @@
           class="form-control rounded-pill"
           formControlName="PRO_Name"
           placeholder="Product Name"
-          [typeahead]="allProduct"
-          typeaheadOptionField="PRO_Name"
-          [typeaheadOptionsInScrollableView]="5"
-          adaptivePosition="true"
-          (typeaheadOnSelect)="onSelect($event)"
+          [matAutocomplete]="auto"
+          (keypress)="findProduct($event)"
         />
-
-        <!-- <input
-          type="text"
-          class="form-control rounded-pill"
-          formControlName="PRO_Name"
-          placeholder="Product Name"
-          [typeahead]="allProduct"
-          typeaheadOptionField="PRO_Name"
-          [typeaheadOptionsInScrollableView]="5"
-          adaptivePosition="true"
-          (typeaheadOnSelect)="onSelect($event)"
-          [typeaheadMinLength]="4"
-          [typeaheadHideResultsOnBlur]="typeaheadHideResultsOnBlur"
-          [typeaheadAsync]="true"
-          (typeaheadLoading)="changeTypeaheadLoading($event)"
-        /> -->
+        <mat-autocomplete
+          #auto="matAutocomplete"
+          (optionSelected)="onSelect($event.option.value)"
+        >
+          <mat-option *ngFor="let prod of allProduct" [value]="prod">
+            {{ prod.PRO_Name }}
+          </mat-option>
+        </mat-autocomplete>
 
         <app-error-message [control]="PRO_Name"></app-error-message>
       </div>

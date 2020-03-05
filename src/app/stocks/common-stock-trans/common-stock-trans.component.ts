@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ProductMasterService } from "../../_services/product-master.service";
+import { MasterServiceService } from "../../_services/master-service.service";
 import { Observable } from "rxjs";
 import { Router } from "@angular/router";
 import { TypeaheadMatch } from "ngx-bootstrap/typeahead/typeahead-match.class";
@@ -17,38 +18,39 @@ export class CommonStockTransComponent implements OnInit {
   allProductList = [];
   filteredOptions: Observable<any>;
   date = new Date();
-  d: number;
-  m: number;
-  y: number;
-  today: any;
   Stock_type: number;
-  invoiceNo: number = 0;
+  invoiceNo: any = 0;
+  allProduct: [];
+  showSpinner: boolean = false;
+  selectedProductCode: any;
+  stockTypes = [];
+  yearID: String;
 
   constructor(
     private fb: FormBuilder,
     private pservice: ProductMasterService,
     private sservice: StocksService,
     private router: Router,
-    private alertService: AlertService
+    private alertService: AlertService,
+    private masterservice: MasterServiceService
   ) {}
 
   ngOnInit() {
-    this.fetchAllProducts();
-    this.fetchInvoiceNo();
+    this.fetchCommonMaster("5e54db78fed7070017b4a01a");
 
     this.stockTrans = this.fb.group({
-      Invoice_no: [""],
+      Invoice_no: [this.invoiceNo],
       Product: ["", Validators.required],
       PRO_code: [""],
-      PRO_batch: ["", [Validators.required, Validations.alphaNumericPattern]],
+      PRO_Batch: ["", [Validators.required, Validations.alphaNumericPattern]],
+      PRO_Expiry: ["", Validators.required],
       PRO_purchase_unit: [""],
-      PRO_sales_unit: [""]
+      PRO_sales_unit: [""],
+      Stock_Type: ["", Validators.required]
     });
 
-    this.d = this.date.getDate();
-    this.m = this.date.getMonth() + 1;
-    this.y = this.date.getFullYear();
-    this.today = this.y + "-" + this.m + "-" + this.d;
+    this.getYearId();
+    this.generateInvoice();
   }
 
   get Invoice_no() {
@@ -59,12 +61,16 @@ export class CommonStockTransComponent implements OnInit {
     return this.stockTrans.get("Product");
   }
 
-  get PRO_code() {
-    return this.stockTrans.get("PRO_code");
+  get PRO_Batch() {
+    return this.stockTrans.get("PRO_Batch");
   }
 
-  get PRO_batch() {
-    return this.stockTrans.get("PRO_batch");
+  get PRO_Expiry() {
+    return this.stockTrans.get("PRO_Expiry");
+  }
+
+  get Stock_Type() {
+    return this.stockTrans.get("Stock_Type");
   }
 
   get PRO_purchase_unit() {
@@ -75,52 +81,74 @@ export class CommonStockTransComponent implements OnInit {
     return this.stockTrans.get("PRO_sales_unit");
   }
 
-  onSubmit() {
-    const formData = this.stockTrans.value;
-    formData.Date = this.today;
+  generateInvoice() {
+    this.invoiceNo = (
+      Math.random()
+        .toString(36)
+        .substring(2, 15) +
+      Math.random()
+        .toString(36)
+        .substring(2, 15)
+    ).toUpperCase();
 
-    if (this.PRO_sales_unit.value === "" || this.PRO_sales_unit.value === 0) {
-      this.Stock_type = 1; //Stock Type - Purchase
-    } else {
-      this.Stock_type = 2; //Stock Type - Sales
+    this.Invoice_no.patchValue(this.invoiceNo);
+  }
+
+  findProduct(event) {
+    const searchTxt = event.target.value;
+
+    if (searchTxt.length >= 3) {
+      this.showSpinner = true;
+
+      this.pservice.findProduct({ PRO_Name: searchTxt }).subscribe(result => {
+        this.showSpinner = false;
+        this.allProduct = result;
+      });
     }
+  }
 
-    formData.Stock_type = this.Stock_type;
+  onSelect(value) {
+    this.Product.patchValue(value.PRO_Name);
+    this.selectedProductCode = value._id;
+  }
+
+  onSubmit() {
+    this.showSpinner = true;
+    const formData = this.stockTrans.value;
+    formData.PRO_ID = this.selectedProductCode;
+    formData.Date = this.date;
+    formData.Year_id = this.yearID;
+    delete formData.PRO_code;
     delete formData.Product;
 
     this.sservice.addCommonStockTrans(formData).subscribe(data => {
-      if (data > 0) {
+      if (data != null) {
         this.alertService.openSnackBar("Stock added successfuly");
         this.stockTrans.reset();
-        this.fetchInvoiceNo();
+        this.generateInvoice();
         this.router.navigate(["/common-stocks"]);
+        this.showSpinner = false;
       } else {
         this.alertService.openSnackBar("Error adding stock. Please try again.");
+        this.showSpinner = false;
       }
     });
   }
 
-  fetchAllProducts() {
-    this.pservice.fetchProduct().subscribe(productlist => {
-      this.allProductList = productlist;
+  fetchCommonMaster(CM_Id) {
+    this.showSpinner = true;
+    this.masterservice.fetchCommonChildFromCM(CM_Id).subscribe(list => {
+      this.stockTypes = list;
+      this.showSpinner = false;
     });
   }
 
-  onSelect(event: TypeaheadMatch): void {
-    // console.log(event.item);
-    this.stockTrans.patchValue({
-      PRO_code: event.item.PRO_code
-    });
-  }
-
-  fetchInvoiceNo() {
-    this.sservice.fetchInvoiceNo().subscribe(data => {
-      if (data.Invoice_no === null) {
-        this.invoiceNo = 1;
-      } else {
-        this.invoiceNo = data.Invoice_no;
-        this.invoiceNo++;
-      }
-    });
+  getYearId() {
+    const year = this.date.getFullYear();
+    this.masterservice
+      .findCommonMasterChild({ CMC_Name: year })
+      .subscribe(result => {
+        this.yearID = result[0]._id;
+      });
   }
 }

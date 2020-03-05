@@ -1,24 +1,4 @@
-<!-- <div class="modal-header">
-  <h4 class="modal-title pull-left text-dark">{{ title }}</h4>
-</div>
-<div class="modal-body">
-  <div class="card shadow mb-4">
-    <div class="card-body">
-      <form [formGroup]="sales" #formDirective="ngForm" (ngSubmit)="onSubmit()">
-        <div class="form-group">
-          <input
-            type="text"
-            class="form-control rounded-pill"
-            formControlName="CM_Name"
-            placeholder="Enter Name"
-          />
-        </div>
-      </form>
-    </div>
-  </div>
-</div> -->
-
-<div class="card">
+<div class="card" *ngIf="this.local_data.salesPurchaseFlag == 2">
   <div class="card-body">
     <div class="table-responsive shadow">
       <table
@@ -41,10 +21,16 @@
             Batch
           </th>
           <td *matCellDef="let element" class="text-center">
-            <!-- {{ element.Product_id.PRO_Name }} -->
-
-            <select class="form-control rounded-pill">
+            <select
+              class="form-control rounded-pill"
+              (change)="getExpiry($event)"
+            >
               <option value="">Select Batch</option>
+              <option
+                value="{{ batch.PRO_Batch }}"
+                *ngFor="let batch of productBatch"
+                >{{ batch.PRO_Batch }}</option
+              >
             </select>
           </td>
         </ng-container>
@@ -54,12 +40,11 @@
             Expiry Date
           </th>
           <td *matCellDef="let element" class="text-center">
-            <!-- {{ element.Product_id.PRO_Barcode }} -->
-
             <input
               type="text"
               class="form-control rounded-pill"
               placeholder="Expiry Date"
+              [value]="productExpiryDate | date: 'dd-MM-yyyy'"
             />
           </td>
         </ng-container>
@@ -69,8 +54,6 @@
             MRP
           </th>
           <td *matCellDef="let element" class="text-center">
-            <!-- {{ element.Product_Quantity }} -->
-
             <input
               type="text"
               class="form-control rounded-pill"
@@ -84,8 +67,6 @@
             Purchase Rate
           </th>
           <td *matCellDef="let element" class="text-center">
-            <!-- {{ element.Product_Free_Quantity }} -->
-
             <input
               type="text"
               class="form-control rounded-pill"
@@ -99,8 +80,6 @@
             Sale Rate
           </th>
           <td *matCellDef="let element" class="text-center">
-            <!-- {{ element.Product_Free_Quantity }} -->
-
             <input
               type="text"
               class="form-control rounded-pill"
@@ -124,8 +103,43 @@
   </div>
 </div>
 
-<div class="modal-footer">
+<div class="modal-footer" *ngIf="this.local_data.salesPurchaseFlag == 2">
   <button type="button" class="btn btn-primary" (click)="closeDialog()">
     Cancel
+  </button>
+</div>
+
+<div class="card" *ngIf="this.local_data.salesPurchaseFlag == 1">
+  <div class="card-body">
+    <div class="table-responsive shadow">
+      <table class="table table-bordered table-hover mb-0">
+        <thead class="thead-dark">
+          <th class="text-center">Product</th>
+          <th class="text-center">Quantity</th>
+          <th class="text-center">Free Quantity</th>
+        </thead>
+
+        <tbody>
+          <tr *ngFor="let content of purchaseOrderDetails">
+            <td class="text-center">
+              {{ content.Product_Name }}
+            </td>
+
+            <td class="text-center">
+              {{ content.Product_Quantity }}
+            </td>
+            <td class="text-center">
+              {{ content.Product_Free_Quantity }}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div class="modal-footer" *ngIf="this.local_data.salesPurchaseFlag == 1">
+  <button type="button" class="btn btn-primary" (click)="closeDialog()">
+    Close
   </button>
 </div>

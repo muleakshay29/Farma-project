@@ -1,25 +1,40 @@
 <h3 class="h3 mb-4 text-gray-800 border-bottom pb-2">Common Master</h3>
 
+<div class="progress-spinner" *ngIf="showSpinner">
+  <mat-spinner *ngIf="showSpinner"></mat-spinner>
+</div>
+
 <div class="card shadow mb-4">
   <div class="card-body">
-    <form [formGroup]="commonMaster" #formDirective="ngForm" (ngSubmit)="onSubmit()">
+    <form
+      [formGroup]="commonMaster"
+      #formDirective="ngForm"
+      (ngSubmit)="onSubmit()"
+    >
       <div class="form-group">
-        <input type="text" class="form-control rounded-pill" formControlName="CM_Name" placeholder="Enter Name">
+        <label for="CMName"><strong>Enter Name</strong></label>
+        <input
+          type="text"
+          class="form-control rounded-pill"
+          formControlName="CM_Name"
+          placeholder="Enter Name"
+        />
         <app-error-message [control]="CM_Name"></app-error-message>
       </div>
 
       <div class="form-group text-center">
-        <button type="submit" value="submit" class="btn btn-primary btn-user rounded-pill"
-          [disabled]="!commonMaster.valid" *ngIf="addFlag">
-          Submit
-        </button>
+        <input
+          type="submit"
+          [value]="buttonText"
+          class="btn btn-primary btn-user rounded-pill"
+          [disabled]="commonMaster.invalid"
+        />
 
-        <button type="submit" value="submit" class="btn btn-primary btn-user rounded-pill mx-1"
-          [disabled]="!commonMaster.valid" *ngIf="updateFlag">
-          Update
-        </button>
-
-        <button type="button" class="btn btn-warning btn-user rounded-pill mx-1" (click)="onCancel()">
+        <button
+          type="button"
+          class="btn btn-warning btn-user rounded-pill mx-1"
+          (click)="onCancel()"
+        >
           Cancel
         </button>
       </div>

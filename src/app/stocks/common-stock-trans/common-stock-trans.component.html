@@ -7,107 +7,191 @@
       #formDirective="ngForm"
       (ngSubmit)="onSubmit()"
     >
-      <div class="form-group">
-        <input
-          type="text"
-          class="form-control rounded-pill"
-          formControlName="Invoice_no"
-          placeholder="Serial No."
-          [value]="invoiceNo"
-          readonly
-        />
-        <app-error-message [control]="Invoice_no"></app-error-message>
+      <div class="form-group row">
+        <div class="col-sm-6 mb-3 mb-sm-0">
+          <input
+            type="text"
+            class="form-control rounded-pill"
+            formControlName="Invoice_no"
+            placeholder="Serial No."
+            [value]="invoiceNo"
+            readonly
+          />
+          <app-error-message [control]="Invoice_no"></app-error-message>
+        </div>
+
+        <div class="col-sm-6 mb-3 mb-sm-0">
+          <input
+            type="text"
+            class="form-control rounded-pill"
+            formControlName="Product"
+            placeholder="Product Name"
+            [matAutocomplete]="auto"
+            (keypress)="findProduct($event)"
+          />
+          <mat-autocomplete
+            #auto="matAutocomplete"
+            (optionSelected)="onSelect($event.option.value)"
+          >
+            <mat-option *ngFor="let prod of allProduct" [value]="prod">
+              {{ prod.PRO_Name }}
+            </mat-option>
+          </mat-autocomplete>
+
+          <app-error-message [control]="Product"></app-error-message>
+        </div>
       </div>
 
-      <div class="form-group">
-        <!-- <input
-          type="text"
-          class="form-control rounded-pill"
-          formControlName="Product"
-          placeholder="Search Product"
-          [typeahead]="allProductList"
-          typeaheadOptionField="PRO_Name"
-          adaptivePosition="true"
-          (typeaheadOnSelect)="onSelect($event)"
-          [typeaheadOptionsInScrollableView]="5"
-        /> -->
+      <div class="form-group row">
+        <div class="col-sm-6 mb-3 mb-sm-0">
+          <input
+            type="text"
+            class="form-control rounded-pill"
+            formControlName="PRO_Batch"
+            placeholder="Batch"
+          />
+          <app-error-message [control]="PRO_Batch"></app-error-message>
+        </div>
 
-        <input
-          type="text"
-          class="form-control rounded-pill"
-          formControlName="Product"
-          placeholder="Product Name"
-          [matAutocomplete]="auto"
-          (keypress)="findProduct($event)"
-        />
-        <mat-autocomplete
-          #auto="matAutocomplete"
-          (optionSelected)="onSelect($event.option.value)"
-        >
-          <mat-option *ngFor="let prod of allProduct" [value]="prod">
-            {{ prod.PRO_Name }}
-          </mat-option>
-        </mat-autocomplete>
-
-        <app-error-message [control]="Product"></app-error-message>
+        <div class="col-sm-6 mb-3 mb-sm-0">
+          <input
+            type="number"
+            class="form-control rounded-pill"
+            formControlName="CGST"
+            placeholder="CGST"
+          />
+          <app-error-message [control]="CGST"></app-error-message>
+        </div>
       </div>
 
-      <div class="form-group">
-        <input
-          type="text"
-          class="form-control rounded-pill"
-          formControlName="PRO_Batch"
-          placeholder="Batch"
-        />
-        <app-error-message [control]="PRO_Batch"></app-error-message>
+      <div class="form-group row">
+        <div class="col-sm-6 mb-3 mb-sm-0">
+          <input
+            type="number"
+            class="form-control rounded-pill"
+            formControlName="SGST"
+            placeholder="SGST"
+          />
+          <app-error-message [control]="SGST"></app-error-message>
+        </div>
+
+        <div class="col-sm-6 mb-3 mb-sm-0">
+          <input
+            type="number"
+            class="form-control rounded-pill"
+            formControlName="IGST"
+            placeholder="IGST"
+          />
+          <app-error-message [control]="IGST"></app-error-message>
+        </div>
       </div>
 
-      <div class="form-group">
-        <input
-          type="text"
-          class="form-control rounded-pill"
-          formControlName="PRO_Expiry"
-          placeholder="Product Expiry Date"
-          bsDatepicker
-          [bsConfig]="{
-            adaptivePosition: true,
-            dateInputFormat: 'DD-MM-YYYY'
-          }"
-        />
-        <app-error-message [control]="PRO_Expiry"></app-error-message>
+      <div class="form-group row">
+        <div class="col-sm-6 mb-3 mb-sm-0">
+          <input
+            type="number"
+            class="form-control rounded-pill"
+            formControlName="GST"
+            placeholder="GST"
+          />
+          <app-error-message [control]="GST"></app-error-message>
+        </div>
+
+        <div class="col-sm-6 mb-3 mb-sm-0">
+          <input
+            type="text"
+            class="form-control rounded-pill"
+            formControlName="PRO_Expiry"
+            placeholder="Product Expiry Date"
+            bsDatepicker
+            [bsConfig]="{
+              adaptivePosition: true,
+              dateInputFormat: 'DD-MM-YYYY'
+            }"
+          />
+          <app-error-message [control]="PRO_Expiry"></app-error-message>
+        </div>
       </div>
 
-      <div class="form-group">
-        <select class="form-control rounded-pill" formControlName="Stock_Type">
-          <option value="">Select Stock Type</option>
-          <option value="{{ stype._id }}" *ngFor="let stype of stockTypes">{{
-            stype.CMC_Name
-          }}</option>
-        </select>
+      <div class="form-group row">
+        <div class="col-sm-6 mb-3 mb-sm-0">
+          <select
+            class="form-control rounded-pill"
+            formControlName="PRO_Purchase_Unit"
+          >
+            <option value="">Select Purchase Unit</option>
+            <option
+              value="{{ ptype._id }}"
+              *ngFor="let ptype of typeOfProduct"
+              >{{ ptype.CMC_Name }}</option
+            >
+          </select>
+          <app-error-message [control]="PRO_Purchase_Unit"></app-error-message>
+        </div>
+
+        <div class="col-sm-6 mb-3 mb-sm-0">
+          <input
+            type="text"
+            class="form-control rounded-pill"
+            formControlName="PRO_purchase_unit_QTY"
+            placeholder="Purchase Unit Opening Quantity"
+            (change)="calculateSalesQTY()"
+          />
+          <app-error-message
+            [control]="PRO_purchase_unit_QTY"
+          ></app-error-message>
+        </div>
       </div>
 
-      <div class="form-group">
-        <input
-          type="text"
-          class="form-control rounded-pill"
-          formControlName="PRO_purchase_unit"
-          placeholder="Purchase Unit Opening Quantity"
-        />
-        <app-error-message [control]="PRO_purchase_unit"></app-error-message>
+      <div class="form-group row">
+        <div class="col-sm-6 mb-3 mb-sm-0">
+          <input
+            type="number"
+            class="form-control rounded-pill"
+            formControlName="Conversion_Factor"
+            placeholder="Conversion Factor"
+            (change)="calculateSalesQTY()"
+          />
+          <app-error-message [control]="Conversion_Factor"></app-error-message>
+        </div>
+
+        <div class="col-sm-6 mb-3 mb-sm-0">
+          <select
+            class="form-control rounded-pill"
+            formControlName="PRO_Sales_Unit"
+          >
+            <option value="">Select Sales Unit</option>
+            <option
+              value="{{ ptype._id }}"
+              *ngFor="let ptype of typeOfProduct"
+              >{{ ptype.CMC_Name }}</option
+            >
+          </select>
+          <app-error-message [control]="PRO_Sales_Unit"></app-error-message>
+        </div>
       </div>
 
-      <div class="form-group text-center">
-        <span><strong>OR</strong></span>
-      </div>
+      <div class="form-group row">
+        <div class="col-sm-6 mb-3 mb-sm-0">
+          <input
+            type="text"
+            class="form-control rounded-pill"
+            formControlName="PRO_sales_unit_QTY"
+            placeholder="Sales Unit Opening Quantity"
+            readonly="readonly"
+          />
+          <app-error-message [control]="PRO_sales_unit_QTY"></app-error-message>
+        </div>
 
-      <div class="form-group">
-        <input
-          type="text"
-          class="form-control rounded-pill"
-          formControlName="PRO_sales_unit"
-          placeholder="Sales Unit Opening Quantity"
-        />
-        <app-error-message [control]="PRO_sales_unit"></app-error-message>
+        <div class="col-sm-6 mb-3 mb-sm-0">
+          <input
+            type="number"
+            class="form-control rounded-pill"
+            formControlName="MRP"
+            placeholder="MRP"
+          />
+          <app-error-message [control]="MRP"></app-error-message>
+        </div>
       </div>
 
       <div class="form-group text-center">

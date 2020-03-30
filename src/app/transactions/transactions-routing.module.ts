@@ -9,6 +9,7 @@ import { AddSchemaComponent } from "./schema-master/add-schema/add-schema.compon
 import { SaleComponent } from "./sale/sale.component";
 import { AuthGuard } from "../_guards/auth.guard";
 import { Role } from "../_models/role";
+import { ConfirmSaleComponent } from "./sale/confirm-sale/confirm-sale.component";
 
 const routes: Routes = [
   {
@@ -50,6 +51,12 @@ const routes: Routes = [
   {
     path: "sales",
     component: SaleComponent,
+    canActivate: [AuthGuard],
+    data: { roles: [Role.Admin] }
+  },
+  {
+    path: "sales-detail/:id/:id1",
+    component: ConfirmSaleComponent,
     canActivate: [AuthGuard],
     data: { roles: [Role.Admin] }
   }

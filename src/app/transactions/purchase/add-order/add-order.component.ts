@@ -5,6 +5,7 @@ import { AlertService } from "../../../_services/alert.service";
 import { Router, ActivatedRoute } from "@angular/router";
 import { ProductMasterService } from "../../../_services/product-master.service";
 import { TransactionService } from "../../../_services/transaction.service";
+import { AuthenticationService } from "src/app/_services/authentication.service";
 
 @Component({
   selector: "app-add-order",
@@ -22,6 +23,7 @@ export class AddOrderComponent implements OnInit {
   allSuppliers: [];
   d;
   showSpinner: boolean = false;
+  loggedInUser: any;
 
   constructor(
     private fb: FormBuilder,
@@ -30,7 +32,8 @@ export class AddOrderComponent implements OnInit {
     private transervice: TransactionService,
     private router: Router,
     private route: ActivatedRoute,
-    private alertService: AlertService
+    private alertService: AlertService,
+    private auth: AuthenticationService
   ) {}
 
   ngOnInit() {
@@ -44,6 +47,8 @@ export class AddOrderComponent implements OnInit {
 
     this.ProdList = this.purchase.get("ProductList") as FormArray;
     this.fetchSuppliers();
+
+    this.loggedInUser = this.auth.currentUserValue.user;
   }
 
   get prodFormGroup() {
@@ -85,7 +90,8 @@ export class AddOrderComponent implements OnInit {
     const transData = {
       InvoiceDate: formData.InvoiceDate,
       PurchaseFlag: 1,
-      SupplierID: formData.SupplierID
+      SupplierID: formData.SupplierID,
+      Created_By: this.loggedInUser._id
     };
 
     this.transervice.addPurchase(transData).subscribe(data => {
@@ -98,7 +104,8 @@ export class AddOrderComponent implements OnInit {
             Product_Name: element.Product_Name,
             Product_Scheme: element.Product_Scheme,
             Product_Quantity: element.Product_Quantity,
-            Product_Free_Quantity: element.Product_Free_Quantity
+            Product_Free_Quantity: element.Product_Free_Quantity,
+            Created_By: this.loggedInUser._id
           };
 
           this.transervice.addTransactionChild(transSchemeData).subscribe();

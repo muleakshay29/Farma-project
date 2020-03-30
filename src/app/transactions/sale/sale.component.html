@@ -20,7 +20,7 @@
         <thead class="thead-dark">
           <th class="text-center">Action</th>
           <th class="text-center">Invoice Date</th>
-          <th class="text-center">Product Name</th>
+          <th class="text-center">Business Name</th>
         </thead>
 
         <tbody>
@@ -30,17 +30,20 @@
                 href="javascript:void(0)"
                 matTooltip="Order Details"
                 matTooltipPosition="above"
-                (click)="openDialog(content._id, content.Product_id._id)"
+                routerLink="/sales-detail/{{ content._id }}/{{
+                  content.Created_By._id
+                }}"
               >
+                <!-- (click)="openDialog(content._id, content.Created_By._id)" -->
                 <i class="fas fa-pencil-alt"></i>
               </a>
             </td>
 
             <td class="text-center">
-              {{ content.PurchaseTransId.InvoiceDate | date: "dd, MMM yyyy" }}
+              {{ content.InvoiceDate | date: "dd, MMM yyyy" }}
             </td>
             <td class="text-center">
-              {{ content.Product_id.PRO_Name | uppercase }}
+              {{ content.Created_By.R_BusinessName | uppercase }}
             </td>
           </tr>
         </tbody>

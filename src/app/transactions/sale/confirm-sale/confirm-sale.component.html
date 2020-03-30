@@ -1,0 +1,147 @@
+<h3 class="h3 mb-4 text-gray-800 border-bottom pb-2">Sales Details</h3>
+
+<div class="progress-spinner" *ngIf="showSpinner">
+  <mat-spinner *ngIf="showSpinner"></mat-spinner>
+</div>
+
+<div class="card">
+  <form [formGroup]="sales" #formDirective="ngForm" (ngSubmit)="onSubmit()">
+    <div class="card-body">
+      <div class="table-responsive shadow">
+        <table class="table table-bordered table-hover mb-0">
+          <thead class="thead-dark">
+            <th class="text-center">Product</th>
+            <th class="text-center">Batch</th>
+            <th class="text-center">Expiry Date</th>
+            <th class="text-center">MRP</th>
+            <th class="text-center">Purchase Rate</th>
+            <th class="text-center">Sale Rate</th>
+            <th class="text-center">CGST</th>
+            <th class="text-center">SGST</th>
+            <th class="text-center">IGST</th>
+            <th class="text-center">GST</th>
+          </thead>
+
+          <tbody formArrayName="ProductList">
+            <tr *ngFor="let item of prodFormGroup.controls; let i = index">
+              <ng-container [formGroupName]="i">
+                <td class="text-center">
+                  <input
+                    type="text"
+                    formControlName="Product_Name"
+                    class="form-control rounded-pill"
+                  />
+                </td>
+
+                <td class="text-center">
+                  <select
+                    class="form-control rounded-pill"
+                    formControlName="Product_Batch"
+                    (change)="getExpiry($event, i)"
+                  >
+                    <option value="">Select Batch</option>
+                    <option
+                      value="{{ batch.PRO_Batch }}"
+                      *ngFor="let batch of batchList[i]"
+                      >{{ batch.PRO_Batch }}</option
+                    >
+                  </select>
+                </td>
+
+                <td class="text-center">
+                  <input
+                    type="text"
+                    class="form-control rounded-pill"
+                    placeholder="Expiry Date"
+                    formControlName="Product_Expiry"
+                  />
+                </td>
+                <td class="text-center">
+                  <input
+                    type="number"
+                    class="form-control rounded-pill"
+                    placeholder="MRP"
+                    formControlName="Product_MRP"
+                  />
+                </td>
+                <td class="text-center">
+                  <input
+                    type="number"
+                    class="form-control rounded-pill"
+                    placeholder="Purchase Rate"
+                    formControlName="Product_Purchase_Rate"
+                  />
+                </td>
+                <td class="text-center">
+                  <input
+                    type="number"
+                    class="form-control rounded-pill"
+                    placeholder="Sale Rate"
+                    formControlName="Product_Sale_Rate"
+                  />
+                </td>
+
+                <td class="text-center">
+                  <input
+                    type="number"
+                    class="form-control rounded-pill"
+                    placeholder="CGST"
+                    formControlName="Product_CGST"
+                  />
+                </td>
+
+                <td class="text-center">
+                  <input
+                    type="number"
+                    class="form-control rounded-pill"
+                    placeholder="SGST"
+                    formControlName="Product_SGST"
+                  />
+                </td>
+
+                <td class="text-center">
+                  <input
+                    type="number"
+                    class="form-control rounded-pill"
+                    placeholder="IGST"
+                    formControlName="Product_IGST"
+                  />
+                </td>
+
+                <td class="text-center">
+                  <input
+                    type="number"
+                    class="form-control rounded-pill"
+                    placeholder="GST"
+                    formControlName="Product_GST"
+                  />
+                </td>
+              </ng-container>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="card-footer">
+      <div class="form-group text-center">
+        <button
+          type="submit"
+          value="submit"
+          class="btn btn-primary btn-user rounded-pill"
+          [disabled]="!sales.valid"
+        >
+          Submit
+        </button>
+
+        <button
+          type="button"
+          class="btn btn-warning btn-user rounded-pill mx-1"
+          (click)="onCancel()"
+        >
+          Cancel
+        </button>
+      </div>
+    </div>
+  </form>
+</div>

@@ -14,7 +14,8 @@ const httpOptions = {
   providedIn: "root"
 })
 export class StocksService {
-  API_URL = `https://ak-mead-test-heroku.herokuapp.com/`;
+  API_URL = `http://localhost:3000/`;
+  // API_URL = `https://ak-mead-test-heroku.herokuapp.com/`;
 
   constructor(private http: HttpClient) {}
 
@@ -30,6 +31,13 @@ export class StocksService {
     return this.http
       .get<any>(URL, httpOptions)
       .pipe(catchError(this.handleError<any>("fetchProductBatch")));
+  }
+
+  fetchBatchDetails(PRO_Batch): Observable<any> {
+    const URL = `${this.API_URL}find-batch-details/${PRO_Batch}`;
+    return this.http
+      .get<any>(URL, httpOptions)
+      .pipe(catchError(this.handleError<any>("fetchBatchDetails")));
   }
 
   fetchInvoiceNo(): Observable<any> {

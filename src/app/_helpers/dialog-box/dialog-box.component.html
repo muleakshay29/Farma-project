@@ -1,103 +1,68 @@
 <div class="card" *ngIf="this.local_data.salesPurchaseFlag == 2">
   <div class="card-body">
     <div class="table-responsive shadow">
-      <table
-        mat-table
-        [dataSource]="dataSource"
-        matSort
-        class="table table-bordered table-hover mb-0"
-      >
-        <ng-container matColumnDef="ProductName">
-          <th *matHeaderCellDef class="text-center">
-            Product Name
-          </th>
-          <td *matCellDef="let element" class="text-center">
-            {{ element.Product_id.PRO_Name }}
-          </td>
-        </ng-container>
+      <table class="table table-bordered table-hover mb-0">
+        <thead class="thead-dark">
+          <th class="text-center">Product Name</th>
+          <th class="text-center">Batch</th>
+          <th class="text-center">Expiry Date</th>
+          <th class="text-center">MRP</th>
+          <th class="text-center">Purchase Rate</th>
+          <th class="text-center">Sale Rate</th>
+        </thead>
 
-        <ng-container matColumnDef="Batch">
-          <th *matHeaderCellDef class="text-center">
-            Batch
-          </th>
-          <td *matCellDef="let element" class="text-center">
-            <select
-              class="form-control rounded-pill"
-              (change)="getExpiry($event)"
-            >
-              <option value="">Select Batch</option>
-              <option
-                value="{{ batch.PRO_Batch }}"
-                *ngFor="let batch of productBatch"
-                >{{ batch.PRO_Batch }}</option
+        <tbody>
+          <tr *ngFor="let content of returnedArray; let i = index">
+            <td class="text-center">
+              {{ content.Product_id.PRO_Name }}
+              Index - {{ i }}
+            </td>
+
+            <td class="text-center">
+              <select
+                class="form-control rounded-pill"
+                (change)="getExpiry($event)"
               >
-            </select>
-          </td>
-        </ng-container>
+                <option value="">Select Batch</option>
+                <option
+                  value="{{ batch.PRO_Batch }}"
+                  *ngFor="let batch of productBatch"
+                  >{{ i }}</option
+                >
+              </select>
+            </td>
 
-        <ng-container matColumnDef="Expiry_Date">
-          <th *matHeaderCellDef class="text-center">
-            Expiry Date
-          </th>
-          <td *matCellDef="let element" class="text-center">
-            <input
-              type="text"
-              class="form-control rounded-pill"
-              placeholder="Expiry Date"
-              [value]="productExpiryDate | date: 'dd-MM-yyyy'"
-            />
-          </td>
-        </ng-container>
-
-        <ng-container matColumnDef="MRP">
-          <th *matHeaderCellDef class="text-center">
-            MRP
-          </th>
-          <td *matCellDef="let element" class="text-center">
-            <input
-              type="text"
-              class="form-control rounded-pill"
-              placeholder="MRP"
-            />
-          </td>
-        </ng-container>
-
-        <ng-container matColumnDef="Purchase_Rate">
-          <th *matHeaderCellDef class="text-center">
-            Purchase Rate
-          </th>
-          <td *matCellDef="let element" class="text-center">
-            <input
-              type="text"
-              class="form-control rounded-pill"
-              placeholder="Purchase Rate"
-            />
-          </td>
-        </ng-container>
-
-        <ng-container matColumnDef="Sale_Rate">
-          <th *matHeaderCellDef class="text-center">
-            Sale Rate
-          </th>
-          <td *matCellDef="let element" class="text-center">
-            <input
-              type="text"
-              class="form-control rounded-pill"
-              placeholder="Sale Rate"
-            />
-          </td>
-        </ng-container>
-
-        <tr
-          mat-header-row
-          *matHeaderRowDef="displayedColumns"
-          class="text-center thead-dark"
-        ></tr>
-        <tr
-          mat-row
-          *matRowDef="let row; columns: displayedColumns"
-          class="text-center"
-        ></tr>
+            <td class="text-center">
+              <input
+                type="text"
+                class="form-control rounded-pill"
+                placeholder="Expiry Date"
+                [value]="productExpiryDate | date: 'dd-MM-yyyy'"
+              />
+            </td>
+            <td class="text-center">
+              <input
+                type="text"
+                class="form-control rounded-pill"
+                placeholder="MRP"
+              />
+            </td>
+            <td class="text-center">
+              <input
+                type="text"
+                class="form-control rounded-pill"
+                placeholder="Purchase Rate"
+              />
+            </td>
+            <td class="text-center">
+              <input
+                type="text"
+                class="form-control rounded-pill"
+                placeholder="Sale Rate"
+              />
+            </td>
+          </tr>
+        </tbody>
       </table>
     </div>
   </div>

@@ -123,5 +123,8 @@
       }
     }
   },
-  "defaultProject": "Farma"
+  "defaultProject": "Farma",
+  "cli": {
+    "analytics": false
+  }
 }

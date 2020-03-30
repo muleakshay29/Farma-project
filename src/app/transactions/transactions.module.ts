@@ -8,6 +8,7 @@ import { SchemaMasterComponent } from "./schema-master/schema-master.component";
 import { AddSchemaComponent } from "./schema-master/add-schema/add-schema.component";
 import { SaleComponent } from "./sale/sale.component";
 import { AddOrderComponent } from "./purchase/add-order/add-order.component";
+import { ConfirmSaleComponent } from './sale/confirm-sale/confirm-sale.component';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import { AddOrderComponent } from "./purchase/add-order/add-order.component";
     SchemaMasterComponent,
     AddSchemaComponent,
     SaleComponent,
-    AddOrderComponent
+    AddOrderComponent,
+    ConfirmSaleComponent
   ],
   imports: [SharedModule, TransactionsRoutingModule]
 })

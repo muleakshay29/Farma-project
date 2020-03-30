@@ -13,7 +13,8 @@ const httpOptions = {
   providedIn: "root"
 })
 export class MasterServiceService {
-  API_URL = `https://ak-mead-test-heroku.herokuapp.com/`;
+  API_URL = `http://localhost:3000/`;
+  // API_URL = `https://ak-mead-test-heroku.herokuapp.com/`;
 
   constructor(private http: HttpClient) {}
 
